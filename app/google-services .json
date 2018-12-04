@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "325538341614",
+    "firebase_url": "https://vikna-20adf.firebaseio.com",
+    "project_id": "vikna-20adf",
+    "storage_bucket": "vikna-20adf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325538341614:android:e0d213fe5739f6c1",
+        "android_client_info": {
+          "package_name": "a.b.c.quizmania"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "325538341614-obsk5d99o1psqe45196acgf60581aeqm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "a.b.c.quizmania",
+            "certificate_hash": "16d89f708a9756c36e006013cd484f726c94b70b"
+          }
+        },
+        {
+          "client_id": "325538341614-d08s7posirhuhvj3baedk16uct35u70t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOZGwJvuhOGiiTKgcgIJ9QrnLzPoRME3I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "325538341614-d08s7posirhuhvj3baedk16uct35u70t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
