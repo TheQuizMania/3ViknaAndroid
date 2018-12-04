@@ -58,22 +58,35 @@ public class LoginActivity extends AppCompatActivity {
     should sign in the user
      */
     private void signIn(View view) {
-        //Event listener that tries to sign in the user
-        mAuth.signInWithEmailAndPassword(emailEdit.getText().toString(), passwdEdit.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            // Sign in was successful
-                            Toast.makeText(LoginActivity.this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
+        String email = emailEdit.getText().toString();
+        String passwd = passwdEdit.getText().toString();
 
-                        } else {
-                            // Sign in failed
-                            Toast.makeText(LoginActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
-
+        if(!email.matches("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")) {
+            // If email is invalid
+            emailEdit.requestFocus();
+            emailEdit.setError("Email needs to be valid");
+        } else if (passwd.trim().length() == 0) {
+            // If password is empty
+            passwdEdit.requestFocus();
+            passwdEdit.setError("Password is needed");
+        } else {
+            //Event listener that tries to sign in the user
+            mAuth.signInWithEmailAndPassword(emailEdit.getText().toString(), passwdEdit.getText().toString())
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()) {
+                                // Sign in was successful
+                                Toast.makeText(LoginActivity.this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
+                                startMainMenu();
+                            } else {
+                                // Sign in failed
+                                Toast.makeText(LoginActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+        }
+
     }
 
     private void registerMe(View view) {
