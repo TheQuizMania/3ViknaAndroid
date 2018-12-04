@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".LoginActivity">
+    tools:context=".UI.LoginActivity">
 
 
     <TextView
@@ -34,6 +34,7 @@
         />
 
     <Button
+        android:id="@+id/sign_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sign in"
@@ -41,6 +42,7 @@
         />
 
     <TextView
+        android:id="@+id/register_me"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Register me"
