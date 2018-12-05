@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,8 +23,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import a.b.c.quizmania.R;
 
@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     // Firebase
     FirebaseAuth mAuth;
     GoogleSignInClient googleClient;
+    GoogleSignInAccount account;
 
     // Views
     Button signInBtn;
@@ -102,9 +103,6 @@ public class LoginActivity extends AppCompatActivity {
                             if(task.isSuccessful()) {
                                 // Sign in was successful
                                 Toast.makeText(LoginActivity.this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
-//                                FirebaseDatabase db = FirebaseDatabase.getInstance();
-//                                DatabaseReference ref = db.getReference("root//Users//id//userName");
-//                                ref.setValue("")
                                 startMainMenu();
                             } else {
                                 // Sign in failed
@@ -128,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Sign in Google was successful
-                GoogleSignInAccount account = task.getResult(ApiException.class);
+                account = task.getResult(ApiException.class);
                 Toast.makeText(this, getString(R.string.google_signin_success), Toast.LENGTH_SHORT).show();
                 FirebaseGoogleSignup(account);
             }catch (ApiException e) {
@@ -160,7 +158,10 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            FirebaseDatabase db = FirebaseDatabase.getInstance();
+                            String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            DatabaseReference ref = db.getReference("root//Users//"+ uId +"//userName");
+                            ref.setValue(account.getDisplayName());
                             startMainMenu();
                         } else {
                             Toast.makeText(LoginActivity.this, R.string.google_signin_fail, Toast.LENGTH_SHORT).show();

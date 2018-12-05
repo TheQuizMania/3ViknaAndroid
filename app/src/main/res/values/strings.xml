@@ -6,4 +6,9 @@
     <string name="registration_failed">Failed to register account</string>
     <string name="google_signin_success">Google sign in Succeeded</string>
     <string name="google_signin_fail">Google sign in failed</string>
+    <string name="quiz_mania">Quiz Mania</string>
+    <string name="sign_up">Sign up</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
 </resources>
