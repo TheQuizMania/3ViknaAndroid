@@ -16,4 +16,7 @@
     <string name="quiz_mania">Quiz Mania</string>
     <string name="register_me">Register me</string>
     <string name="username_needed">Username is needed</string>
+    <string name="email_not_valid">Email needs to be valid</string>
+    <string name="email_needed">Email is needed</string>
+    <string name="password_needed">Password is needed</string>
 </resources>

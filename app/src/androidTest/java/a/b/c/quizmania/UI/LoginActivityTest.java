@@ -31,7 +31,9 @@ public class LoginActivityTest {
     @Before
     public void setUp() throws Exception {
         activityTestRule.launchActivity(new Intent());
-        subBtn = onView(withId(R.id.email_signin));
+        subBtn = onView(withId(R.id.sign_in));
+        email = onView(withId(R.id.email_sign_in));
+        passW = onView(withId(R.id.password_sign_in));
     }
 
     @After

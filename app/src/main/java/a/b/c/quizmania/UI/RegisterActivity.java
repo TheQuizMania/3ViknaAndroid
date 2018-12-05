@@ -64,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
         signupBtn.setOnClickListener(v -> signUp());
     }
 
-    private void signUp() {
+    public void signUp() {
 
         String userName = unEdit.getText().toString();
         String email = emailEdit.getText().toString();
@@ -75,12 +75,15 @@ public class RegisterActivity extends AppCompatActivity {
             unEdit.setError(getString(R.string.username_needed));
             //regex validates if email is in a correct format.
             //i.e <chars or symbols>@<chars or symbols>.<chars>
+        } else if(email.length() == 0){
+            emailEdit.requestFocus();
+            emailEdit.setError(getString(R.string.email_needed));
         } else if(!email.trim().matches("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")) {
             emailEdit.requestFocus();
-            emailEdit.setError("Email needs to be valid");
+            emailEdit.setError(getString(R.string.email_not_valid));
         } else if(passW.trim().length() == 0) {
             passwdEdit.requestFocus();
-            passwdEdit.setError("Password is needed");
+            passwdEdit.setError(getString(R.string.password_needed));
             //regex validates if password length is > 6 and at least one of each
             // of the following is used: alphabetical letter for each case and a number
         } else if(passW.trim().matches("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})")){

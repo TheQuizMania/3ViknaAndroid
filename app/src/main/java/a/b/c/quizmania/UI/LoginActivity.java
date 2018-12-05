@@ -63,13 +63,13 @@ public class LoginActivity extends AppCompatActivity {
         googleClient = GoogleSignIn.getClient(this, gso);
 
         // Inputs
-        emailEdit = (EditText)findViewById(R.id.email_signin);
-        passwdEdit = (EditText)findViewById(R.id.passwd_signin); 
+        emailEdit = findViewById(R.id.email_sign_in);
+        passwdEdit = findViewById(R.id.password_sign_in);
 
         // Finding Clickables
-        signInBtn = (Button)findViewById(R.id.sign_in);
-        googleSigninBtn = (SignInButton) findViewById(R.id.google_signin);
-        registerBtn = (TextView)findViewById(R.id.register_me);
+        signInBtn = findViewById(R.id.sign_in);
+        googleSigninBtn = findViewById(R.id.google_signin);
+        registerBtn = findViewById(R.id.register_me);
 
         // Click listeners
         signInBtn.setOnClickListener(v -> signIn(v));
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
         } else if (passW.trim().length() == 0) {
             // If password is empty
             passwdEdit.requestFocus();
-            passwdEdit.setError("Password is needed");
+            passwdEdit.setError(getString(R.string.password_needed));
         } else {
             //Event listener that tries to sign in the user
             mAuth.signInWithEmailAndPassword(emailEdit.getText().toString(),
