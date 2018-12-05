@@ -1,5 +1,6 @@
 package a.b.c.quizmania.UI;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -86,7 +87,12 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     }
 
     private void playGame(View v) {
-        
+        Intent intent = new Intent(this, QuestionActivity.class);
+        intent.putExtra("CATEGORY", ids[0]);
+        intent.putExtra("DIFFICULTY", ids[1]);
+        intent.putExtra("TYPE", ids[2]);
+
+        startActivity(intent);
     }
 
     @Override
