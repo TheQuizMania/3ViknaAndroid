@@ -1,17 +1,16 @@
 package a.b.c.quizmania.UI;
 
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 import a.b.c.quizmania.R;
 
@@ -31,25 +30,25 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         // Firebase
         mAuth = FirebaseAuth.getInstance();
 
         // Buttons
-        signupBtn = (Button)findViewById(R.id.sign_up);
+        signupBtn = findViewById(R.id.sign_up);
 
         // Input
-        unEdit = (EditText)findViewById(R.id.username_signup);
-        emailEdit = (EditText)findViewById(R.id.email_signup);
-        passwdEdit = (EditText)findViewById(R.id.passwd_signup);
+        unEdit = findViewById(R.id.username_signup);
+        emailEdit = findViewById(R.id.email_signup);
+        passwdEdit = findViewById(R.id.passwd_signup);
 
 
         // Click listeners
-        signupBtn.setOnClickListener(v -> signUp(v));
+        signupBtn.setOnClickListener(v -> signUp());
     }
 
-    private void signUp(View view) {
+    private void signUp() {
 
         String userName = unEdit.getText().toString();
         String email = emailEdit.getText().toString();
@@ -58,28 +57,28 @@ public class RegisterActivity extends AppCompatActivity {
         if(userName.trim().length() == 0) {
             unEdit.requestFocus();
             unEdit.setError("Username is needed");
-        } else if(!email.matches("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")) {
+        } else if(!email.trim().matches("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")) {
             emailEdit.requestFocus();
             emailEdit.setError("Email needs to be valid");
         } else if(passwd.trim().length() == 0) {
             passwdEdit.requestFocus();
             passwdEdit.setError("Password is needed");
+        } else if(passwd.trim().matches("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})")){
+            passwdEdit.requestFocus();
+            passwdEdit.setError("Password invalid");
         } else {
             mAuth.createUserWithEmailAndPassword(email, passwd)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()) {
-                                Toast.makeText(RegisterActivity.this, getString(R.string.registration_success), Toast.LENGTH_SHORT).show();
-                                finish();
-                            } else {
-                                Toast.makeText(RegisterActivity.this, getString(R.string.registration_failed), Toast.LENGTH_SHORT).show();
-                            }
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()) {
+                            Toast.makeText(RegisterActivity.this, getString(R.string.registration_success), Toast.LENGTH_SHORT).show();
+                            FirebaseDatabase db = FirebaseDatabase.getInstance();
+                            DatabaseReference ref = db.getReference("root//Users//id//userName");
+                            ref.setValue(userName);
+                            finish();
+                        } else {
+                            Toast.makeText(RegisterActivity.this, getString(R.string.registration_failed), Toast.LENGTH_SHORT).show();
                         }
                     });
         }
     }
-
-
-
 }

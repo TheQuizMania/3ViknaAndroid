@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">QuizMania</string>
-    <string name="login_success">Login Successfull</string>
-    <string name="login_failed">Login failed</string>
+    <string name="login_success">Login Successful</string>
+    <string name="login_failed">Username or password incorrect</string>
     <string name="registration_success">Your account has been registered</string>
     <string name="registration_failed">Failed to register account</string>
 </resources>
