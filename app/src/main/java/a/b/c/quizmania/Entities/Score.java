@@ -8,6 +8,9 @@ public class Score {
     private int totalQuestions;
     private int correctAnswers;
 
+    public Score() {
+    }
+
     public Score(String difficulty, int category, String mode,
                  int totalQuestions, int correctAnswers) {
         this.difficulty = difficulty;

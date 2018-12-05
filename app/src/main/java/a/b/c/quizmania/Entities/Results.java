@@ -7,6 +7,9 @@ public class Results {
     private String correctAnswer;
     private String[] incorrectAnswers;
 
+    public Results() {
+    }
+
     public Results(String category, String type,
                    String question, String correctAnswer,
                    String[] incorrectAnswers) {
