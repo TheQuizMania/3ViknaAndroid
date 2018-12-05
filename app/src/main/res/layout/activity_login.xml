@@ -43,13 +43,28 @@
         android:hint="Password"
         android:inputType="textPassword" />
 
-    <Button
-        android:id="@+id/sign_in"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sign in"
-        android:textAllCaps="false"
-        />
+        android:orientation="horizontal"
+        android:gravity="center">
+        <Button
+            android:id="@+id/sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign in"
+            android:textAllCaps="false"
+            />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_signin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="Google"
+            />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/register_me"
