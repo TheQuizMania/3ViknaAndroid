@@ -1,6 +1,7 @@
 package a.b.c.quizmania.UI;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -101,6 +102,9 @@ public class LoginActivity extends AppCompatActivity {
                             if(task.isSuccessful()) {
                                 // Sign in was successful
                                 Toast.makeText(LoginActivity.this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
+//                                FirebaseDatabase db = FirebaseDatabase.getInstance();
+//                                DatabaseReference ref = db.getReference("root//Users//id//userName");
+//                                ref.setValue("")
                                 startMainMenu();
                             } else {
                                 // Sign in failed

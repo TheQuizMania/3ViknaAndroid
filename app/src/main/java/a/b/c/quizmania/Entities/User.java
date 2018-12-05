@@ -6,6 +6,9 @@ public class User {
     private int wins;
     private int losses;
 
+    public User() {
+    }
+
     public User(String userName, Score[] scores, int wins, int losses) {
         this.userName = userName;
         this.scores = scores;
