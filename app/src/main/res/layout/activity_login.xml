@@ -16,7 +16,7 @@
         android:textSize="50sp"
         android:text="@string/quiz_mania"
         android:gravity="center"
-        android:layout_marginVertical="40dp"
+        android:layout_marginVertical="40sp"
         />
 
     <TextView
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/log_in"
-        android:textSize="30dp"
+        android:textSize="30sp"
         />
 
     <EditText
@@ -71,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15sp"
-        android:text="Register me"
+        android:text="@string/register_me"
         />
 
 </LinearLayout>

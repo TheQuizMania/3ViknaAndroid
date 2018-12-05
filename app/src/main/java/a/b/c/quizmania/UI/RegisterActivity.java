@@ -21,7 +21,13 @@ import a.b.c.quizmania.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    private static FirebaseDatabase INSTANCE = null;
+    public static void setInstance(FirebaseDatabase instance){
+        INSTANCE = instance;
+    }
+
     // Firebase
+    private FirebaseDatabase db;
     FirebaseAuth mAuth;
 
     // Views
@@ -38,16 +44,20 @@ public class RegisterActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         // Firebase
+        db = INSTANCE;
+        if(db == null){
+            FirebaseDatabase.getInstance();
+        }
         mAuth = FirebaseAuth.getInstance();
 
 
         // Buttons
-        signupBtn = findViewById(R.id.sign_up);
+        signupBtn = findViewById(R.id.sign_Up);
 
         // Input
-        unEdit = findViewById(R.id.username_signup);
-        emailEdit = findViewById(R.id.email_signup);
-        passwdEdit = findViewById(R.id.passwd_signup);
+        unEdit = findViewById(R.id.username_signUp);
+        emailEdit = findViewById(R.id.email_signUp);
+        passwdEdit = findViewById(R.id.passwd_signUp);
 
 
         // Click listeners
@@ -62,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         if(userName.trim().length() == 0) {
             unEdit.requestFocus();
-            unEdit.setError("Username is needed");
+            unEdit.setError(getString(R.string.username_needed));
             //regex validates if email is in a correct format.
             //i.e <chars or symbols>@<chars or symbols>.<chars>
         } else if(!email.trim().matches("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")) {
@@ -102,7 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void addUserIfNotInDb(User user){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        db = FirebaseDatabase.getInstance();
         String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference ref = db.getReference("root//Users//" + uId);
         //Listener listens if there is an attempt to change data in the database

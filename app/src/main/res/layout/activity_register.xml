@@ -21,7 +21,7 @@
         android:text="@string/sign_up"
         android:textSize="30sp" />
     <EditText
-        android:id="@+id/username_signup"
+        android:id="@+id/username_signUp"
         android:maxLines="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         android:hint="@string/username"
         android:importantForAutofill="no" />
     <EditText
-        android:id="@+id/email_signup"
+        android:id="@+id/email_signUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20sp"
@@ -37,7 +37,7 @@
         android:inputType="textEmailAddress"
         android:importantForAutofill="no" />
     <EditText
-        android:id="@+id/passwd_signup"
+        android:id="@+id/passwd_signUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20sp"
@@ -45,7 +45,7 @@
         android:inputType="textPassword"
         android:importantForAutofill="no" />
     <Button
-        android:id="@+id/sign_up"
+        android:id="@+id/sign_Up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sign_up"
