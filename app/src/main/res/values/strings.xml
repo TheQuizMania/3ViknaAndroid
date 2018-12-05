@@ -4,4 +4,6 @@
     <string name="login_failed">Username or password incorrect</string>
     <string name="registration_success">Your account has been registered</string>
     <string name="registration_failed">Failed to register account</string>
+    <string name="google_signin_success">Google sign in Succeeded</string>
+    <string name="google_signin_fail">Google sign in failed</string>
 </resources>
