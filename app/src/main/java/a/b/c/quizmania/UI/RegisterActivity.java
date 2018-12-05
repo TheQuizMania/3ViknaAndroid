@@ -1,17 +1,22 @@
 package a.b.c.quizmania.UI;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
+import a.b.c.quizmania.Entities.User;
 import a.b.c.quizmania.R;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -72,15 +77,38 @@ public class RegisterActivity extends AppCompatActivity {
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()) {
                             Toast.makeText(RegisterActivity.this, getString(R.string.registration_success), Toast.LENGTH_SHORT).show();
-                            FirebaseDatabase db = FirebaseDatabase.getInstance();
-                            String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            DatabaseReference ref = db.getReference("root//Users//"+ uId +"//userName");
-                            ref.setValue(userName);
+                            //Create user to be inserted
+                            final User user = new User();
+                            user.setUserName(userName);
+                            user.setScores(null);
+                            user.setWins(0);
+                            user.setLosses(0);
+                            addUserIfNotInDb(user);
                             finish();
                         } else {
                             Toast.makeText(RegisterActivity.this, getString(R.string.registration_failed), Toast.LENGTH_SHORT).show();
                         }
                     });
         }
+    }
+
+    private void addUserIfNotInDb(User user){
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference ref = db.getReference("root//Users//" + uId);
+
+        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.hasChild("root//Users//" + uId)){
+                    //insert user if they don't exist in database.
+                    ref.setValue(user);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 }
