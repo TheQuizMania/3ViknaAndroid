@@ -4,6 +4,9 @@ public class Question {
     private int responseCode;
     private Results[] results;
 
+    public Question() {
+    }
+
     public Question(int responseCode, Results[] results) {
         this.responseCode = responseCode;
         this.results = results;
