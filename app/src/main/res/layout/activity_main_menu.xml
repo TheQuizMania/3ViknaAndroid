@@ -23,4 +23,28 @@
         android:text="sign out"
         android:textAllCaps="false"
         />
+
+    <Button
+        android:id="@+id/singleplayer_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Single Player"
+        android:textAllCaps="false"
+        />
+    <Button
+        android:id="@+id/multiplayer_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Multiplayer"
+        android:textAllCaps="false"
+        android:clickable="false"
+        />
+    <Button
+        android:id="@+id/quickmatch_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quick Match"
+        android:textAllCaps="false"
+        android:clickable="false"
+        />
 </LinearLayout>
