@@ -17,10 +17,11 @@ import a.b.c.quizmania.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    // Firebase
     FirebaseAuth mAuth;
 
+    // Views
     Button signupBtn;
-
     EditText unEdit;
     EditText emailEdit;
     EditText passwdEdit;

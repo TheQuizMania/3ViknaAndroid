@@ -19,13 +19,14 @@ import a.b.c.quizmania.R;
 
 public class LoginActivity extends AppCompatActivity {
 
+    // Firebase
+    FirebaseAuth mAuth;
+
+    // Views
     Button signInBtn;
     TextView registerBtn;
-    
     EditText emailEdit;
     EditText passwdEdit;
-    
-    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +91,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void registerMe(View view) {
+        // Starting Register activity
         Intent i = new Intent(this, RegisterActivity.class);
         startActivity(i);
     }
 
     private void startMainMenu() {
+        // Starting Main menu activity
         Intent intent = new Intent(this, MainMenuActivity.class);
         startActivity(intent);
     }

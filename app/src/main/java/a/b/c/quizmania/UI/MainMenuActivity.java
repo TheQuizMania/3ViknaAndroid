@@ -11,6 +11,7 @@ import a.b.c.quizmania.R;
 
 public class MainMenuActivity extends AppCompatActivity {
 
+    // Views
     Button signOutBtn;
 
     @Override
@@ -19,12 +20,14 @@ public class MainMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
         getSupportActionBar().hide();
 
+        // Finding views
         signOutBtn = findViewById(R.id.sign_out);
 
+        // Setting Click listeners
         signOutBtn.setOnClickListener(v -> signOut(v));
     }
 
-    // Sign Out
+    // Sign Out account
     private void signOut(View view) {
         FirebaseAuth.getInstance().signOut();
         finish();
