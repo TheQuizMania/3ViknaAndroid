@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -20,6 +21,7 @@ import com.koushikdutta.ion.Ion;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.Arrays;
+import java.util.concurrent.Semaphore;
 
 import a.b.c.quizmania.Entities.Question;
 import a.b.c.quizmania.Jobs.BackroundJob;
@@ -33,7 +35,7 @@ import static java.util.Collections.sort;
  */
 public class QuestionDisplayFragment extends Fragment {
 
-    private Question question;
+    private static Question question;
     private boolean isMul;
     FragmentManager fmanager;
     FragmentTransaction ftransaction;
@@ -60,25 +62,26 @@ public class QuestionDisplayFragment extends Fragment {
 
     }
 
+    private Semaphore mutex;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         questionTxt = getActivity().findViewById(R.id.question);
         if(task == null || task.getStatus() != AsyncTask.Status.RUNNING) {
             task = createBackroundJob();
-            task.execute(1);
+            task.execute(0);
         }
     }
 
     private void getQuestions() {
         Ion.with(this)
                 .load(url)
-                .as(new TypeToken<Question>(){ })
-                .setCallback(new FutureCallback<Question>() {
+                .asString()
+                .setCallback(new FutureCallback<String>() {
                     @Override
-                    public void onCompleted(Exception e, Question result) {
-//                        StringEscapeUtils.unescapeHtml4()
-                        question = result;
+                    public void onCompleted(Exception e, String result) {
+                        Gson gson = new Gson();
+                        question = gson.fromJson(result, Question.class);
                     }
                 });
     }
@@ -90,7 +93,6 @@ public class QuestionDisplayFragment extends Fragment {
         } else {
             displayTrueFalse();
         }
-        // StringEscapeUitls library to decode html4 encoded strings
         questionTxt.setText(StringEscapeUtils.unescapeHtml4(question.getResults()[i].getQuestion()));
     }
 
@@ -137,11 +139,13 @@ public class QuestionDisplayFragment extends Fragment {
         return new BackroundJob(new UiCallback() {
             @Override
             public void onPreExecute() {
-                getQuestions();
+                return;
             }
 
             @Override
             public void onProgressUpdate(Integer... values) {
+                getQuestions();
+                SystemClock.sleep(1000);
                 displayQuestion(values[0]);
             }
 
