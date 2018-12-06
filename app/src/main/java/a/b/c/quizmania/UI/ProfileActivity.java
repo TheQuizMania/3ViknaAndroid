@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import a.b.c.quizmania.R;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -16,10 +18,12 @@ public class ProfileActivity extends AppCompatActivity {
 
     private Switch themeSwitch;
     private String theme;
+    private String uID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         setAppTheme();
         setContentView(R.layout.activity_profile);
         themeSwitch = findViewById(R.id.theme_switch);
@@ -32,7 +36,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
     private void setAppTheme() {
-        SharedPreferences pref = getSharedPreferences("MY_PREF", MODE_PRIVATE);
+        SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");
         if(str.equals("AppTheme")) {
             setTheme(R.style.AppTheme);
@@ -45,19 +49,26 @@ public class ProfileActivity extends AppCompatActivity {
         themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked){
                 setTheme(R.style.DarkTheme);
-                SharedPreferences pref = getSharedPreferences("MY_PREF", MODE_PRIVATE);
+                SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("THEME_PREF", "DarkTheme");
                 editor.apply();
                 this.recreate();
             }else{
                 setTheme(R.style.AppTheme);
-                SharedPreferences pref = getSharedPreferences("MY_PREF", MODE_PRIVATE);
+                SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("THEME_PREF", "AppTheme");
                 editor.apply();
                 this.recreate();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, MainMenuActivity.class);
+        startActivity(intent);
     }
 }
