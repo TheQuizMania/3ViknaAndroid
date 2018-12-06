@@ -50,7 +50,6 @@ public class RegisterActivity extends AppCompatActivity {
         }
         mAuth = FirebaseAuth.getInstance();
 
-
         // Buttons
         signupBtn = findViewById(R.id.sign_Up);
 
@@ -69,6 +68,13 @@ public class RegisterActivity extends AppCompatActivity {
         String userName = unEdit.getText().toString();
         String email = emailEdit.getText().toString();
         String passW = passwdEdit.getText().toString();
+
+//        mAuth.createUserWithEmailAndPassword().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//            @Override
+//            public void onComplete(@NonNull Task<AuthResult> task) {
+//
+//            }
+//        })
 
         if(userName.trim().length() == 0) {
             unEdit.requestFocus();

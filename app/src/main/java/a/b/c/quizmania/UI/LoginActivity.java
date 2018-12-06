@@ -76,7 +76,6 @@ public class LoginActivity extends AppCompatActivity {
         googleSigninBtn.setOnClickListener(v -> signInGoogle(v));
         registerBtn.setOnClickListener(v -> registerMe(v));
 
-
     }
 
 
@@ -93,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         if(!email.matches("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")) {
             // If email is invalid
             emailEdit.requestFocus();
-            emailEdit.setError("Email needs to be valid");
+            emailEdit.setError(getString(R.string.email_not_valid));
         } else if (passW.trim().length() == 0) {
             // If password is empty
             passwdEdit.requestFocus();

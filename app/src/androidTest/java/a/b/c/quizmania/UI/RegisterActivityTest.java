@@ -3,8 +3,10 @@ package a.b.c.quizmania.UI;
 import android.content.Intent;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
-import android.widget.EditText;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -18,8 +20,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Objects;
-
 import a.b.c.quizmania.R;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -31,8 +31,6 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static android.support.test.espresso.matcher.ViewMatchers.hasFocus;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RegisterActivityTest {
@@ -60,13 +58,13 @@ public class RegisterActivityTest {
     private DataSnapshot mSnap;
 
     @Mock
-    private FirebaseAuth mockAuth;
+    private FirebaseAuth mAuth;
 
     @Mock
-    private EditText mockEmail;
+    private OnCompleteListener<AuthResult> mListener;
 
     @Mock
-    private EditText mockpass;
+    private Task<AuthResult> mTask;
 
     @Before
     public void setUp() {
@@ -81,12 +79,22 @@ public class RegisterActivityTest {
         passWBox = onView(withId(R.id.passwd_signUp));
         registerBtn = onView(withId(R.id.sign_Up));
 
-        String uId = Objects.requireNonNull(FirebaseAuth
-                .getInstance()
-                .getCurrentUser()).getUid();
+//        mAuth.signInWithCredential(string, string).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//            @Override
+//            public void onComplete(@NonNull Task<AuthResult> task) {
+//                task.isSuccessful();
+//            }
+//        })
+
+//        String uId = Objects.requireNonNull(FirebaseAuth
+//                .getInstance()
+//                .getCurrentUser()).getUid();
 //        when(mDb.getReference("root//Users//" + uId)).thenReturn(mRef);
 //        when(mRef.setValue(any(String.class))).thenReturn(null);
-        when(mockAuth.createUserWithEmailAndPassword(any(String.class), any(String.class))).thenReturn(null);
+
+//        when(mAuth.createUserWithEmailAndPassword(any(String.class), any(String.class))
+//                .addOnCompleteListener(any(OnCompleteListener<AuthResult>.class))).thenReturn(mTask);
+//        when(mTask.isSuccessful()).thenReturn(false);
 
     }
 
@@ -144,7 +152,9 @@ public class RegisterActivityTest {
     public void passwordValidityTest(){
         userNameBox.perform(typeText("Test"), closeSoftKeyboard());
         emailBox.perform(typeText("test@testdomain.tst"), closeSoftKeyboard());
-        passWBox.perform(typeText("Test123"), closeSoftKeyboard());
+        passWBox.perform(typeText(""), closeSoftKeyboard());
+        passWBox.perform(clearText(), typeText(""), closeSoftKeyboard());
+//        passWBox.perform(typeText("Test123"), closeSoftKeyboard());
         registerBtn.perform(click());
     }
 }

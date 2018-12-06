@@ -15,6 +15,9 @@ import a.b.c.quizmania.R;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasErrorText;
+import static android.support.test.espresso.matcher.ViewMatchers.hasFocus;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
@@ -27,22 +30,26 @@ public class LoginActivityTest {
     private ViewInteraction email;
     private ViewInteraction passW;
     private ViewInteraction subBtn;
+    private LoginActivity activity;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         activityTestRule.launchActivity(new Intent());
+        activity = activityTestRule.getActivity();
         subBtn = onView(withId(R.id.sign_in));
         email = onView(withId(R.id.email_sign_in));
         passW = onView(withId(R.id.password_sign_in));
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
     }
 
     @Test
     public void noInputTest(){
         subBtn.perform(click());
-//        check()
+        email.check(matches(hasFocus()));
+        email.check(matches(hasErrorText(activity.getString(R.string.email_not_valid))));
+
     }
 }
