@@ -149,6 +149,11 @@ public class QuestionDisplayFragment extends Fragment {
         Log.d("QUIZ_APP", "showResults() called");
     }
 
+
+    public String getRightAnswer() {
+        return question.getResults()[questionId].getCorrectAnswer();
+    }
+
     private BackroundJob createBackroundJob() {
         return new BackroundJob(new UiCallback<Integer>() {
 

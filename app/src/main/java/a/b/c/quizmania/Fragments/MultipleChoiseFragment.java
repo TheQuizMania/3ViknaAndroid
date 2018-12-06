@@ -119,7 +119,7 @@ public class MultipleChoiseFragment extends Fragment {
                 Toast.makeText(getActivity(), "Error came up", Toast.LENGTH_SHORT).show();
                 break;
         }
-
+        printRightAnswer(questionFragment.getRightAnswer());
         questionFragment.stopCurrentTask();
     }
 
@@ -130,4 +130,15 @@ public class MultipleChoiseFragment extends Fragment {
         b4.setClickable(false);
     }
 
+    private void printRightAnswer(String correctAnswer) {
+        if(b1.getText().toString().matches(correctAnswer)) {
+            b1.setBackgroundColor(Color.parseColor("#00FF00"));
+        } else if(b2.getText().toString().matches(correctAnswer)) {
+            b2.setBackgroundColor(Color.parseColor("#00FF00"));
+        } else if(b3.getText().toString().matches(correctAnswer)) {
+            b3.setBackgroundColor(Color.parseColor("#00FF00"));
+        } else {
+            b4.setBackgroundColor(Color.parseColor("#00FF00"));
+        }
+    }
 }
