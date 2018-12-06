@@ -1,6 +1,7 @@
 package a.b.c.quizmania.UI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Selection;
@@ -15,17 +16,23 @@ import a.b.c.quizmania.R;
 public class MainMenuActivity extends AppCompatActivity {
 
     // Firebase
-    FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
 
     // Views
-    Button signOutBtn;
-    Button singlePlayerBtn;
-    Button multiPlayerBtn;
-    Button quickmatchBtn;
+    private Button signOutBtn;
+    private Button singlePlayerBtn;
+    private Button multiPlayerBtn;
+    private Button quickmatchBtn;
+
+    //
+    private String theme;
+    private String uID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        setAppTheme();
         setContentView(R.layout.activity_main_menu);
         getSupportActionBar().hide();
 
@@ -45,7 +52,6 @@ public class MainMenuActivity extends AppCompatActivity {
         quickmatchBtn.setOnClickListener(v -> multiPlayer(v));
 
     }
-
     private void multiPlayer(View v) {
         if(v.getId() == R.id.multiplayer_btn) {
 
@@ -69,5 +75,16 @@ public class MainMenuActivity extends AppCompatActivity {
     public void goToProfile(View view) {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
+        finish();
+    }
+    private void setAppTheme() {
+        SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
+        String str = pref.getString("THEME_PREF", "AppTheme");
+        if(str.equals("AppTheme")) {
+            setTheme(R.style.AppTheme);
+        }else{
+            setTheme(R.style.DarkTheme);
+        }
+        theme = str;
     }
 }
