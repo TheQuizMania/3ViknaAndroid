@@ -21,4 +21,8 @@
     <string name="password_needed">Password is needed</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="quick_match">Quick Match</string>
+    <string name="single_player">Singleplayer</string>
+    <string name="multiplayer">Multiplayer</string>
+    <string name="settings">Settings</string>
 </resources>
