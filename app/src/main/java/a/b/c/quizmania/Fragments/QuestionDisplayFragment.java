@@ -95,7 +95,7 @@ public class QuestionDisplayFragment extends Fragment {
     }
 
     private void displayMultipleQuestion(String[] answers) {
-
+        Log.d("QUIZ_APP", "MultipleChoise() Called");
         if(!isMul) {
             isMul = true;
             MultipleChoiseFragment displayFragment = new MultipleChoiseFragment();
@@ -108,7 +108,7 @@ public class QuestionDisplayFragment extends Fragment {
     }
 
     private void displayTrueFalse() {
-
+        Log.d("QUIZ_APP", "True&False() Called");
     }
 
     private String[] getAnswers(int id) {
@@ -146,32 +146,42 @@ public class QuestionDisplayFragment extends Fragment {
     }
 
     private void showResults() {
-
+        Log.d("QUIZ_APP", "showResults() called");
     }
 
     private BackroundJob createBackroundJob() {
         return new BackroundJob(new UiCallback<Integer>() {
+
+            private boolean isDisplayed;
             @Override
             public void onPreExecute() {
                 Log.d("QUIZ_APP", "onPreExecute() task[" + questionId + "]");
+                isDisplayed = false;
+
             }
 
             @Override
             public void onProgressUpdate(Integer... values) {
-                Log.d("QUIZ_APP", "onProgressUpdate() task[" + questionId + "]");
-                displayQuestion(questionId);
+//                Log.d("QUIZ_APP", "onProgressUpdate() task[" + values[0] + "]");
+                if(!isDisplayed) {
+                    Log.d("QUIZ_APP", "DisplayOn() task[" + values[0] + "]");
+                    displayQuestion(values[0]);
+                    isDisplayed = true;
+                }
             }
 
             @Override
             public void onPostExecute(Integer integer) {
                 Log.d("QUIZ_APP", "onPostExecute() task[" + questionId + "]");
+                isDisplayed = false;
                 questionId++;
             }
 
             @Override
             public void onCancelled() {
-                SystemClock.sleep(1000);
                 Log.d("QUIZ_APP", "onCancelled() task[" + questionId + "]");
+                isDisplayed = false;
+                SystemClock.sleep(1000);
                 questionId++;
                 if(questionId == 10) {
                     showResults();

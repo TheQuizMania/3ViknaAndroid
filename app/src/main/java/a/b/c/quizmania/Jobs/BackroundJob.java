@@ -1,6 +1,7 @@
 package a.b.c.quizmania.Jobs;
 
 import android.os.AsyncTask;
+import android.os.SystemClock;
 
 public class BackroundJob extends AsyncTask<Integer, Integer, Integer> {
     private UiCallback<Integer> callback;
@@ -11,17 +12,17 @@ public class BackroundJob extends AsyncTask<Integer, Integer, Integer> {
 
     @Override
     protected Integer doInBackground(Integer... integers) {
-
         long startTime = System.currentTimeMillis();
         long endTime = startTime + 1000 * 20;
         long currTime;
-        publishProgress(integers[0]);
         while(!this.isCancelled() && endTime > (currTime = System.currentTimeMillis())) {
-
+            SystemClock.sleep(500);
+            publishProgress(integers[0]);
         }
 
         return integers[0];
     }
+
 
     @Override
     protected void onPreExecute() {
@@ -32,13 +33,6 @@ public class BackroundJob extends AsyncTask<Integer, Integer, Integer> {
     protected void onProgressUpdate(Integer... values) {
         callback.onProgressUpdate(values);
     }
-
-//    @Override
-//    protected Integer onPostExecute(Integer... integers) {
-//        callback.onPostExecute(integers[0]);
-//        callback = null;
-//        return null;
-//    }
 
 
     @Override
