@@ -76,11 +76,11 @@ public class MultipleChoiseFragment extends Fragment {
 
     public void btnClicked(View view) {
         disableButtons();
-        QuestionDisplayFragment question = (QuestionDisplayFragment) getFragmentManager().findFragmentById(R.id.question_fragment);
+        QuestionDisplayFragment questionFragment = (QuestionDisplayFragment) getFragmentManager().findFragmentById(R.id.question_fragment);
 
         switch (view.getId()) {
             case R.id.answer_1:
-                if(question.checkAnswer(b1.getText().toString())) {
+                if(questionFragment.checkAnswer(b1.getText().toString())) {
                     Toast.makeText(getActivity(), "Correct Answer", Toast.LENGTH_SHORT).show();
                     b1.setBackgroundColor(Color.parseColor("#00FF00"));
                 } else {
@@ -89,7 +89,7 @@ public class MultipleChoiseFragment extends Fragment {
                 }
                 break;
             case R.id.answer_2:
-                if(question.checkAnswer(b2.getText().toString())) {
+                if(questionFragment.checkAnswer(b2.getText().toString())) {
                     Toast.makeText(getActivity(), "Correct Answer", Toast.LENGTH_SHORT).show();
                     b2.setBackgroundColor(Color.parseColor("#00FF00"));
                 } else {
@@ -98,7 +98,7 @@ public class MultipleChoiseFragment extends Fragment {
                 }
                 break;
             case R.id.answer_3:
-                if(question.checkAnswer(b3.getText().toString())) {
+                if(questionFragment.checkAnswer(b3.getText().toString())) {
                     Toast.makeText(getActivity(), "Correct Answer", Toast.LENGTH_SHORT).show();
                     b3.setBackgroundColor(Color.parseColor("#00FF00"));
                 } else {
@@ -107,7 +107,7 @@ public class MultipleChoiseFragment extends Fragment {
                 }
                 break;
             case R.id.answer_4:
-                if(question.checkAnswer(b4.getText().toString())) {
+                if(questionFragment.checkAnswer(b4.getText().toString())) {
                     Toast.makeText(getActivity(), "Correct Answer", Toast.LENGTH_SHORT).show();
                     b4.setBackgroundColor(Color.parseColor("#00FF00"));
                 } else {
@@ -119,6 +119,8 @@ public class MultipleChoiseFragment extends Fragment {
                 Toast.makeText(getActivity(), "Error came up", Toast.LENGTH_SHORT).show();
                 break;
         }
+
+        questionFragment.stopCurrentTask();
     }
 
     private void disableButtons() {

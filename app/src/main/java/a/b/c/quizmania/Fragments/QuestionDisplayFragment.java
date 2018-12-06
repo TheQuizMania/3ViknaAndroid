@@ -30,6 +30,7 @@ import a.b.c.quizmania.Jobs.UiCallback;
 import a.b.c.quizmania.R;
 
 import static a.b.c.quizmania.UI.SelectionActivity.question;
+import static java.sql.Types.NULL;
 import static java.util.Collections.sort;
 
 /**
@@ -43,10 +44,8 @@ public class QuestionDisplayFragment extends Fragment {
     FragmentTransaction ftransaction;
     private int questionId;
 
-    private BackroundJob task;
+    private BackroundJob[] task;
 
-
-    public static Semaphore mutex;
 
     // Views
     TextView questionTxt;
@@ -71,27 +70,15 @@ public class QuestionDisplayFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         questionTxt = getActivity().findViewById(R.id.question);
-        if(task == null || task.getStatus() != AsyncTask.Status.RUNNING) {
-            for(int i = 0; i < 10; i++) {
-                task = createBackroundJob();
-                task.execute(i);
-                while(task.isCancelled()) {}
+        questionId = 0;
+        task = new BackroundJob[10];
+        for(int i = 0; i < 10; i++) {
+            if(task[i] == null || task[i].getStatus() != AsyncTask.Status.RUNNING) {
+                task[i] = createBackroundJob();
+                task[i].execute(i);
             }
         }
     }
-
-//    private void getQuestions() {
-//        Ion.with(this)
-//                .load(url)
-//                .asString()
-//                .setCallback(new FutureCallback<String>() {
-//                    @Override
-//                    public void onCompleted(Exception e, String result) {
-//                        Gson gson = new Gson();
-//                        question = gson.fromJson(result, Question.class);
-//                    }
-//                });
-//    }
 
     private void displayQuestion(int i) {
         if(question != null) {
@@ -148,34 +135,48 @@ public class QuestionDisplayFragment extends Fragment {
     }
 
     public boolean checkAnswer(String answer) {
-        task.cancel(true);
         if(question.getResults()[questionId].getCorrectAnswer().equals(answer)) {
             return true;
         }
         return false;
     }
 
+    public void stopCurrentTask() {
+        task[questionId].cancel(true);
+    }
+
+    private void showResults() {
+
+    }
+
     private BackroundJob createBackroundJob() {
         return new BackroundJob(new UiCallback<Integer>() {
             @Override
-            public void onPreExecute() { }
+            public void onPreExecute() {
+                Log.d("QUIZ_APP", "onPreExecute() task[" + questionId + "]");
+            }
 
             @Override
             public void onProgressUpdate(Integer... values) {
-                questionId = values[0];
-                displayQuestion(values[0]);
+                Log.d("QUIZ_APP", "onProgressUpdate() task[" + questionId + "]");
+                displayQuestion(questionId);
             }
 
             @Override
             public void onPostExecute(Integer integer) {
-                Log.d("QUIZ_APP", "Stopped on id: " + integer);
+                Log.d("QUIZ_APP", "onPostExecute() task[" + questionId + "]");
+                questionId++;
             }
 
             @Override
             public void onCancelled() {
-                Log.d("QUIZ_APP", "Cancelled Thread");
+                SystemClock.sleep(1000);
+                Log.d("QUIZ_APP", "onCancelled() task[" + questionId + "]");
+                questionId++;
+                if(questionId == 10) {
+                    showResults();
+                }
             }
         });
     }
-
 }
