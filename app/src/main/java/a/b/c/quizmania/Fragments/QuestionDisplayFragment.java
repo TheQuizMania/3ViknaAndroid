@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import a.b.c.quizmania.Jobs.BackroundJob;
 import a.b.c.quizmania.Jobs.UiCallback;
 import a.b.c.quizmania.R;
 
+import static a.b.c.quizmania.UI.SelectionActivity.question;
 import static java.util.Collections.sort;
 
 /**
@@ -35,13 +37,16 @@ import static java.util.Collections.sort;
  */
 public class QuestionDisplayFragment extends Fragment {
 
-    private static Question question;
+//    private static Question question;
     private boolean isMul;
     FragmentManager fmanager;
     FragmentTransaction ftransaction;
-    public String url = "https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple";
+    private int questionId;
 
     private BackroundJob task;
+
+
+    public static Semaphore mutex;
 
     // Views
     TextView questionTxt;
@@ -62,38 +67,44 @@ public class QuestionDisplayFragment extends Fragment {
 
     }
 
-    private Semaphore mutex;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         questionTxt = getActivity().findViewById(R.id.question);
         if(task == null || task.getStatus() != AsyncTask.Status.RUNNING) {
-            task = createBackroundJob();
-            task.execute(0);
+            for(int i = 0; i < 10; i++) {
+                task = createBackroundJob();
+                task.execute(i);
+                while(task.isCancelled()) {}
+            }
         }
     }
 
-    private void getQuestions() {
-        Ion.with(this)
-                .load(url)
-                .asString()
-                .setCallback(new FutureCallback<String>() {
-                    @Override
-                    public void onCompleted(Exception e, String result) {
-                        Gson gson = new Gson();
-                        question = gson.fromJson(result, Question.class);
-                    }
-                });
-    }
+//    private void getQuestions() {
+//        Ion.with(this)
+//                .load(url)
+//                .asString()
+//                .setCallback(new FutureCallback<String>() {
+//                    @Override
+//                    public void onCompleted(Exception e, String result) {
+//                        Gson gson = new Gson();
+//                        question = gson.fromJson(result, Question.class);
+//                    }
+//                });
+//    }
 
     private void displayQuestion(int i) {
-        if(question.getResults()[i].getType().equals("multiple")) {
-            String[] answers = getAnswers(i);
-            displayMultipleQuestion(answers);
+        if(question != null) {
+            if(question.getResults()[i].getType().equals("multiple")) {
+                String[] answers = getAnswers(i);
+                displayMultipleQuestion(answers);
+            } else {
+                displayTrueFalse();
+            }
+            questionTxt.setText(StringEscapeUtils.unescapeHtml4(question.getResults()[i].getQuestion()));
         } else {
-            displayTrueFalse();
+            questionTxt.setText(getString(R.string.question_null_error_message));
         }
-        questionTxt.setText(StringEscapeUtils.unescapeHtml4(question.getResults()[i].getQuestion()));
     }
 
     private void displayMultipleQuestion(String[] answers) {
@@ -105,6 +116,7 @@ public class QuestionDisplayFragment extends Fragment {
             fmanager.executePendingTransactions();
         }
         MultipleChoiseFragment fragment = (MultipleChoiseFragment) fmanager.findFragmentById(R.id.answer_fragment);
+//        fragment.setBtnColors();
         fragment.printAnswers(answers);
     }
 
@@ -135,28 +147,33 @@ public class QuestionDisplayFragment extends Fragment {
         return retVal;
     }
 
+    public boolean checkAnswer(String answer) {
+        task.cancel(true);
+        if(question.getResults()[questionId].getCorrectAnswer().equals(answer)) {
+            return true;
+        }
+        return false;
+    }
+
     private BackroundJob createBackroundJob() {
-        return new BackroundJob(new UiCallback() {
+        return new BackroundJob(new UiCallback<Integer>() {
             @Override
-            public void onPreExecute() {
-                return;
-            }
+            public void onPreExecute() { }
 
             @Override
             public void onProgressUpdate(Integer... values) {
-                getQuestions();
-                SystemClock.sleep(1000);
+                questionId = values[0];
                 displayQuestion(values[0]);
             }
 
             @Override
-            public void onPostExecute() {
-
+            public void onPostExecute(Integer integer) {
+                Log.d("QUIZ_APP", "Stopped on id: " + integer);
             }
 
             @Override
             public void onCancelled() {
-
+                Log.d("QUIZ_APP", "Cancelled Thread");
             }
         });
     }
