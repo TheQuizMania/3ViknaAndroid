@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".UI.RegisterActivity" />
         <activity android:name=".UI.MainMenuActivity" />
-        <activity android:name=".UI.SelectionActivity"></activity>
+        <activity android:name=".UI.SelectionActivity" />
+        <activity android:name=".UI.QuestionActivity"></activity>
     </application>
 
 </manifest>
