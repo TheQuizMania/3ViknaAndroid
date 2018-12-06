@@ -33,7 +33,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:hint="Email"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        />
 
     <EditText
         android:id="@+id/passwd_signin"
@@ -70,6 +71,7 @@
         android:id="@+id/register_me"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15sp"
         android:text="Register me"
         />
 
