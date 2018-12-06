@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -27,13 +28,8 @@ public class ProfileActivity extends AppCompatActivity {
         setAppTheme();
         setContentView(R.layout.activity_profile);
         themeSwitch = findViewById(R.id.theme_switch);
-        if(theme.equals("AppTheme")) {
-            themeSwitch.setChecked(false);
-        }else{
-            themeSwitch.setChecked(true);
-        }
+        checkSwitch();
         writePreference();
-
     }
     private void setAppTheme() {
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
@@ -49,6 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
         themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked){
                 setTheme(R.style.DarkTheme);
+
                 SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("THEME_PREF", "DarkTheme");
@@ -70,5 +67,14 @@ public class ProfileActivity extends AppCompatActivity {
         super.onBackPressed();
         Intent intent = new Intent(this, MainMenuActivity.class);
         startActivity(intent);
+    }
+    private void checkSwitch() {
+        //Fall sem athugar hvort userinn er med stillt a Dark/light mode
+        //setur switchin i samræmi við það án þess að triggera onClickið
+        if(theme.equals("AppTheme")) {
+            themeSwitch.setChecked(false);
+        }else{
+            themeSwitch.setChecked(true);
+        }
     }
 }
