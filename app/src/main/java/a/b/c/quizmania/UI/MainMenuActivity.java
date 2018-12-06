@@ -44,9 +44,6 @@ public class MainMenuActivity extends AppCompatActivity {
         multiPlayerBtn.setOnClickListener(v -> multiPlayer(v));
         quickmatchBtn.setOnClickListener(v -> multiPlayer(v));
 
-
-
-        ((TextView)findViewById(R.id.test_show)).setText(mAuth.getCurrentUser().getDisplayName());
     }
 
     private void multiPlayer(View v) {
@@ -69,4 +66,8 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
 
+    public void goToProfile(View view) {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+    }
 }
