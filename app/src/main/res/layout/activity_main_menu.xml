@@ -10,11 +10,11 @@
     tools:context=".UI.MainMenuActivity">
 
     <TextView
-        android:id="@+id/test_show"
+        android:id="@+id/profile_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        />
+        android:onClick="goToProfile"
+        android:text="TextView" />
 
     <Button
         android:id="@+id/sign_out"
@@ -47,4 +47,5 @@
         android:textAllCaps="false"
         android:clickable="false"
         />
+
 </LinearLayout>
