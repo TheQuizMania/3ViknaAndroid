@@ -1,5 +1,6 @@
 package a.b.c.quizmania.UI;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -33,19 +34,18 @@ public class RegisterActivity extends AppCompatActivity {
 
     // Firebase
     private FirebaseDatabase db;
-    FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
 
     // Views
-    Button signupBtn;
-    EditText unEdit;
-    EditText emailEdit;
-    EditText passwdEdit;
+    private Button signupBtn;
+    private EditText unEdit;
+    private EditText emailEdit;
+    private EditText passwdEdit;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTheme(R.style.DarkTheme);
         setContentView(R.layout.activity_register);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
