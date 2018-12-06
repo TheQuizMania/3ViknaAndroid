@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,14 +18,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import a.b.c.quizmania.Entities.User;
 import a.b.c.quizmania.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -36,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     // Firebase
     FirebaseAuth mAuth;
     GoogleSignInClient googleClient;
+    GoogleSignInAccount account;
 
     // Views
     Button signInBtn;
@@ -52,26 +55,26 @@ public class LoginActivity extends AppCompatActivity {
 
         // Firebase
         mAuth = FirebaseAuth.getInstance();
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        GoogleSignInOptions gso = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         googleClient = GoogleSignIn.getClient(this, gso);
 
         // Inputs
-        emailEdit = (EditText)findViewById(R.id.email_signin);
-        passwdEdit = (EditText)findViewById(R.id.passwd_signin); 
+        emailEdit = findViewById(R.id.email_sign_in);
+        passwdEdit = findViewById(R.id.password_sign_in);
 
         // Finding Clickables
-        signInBtn = (Button)findViewById(R.id.sign_in);
-        googleSigninBtn = (SignInButton) findViewById(R.id.google_signin);
-        registerBtn = (TextView)findViewById(R.id.register_me);
+        signInBtn = findViewById(R.id.sign_in);
+        googleSigninBtn = findViewById(R.id.google_signin);
+        registerBtn = findViewById(R.id.register_me);
 
         // Click listeners
         signInBtn.setOnClickListener(v -> signIn(v));
         googleSigninBtn.setOnClickListener(v -> signInGoogle(v));
         registerBtn.setOnClickListener(v -> registerMe(v));
-
 
     }
 
@@ -83,33 +86,31 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void signIn(View view) {
         String email = emailEdit.getText().toString();
-        String passwd = passwdEdit.getText().toString();
-
+        String passW = passwdEdit.getText().toString();
+        //regex looks for any number of characters, then a @ and any number of characters.
+        //Then it looks for a dot and some alphabetical letters.
         if(!email.matches("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")) {
             // If email is invalid
             emailEdit.requestFocus();
-            emailEdit.setError("Email needs to be valid");
-        } else if (passwd.trim().length() == 0) {
+            emailEdit.setError(getString(R.string.email_not_valid));
+        } else if (passW.trim().length() == 0) {
             // If password is empty
             passwdEdit.requestFocus();
-            passwdEdit.setError("Password is needed");
+            passwdEdit.setError(getString(R.string.password_needed));
         } else {
             //Event listener that tries to sign in the user
-            mAuth.signInWithEmailAndPassword(emailEdit.getText().toString(), passwdEdit.getText().toString())
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()) {
-                                // Sign in was successful
-                                Toast.makeText(LoginActivity.this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
-//                                FirebaseDatabase db = FirebaseDatabase.getInstance();
-//                                DatabaseReference ref = db.getReference("root//Users//id//userName");
-//                                ref.setValue("")
-                                startMainMenu();
-                            } else {
-                                // Sign in failed
-                                Toast.makeText(LoginActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
-                            }
+            mAuth.signInWithEmailAndPassword(emailEdit.getText().toString(),
+                                passwdEdit.getText().toString())
+                    .addOnCompleteListener(this, task -> {
+                        if(task.isSuccessful()) {
+                            // Sign in was successful
+                            Toast.makeText(LoginActivity.this,
+                                    getString(R.string.login_success), Toast.LENGTH_SHORT).show();
+                            startMainMenu();
+                        } else {
+                            // Sign in failed
+                            Toast.makeText(LoginActivity.this,
+                                    getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -128,13 +129,15 @@ public class LoginActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Sign in Google was successful
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                Toast.makeText(this, getString(R.string.google_signin_success), Toast.LENGTH_SHORT).show();
+                account = task.getResult(ApiException.class);
+                Toast.makeText(this, getString(R.string.google_signin_success),
+                        Toast.LENGTH_SHORT).show();
                 FirebaseGoogleSignup(account);
             }catch (ApiException e) {
                 // Sign in Google failed
                 e.printStackTrace();
-                Toast.makeText(this, getString(R.string.google_signin_fail), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.google_signin_fail),
+                        Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -156,18 +159,41 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("GOOGLE_LOGIN", "FirebaseAuthWithGoogle: " + acct.getIdToken());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            startMainMenu();
-                        } else {
-                            Toast.makeText(LoginActivity.this, R.string.google_signin_fail, Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(this, task -> {
+                    if(task.isSuccessful()) {
+                        //Create user to be inserted
+                        final User user = new User();
+                        user.setUserName(account.getDisplayName());
+                        user.setScores(null);
+                        user.setWins(0);
+                        user.setLosses(0);
+                        //on sign in inserts new user into database if not exists
+                        addUserIfNotInDb(user);
+                        startMainMenu();
+                    } else {
+                        Toast.makeText(LoginActivity.this,
+                                R.string.google_signin_fail, Toast.LENGTH_SHORT).show();
                     }
                 });
-
     }
 
+    private void addUserIfNotInDb(User user){
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference ref = db.getReference("root//Users//" + uId);
+
+        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.hasChild("root//Users//" + uId)){
+                    //insert user if they don't exist in database.
+                    ref.setValue(user);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
 }

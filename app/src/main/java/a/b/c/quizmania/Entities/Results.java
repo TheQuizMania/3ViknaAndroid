@@ -4,8 +4,8 @@ public class Results {
     private String category;
     private String type;
     private String question;
-    private String correctAnswer;
-    private String[] incorrectAnswers;
+    private String correct_answer;
+    private String[] incorrect_answers;
 
     public Results() {
     }
@@ -16,8 +16,8 @@ public class Results {
         this.category = category;
         this.type = type;
         this.question = question;
-        this.correctAnswer = correctAnswer;
-        this.incorrectAnswers = incorrectAnswers;
+        this.correct_answer = correctAnswer;
+        this.incorrect_answers = incorrectAnswers;
     }
 
     public String getCategory() {
@@ -45,18 +45,18 @@ public class Results {
     }
 
     public String getCorrectAnswer() {
-        return correctAnswer;
+        return correct_answer;
     }
 
     public void setCorrectAnswer(String correctAnswer) {
-        this.correctAnswer = correctAnswer;
+        this.correct_answer = correctAnswer;
     }
 
     public String[] getIncorrectAnswers() {
-        return incorrectAnswers;
+        return incorrect_answers;
     }
 
     public void setIncorrectAnswers(String[] incorrectAnswers) {
-        this.incorrectAnswers = incorrectAnswers;
+        this.incorrect_answers = incorrectAnswers;
     }
 }
