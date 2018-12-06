@@ -19,8 +19,9 @@ import a.b.c.quizmania.R;
 
 public class SelectionActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-
+    // Question variable that is used in QuestionDisplayFragment
     public static Question question;
+    // Url for the api that will be appended strings
     public String url = "https://opentdb.com/api.php?amount=10";
 
     // Views
@@ -52,6 +53,8 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
             "Multiple choice",
             "True or False",
     };
+
+    // String that will be given values for the chosen from a specified dropdown
     String selectedCategory;
     String selectedDifficulty;
     String selectedType;
@@ -64,6 +67,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         setContentView(R.layout.activity_selection);
         getSupportActionBar().hide();
 
+        // Initialize the selection strings as empty strings
         selectedCategory = "";
         selectedDifficulty = "";
         selectedType = "";
@@ -105,6 +109,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     }
 
     private void playGame(View v) {
+        // Starts a Question activity
         Intent intent = new Intent(this, QuestionActivity.class);
         intent.putExtra("CATEGORY", ids[0]);
         intent.putExtra("DIFFICULTY", ids[1]);
@@ -115,6 +120,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // Checks which drop down is pressed
         switch(parent.getId()){
             case R.id.category_dropdown:
                 Toast.makeText(getApplicationContext(),categories[position] , Toast.LENGTH_LONG).show();
@@ -134,11 +140,13 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
             default:
                 break;
         }
+        // Fetches the data from the api
         getQuestions();
 
     }
 
     private String getType(String type) {
+        // If you changed type it will return a string with &type={selected type}
         String retVal = "&type=";
         switch (type) {
             case "Multiple choice":
@@ -153,6 +161,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     }
 
     private String getCategory(String category) {
+        // If you changed category it will return a string with &category={selected category}
         String retVal = "&category=";
         switch (category) {
             case "Random":
@@ -183,6 +192,8 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     }
 
     private void getQuestions() {
+        // Makes the buttons unclickable
+        // Gets the questions from the api
         playBtn.setClickable(false);
         playBtn.setText(getString(R.string.quiz_unavaliable));
         Ion.with(this)
@@ -191,8 +202,10 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                 .setCallback(new FutureCallback<String>() {
                     @Override
                     public void onCompleted(Exception e, String result) {
+                        // Converts the result from the api to a Question.class
                         Gson gson = new Gson();
                         question = gson.fromJson(result, Question.class);
+                        // Makes the play button clickable again
                         playBtn.setOnClickListener(v -> playGame(v));
                         playBtn.setText(getString(R.string.quiz_avaliable));
                     }

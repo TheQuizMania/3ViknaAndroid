@@ -20,10 +20,11 @@ import a.b.c.quizmania.R;
  */
 public class MultipleChoiseFragment extends Fragment {
 
-    Button b1;
-    Button b2;
-    Button b3;
-    Button b4;
+    // Views
+    private Button b1;
+    private Button b2;
+    private Button b3;
+    private Button b4;
 
     public MultipleChoiseFragment() {
         // Required empty public constructor
@@ -39,6 +40,7 @@ public class MultipleChoiseFragment extends Fragment {
 
 
     public void printAnswers(String[] answers) {
+        // Get the actiity
         Activity activity = getActivity();
 
         // Finding views
@@ -64,6 +66,7 @@ public class MultipleChoiseFragment extends Fragment {
     }
 
     public void setBtnColors() {
+        // Setting default colors on the buttons
         b1.setTextColor(Color.parseColor("#FFFFFF"));
         b1.setBackgroundColor(Color.parseColor("#000000"));
         b2.setTextColor(Color.parseColor("#FFFFFF"));
@@ -75,9 +78,12 @@ public class MultipleChoiseFragment extends Fragment {
     }
 
     public void btnClicked(View view) {
+        // When clicked you can't click another answer
         disableButtons();
+        // Get the question fragment to call functions within
         QuestionDisplayFragment questionFragment = (QuestionDisplayFragment) getFragmentManager().findFragmentById(R.id.question_fragment);
 
+        // Checks whether it was the right answer and changes the color of the button accordingly
         switch (view.getId()) {
             case R.id.answer_1:
                 if(questionFragment.checkAnswer(b1.getText().toString())) {
@@ -119,11 +125,15 @@ public class MultipleChoiseFragment extends Fragment {
                 Toast.makeText(getActivity(), "Error came up", Toast.LENGTH_SHORT).show();
                 break;
         }
+
+        // Colours the right answer green
         printRightAnswer(questionFragment.getRightAnswer());
+        // Stops the thread keeping the question on the screen
         questionFragment.stopCurrentTask();
     }
 
     private void disableButtons() {
+        // Disables the button
         b1.setClickable(false);
         b2.setClickable(false);
         b3.setClickable(false);
@@ -131,6 +141,7 @@ public class MultipleChoiseFragment extends Fragment {
     }
 
     private void printRightAnswer(String correctAnswer) {
+        // Prints the right button green
         if(b1.getText().toString().matches(correctAnswer)) {
             b1.setBackgroundColor(Color.parseColor("#00FF00"));
         } else if(b2.getText().toString().matches(correctAnswer)) {
