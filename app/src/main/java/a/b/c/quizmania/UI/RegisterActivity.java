@@ -1,5 +1,6 @@
 package a.b.c.quizmania.UI;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,19 +34,18 @@ public class RegisterActivity extends AppCompatActivity {
 
     // Firebase
     private FirebaseDatabase db;
-    FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
 
     // Views
-    Button signupBtn;
-    EditText unEdit;
-    EditText emailEdit;
-    EditText passwdEdit;
+    private Button signupBtn;
+    private EditText unEdit;
+    private EditText emailEdit;
+    private EditText passwdEdit;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTheme(R.style.DarkTheme);
         setContentView(R.layout.activity_register);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
@@ -72,13 +74,6 @@ public class RegisterActivity extends AppCompatActivity {
         String userName = unEdit.getText().toString();
         String email = emailEdit.getText().toString();
         String passW = passwdEdit.getText().toString();
-
-//        mAuth.createUserWithEmailAndPassword().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//            @Override
-//            public void onComplete(@NonNull Task<AuthResult> task) {
-//
-//            }
-//        })
 
         if(userName.trim().length() == 0) {
             unEdit.requestFocus();
@@ -112,7 +107,16 @@ public class RegisterActivity extends AppCompatActivity {
                             user.setScores(null);
                             user.setWins(0);
                             user.setLosses(0);
+                            //add user to database if not exists
                             addUserIfNotInDb(user);
+                            //add username to auth user
+                            FirebaseUser gUser = FirebaseAuth.getInstance().getCurrentUser();
+                            UserProfileChangeRequest changeRequest
+                                    = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(userName)
+                                    .build();
+                            assert gUser != null;
+                            gUser.updateProfile(changeRequest);
                             finish();
                         } else {
                             Toast.makeText(RegisterActivity.this,
