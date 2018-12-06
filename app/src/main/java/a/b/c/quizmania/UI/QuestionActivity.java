@@ -31,8 +31,6 @@ public class QuestionActivity extends AppCompatActivity {
         uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         setAppTheme();
         setContentView(R.layout.activity_question);
-
-
     }
     private void setAppTheme() {
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
