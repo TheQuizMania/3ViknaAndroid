@@ -18,7 +18,7 @@ import a.b.c.quizmania.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MultipleChoiseFragment extends Fragment {
+public class MultipleChoiceFragment extends Fragment {
 
     // Views
     private Button b1;
@@ -26,7 +26,7 @@ public class MultipleChoiseFragment extends Fragment {
     private Button b3;
     private Button b4;
 
-    public MultipleChoiseFragment() {
+    public MultipleChoiceFragment() {
         // Required empty public constructor
     }
 
