@@ -50,8 +50,6 @@ public class MainMenuActivity extends AppCompatActivity {
         // Firebase
         mAuth = FirebaseAuth.getInstance();
 
-
-
         setContentView(R.layout.activity_main_menu);
         Objects.requireNonNull(getSupportActionBar()).hide();
 

@@ -1,5 +1,6 @@
 package a.b.c.quizmania.Fragments;
 
+import android.app.Activity;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -21,12 +22,14 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.Arrays;
 
-import a.b.c.quizmania.Jobs.BackroundJob;
+import a.b.c.quizmania.Entities.Score;
+import a.b.c.quizmania.Jobs.BackgroundJob;
 import a.b.c.quizmania.Jobs.UiCallback;
 import a.b.c.quizmania.R;
+import a.b.c.quizmania.UI.QuestionActivity;
 
 import static a.b.c.quizmania.UI.SelectionActivity.question;
-import static java.util.Collections.sort;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,18 +40,20 @@ public class QuestionDisplayFragment extends Fragment {
     private boolean isMul;
 
     // Fragment manager and transaction to Control the
-    private FragmentManager fmanager;
-    private FragmentTransaction ftransaction;
+    private FragmentManager fManager;
+    private FragmentTransaction fTransaction;
 
     // Hold the id at the current question
     private int questionId;
 
     // Array of AsyncTasks
-    private BackroundJob[] task;
+    private BackgroundJob[] task;
+
+    private Score score;
 
     // Views
-    TextView questionTxt;
-    ProgressBar progressBar;
+    private TextView questionTxt;
+    private ProgressBar progressBar;
 
     public QuestionDisplayFragment() {
         // Required empty public constructor
@@ -59,8 +64,8 @@ public class QuestionDisplayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Initiates the fragment manager ant transaction
-        fmanager = getFragmentManager();
-        ftransaction = fmanager.beginTransaction();
+        fManager = getFragmentManager();
+        fTransaction = fManager.beginTransaction();
 
         // Initiate the isMul as false because multiple choice is not visible
         isMul = false;
@@ -77,12 +82,15 @@ public class QuestionDisplayFragment extends Fragment {
 
         // Initiate questionid as 0
         questionId = 0;
+        //Get game settings from the activity
+        QuestionActivity a = (QuestionActivity) getActivity();
+        score = a.getGameMode();
         // Makes 10 AsyncTasks
-        task = new BackroundJob[10];
+        task = new BackgroundJob[10];
         for(int i = 0; i < 10; i++) {
             if(task[i] == null || task[i].getStatus() != AsyncTask.Status.RUNNING) {
-                // Creates the backroundJobs and executes them with the right id ranging 0 - 9
-                task[i] = createBackroundJob();
+                // Creates the backgroundJobs and executes them with the right id ranging 0 - 9
+                task[i] = createBackgroundJob();
                 task[i].execute(i);
             }
         }
@@ -115,11 +123,11 @@ public class QuestionDisplayFragment extends Fragment {
             // Makes boolean true and replaces the previous view with a multiple choice fragment
             isMul = true;
             MultipleChoiceFragment displayFragment = new MultipleChoiceFragment();
-            ftransaction.replace(R.id.answer_fragment, displayFragment).commitNow();
-            fmanager.executePendingTransactions();
+            fTransaction.replace(R.id.answer_fragment, displayFragment).commitNow();
+            fManager.executePendingTransactions();
         }
         // Finds the fragment and prints the answers on the buttons
-        MultipleChoiceFragment fragment = (MultipleChoiceFragment) fmanager.findFragmentById(R.id.answer_fragment);
+        MultipleChoiceFragment fragment = (MultipleChoiceFragment) fManager.findFragmentById(R.id.answer_fragment);
         fragment.printAnswers(answers);
     }
 
@@ -144,7 +152,7 @@ public class QuestionDisplayFragment extends Fragment {
 
         // Decode the strings in the array
         for(int i = 0; i < retVal.length; i++) {
-            // StringEscapeUitls library to decode html4 encoded strings
+            // StringEscapeUtils library to decode html4 encoded strings
             retVal[i] = StringEscapeUtils.unescapeHtml4(retVal[i]);
         }
 
@@ -155,10 +163,7 @@ public class QuestionDisplayFragment extends Fragment {
 
     public boolean checkAnswer(String answer) {
         // Returns true if the answer matches the answer asked
-        if(StringEscapeUtils.unescapeHtml4(question.getResults()[questionId].getCorrectAnswer()).equals(answer)) {
-            return true;
-        }
-        return false;
+        return StringEscapeUtils.unescapeHtml4(question.getResults()[questionId].getCorrectAnswer()).equals(answer);
     }
 
     public void stopCurrentTask() {
@@ -168,6 +173,7 @@ public class QuestionDisplayFragment extends Fragment {
 
     private void showResults() {
         Log.d("QUIZ_APP", "showResults() called");
+        getActivity().finish();
     }
 
 
@@ -176,8 +182,8 @@ public class QuestionDisplayFragment extends Fragment {
         return StringEscapeUtils.unescapeHtml4(question.getResults()[questionId].getCorrectAnswer());
     }
 
-    private BackroundJob createBackroundJob() {
-        return new BackroundJob(new UiCallback<Integer>() {
+    private BackgroundJob createBackgroundJob() {
+        return new BackgroundJob(new UiCallback<Integer>() {
             // Boolean to check if the answers have been displayed on the board
             private boolean isDisplayed;
             @Override
@@ -198,6 +204,7 @@ public class QuestionDisplayFragment extends Fragment {
                     progressBar.setVisibility(ProgressBar.VISIBLE);
                     displayQuestion(questionId);
                     isDisplayed = true;
+                    //TODO: create new scorestats
                 }
                 progressBar.setProgress(values[0]);
             }
@@ -208,6 +215,13 @@ public class QuestionDisplayFragment extends Fragment {
                 // If the time runs out make the boolean variable false and increment the questionId
                 isDisplayed = false;
                 questionId++;
+                if(questionId == 10) {
+                    //TODO: get total answered right
+                    showResults();
+                    getActivity().finish();
+                }
+                //TODO: increment scores if time runs out
+                //create questionStats
             }
 
             @Override
@@ -219,9 +233,15 @@ public class QuestionDisplayFragment extends Fragment {
                 SystemClock.sleep(1000);
                 questionId++;
                 if(questionId == 10) {
+                    //TODO: get total answered right
                     showResults();
+                    getActivity().finish();
                 }
+                //TODO: call other fragment for info
+                //add new questionStats
             }
         });
     }
+
+
 }
