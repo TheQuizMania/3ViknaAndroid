@@ -20,14 +20,15 @@
         android:gravity="center"
         android:text="@string/sign_up"
         android:textSize="30sp" />
+
     <EditText
         android:id="@+id/username_signUp"
-        android:maxLines="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20sp"
         android:hint="@string/username"
-        android:importantForAutofill="no" />
+        android:importantForAutofill="no"
+        android:maxLines="1" />
     <EditText
         android:id="@+id/email_signUp"
         android:layout_width="match_parent"

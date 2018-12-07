@@ -1,10 +1,10 @@
 package a.b.c.quizmania.UI;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,17 +12,20 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-import a.b.c.quizmania.Entities.User;
+import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.R;
 
 public class MainMenuActivity extends AppCompatActivity {
+
+    public static List<Challenge> challengeList;
+    public static List<Challenge> myChallenges;
 
     // Firebase
     private FirebaseAuth mAuth;
@@ -50,13 +53,10 @@ public class MainMenuActivity extends AppCompatActivity {
         // Firebase
         mAuth = FirebaseAuth.getInstance();
 
-
-        getPlayer();
-        try {
-            Thread.sleep(1300);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        // Init challenge list
+        challengeList = new ArrayList<>();
+        myChallenges = new ArrayList<>();
+        fetchChallenges();
 
         setContentView(R.layout.activity_main_menu);
         Objects.requireNonNull(getSupportActionBar()).hide();
@@ -73,6 +73,9 @@ public class MainMenuActivity extends AppCompatActivity {
         multiPlayerBtn.setOnClickListener(v -> multiPlayer(v));
         quickMatchBtn.setOnClickListener(v -> multiPlayer(v));
         settingsBtn.setOnClickListener(v -> goToProfile(v));
+
+        // Displays the User name
+        getPlayer();
     }
 
     private void getPlayer(){
@@ -82,7 +85,8 @@ public class MainMenuActivity extends AppCompatActivity {
     }
     private void multiPlayer(View v) {
         if(v.getId() == R.id.multi_player_btn) {
-
+            Intent intent = new Intent(this, UserListActivity.class);
+            startActivity(intent);
         } else {
 
         }
@@ -90,6 +94,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private void singlePlayer(View v) {
         Intent intent = new Intent(this, SelectionActivity.class);
+        intent.putExtra("MODE", "single");
         startActivity(intent);
     }
 
@@ -108,5 +113,28 @@ public class MainMenuActivity extends AppCompatActivity {
             setTheme(R.style.DarkTheme);
         }
         theme = str;
+    }
+
+
+    private void fetchChallenges() {
+        FirebaseDatabase.getInstance().getReference().child("root")
+                .child("challenges")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot challengeInstance: dataSnapshot.getChildren()) {
+                            Challenge challenge = challengeInstance.getValue(Challenge.class);
+                            challengeList.add(challenge);
+                            if(challenge.getChallengee().getEmail().matches(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
+                                myChallenges.add(challenge);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 }

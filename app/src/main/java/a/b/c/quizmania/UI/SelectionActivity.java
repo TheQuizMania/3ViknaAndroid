@@ -2,8 +2,8 @@ package a.b.c.quizmania.UI;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,12 +11,12 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
 import a.b.c.quizmania.Entities.Question;
-
 import a.b.c.quizmania.R;
 
 public class SelectionActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -199,6 +199,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     private void getQuestions() {
         // Makes the buttons unclickable
         // Gets the questions from the api
+
         playBtn.setClickable(false);
         playBtn.setText(getString(R.string.quiz_unavaliable));
         Ion.with(this)
@@ -211,16 +212,19 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                         Gson gson = new Gson();
                         question = gson.fromJson(result, Question.class);
                         // Makes the play button clickable again
-                        playBtn.setOnClickListener(v -> playGame(v));
-                        playBtn.setText(getString(R.string.quiz_avaliable));
+                        if(question.getResults().length == 0) {
+                            playBtn.setText("Not enough questions available");
+                        } else {
+                            playBtn.setOnClickListener(v -> playGame(v));
+                            playBtn.setText(getString(R.string.quiz_avaliable));
+                        }
                     }
                 });
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
+    public void onNothingSelected(AdapterView<?> parent) { }
 
-    }
     private void setAppTheme() {
         SharedPreferences pref = getSharedPreferences(uId, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");
