@@ -12,25 +12,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.Arrays;
-import java.util.concurrent.Semaphore;
 
-import a.b.c.quizmania.Entities.Question;
 import a.b.c.quizmania.Jobs.BackroundJob;
 import a.b.c.quizmania.Jobs.UiCallback;
 import a.b.c.quizmania.R;
 
 import static a.b.c.quizmania.UI.SelectionActivity.question;
-import static java.sql.Types.NULL;
 import static java.util.Collections.sort;
 
 /**
@@ -53,6 +46,7 @@ public class QuestionDisplayFragment extends Fragment {
 
     // Views
     TextView questionTxt;
+    ProgressBar progressBar;
 
     public QuestionDisplayFragment() {
         // Required empty public constructor
@@ -77,6 +71,8 @@ public class QuestionDisplayFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         // Finds Views
         questionTxt = getActivity().findViewById(R.id.question);
+        progressBar = (ProgressBar)getActivity().findViewById(R.id.progress_bar_question_fragment);
+
         // Initiate questionid as 0
         questionId = 0;
         // Makes 10 AsyncTasks
@@ -91,6 +87,7 @@ public class QuestionDisplayFragment extends Fragment {
     }
 
     private void displayQuestion(int i) {
+
         // Checks whether the question variable initiated in Selection Activity was initialized
         if(question != null) {
             // Checks if the question type is multiplie choice
@@ -115,12 +112,12 @@ public class QuestionDisplayFragment extends Fragment {
         if(!isMul) {
             // Makes boolean true and replaces the previous view with a multiple choice fragment
             isMul = true;
-            MultipleChoiseFragment displayFragment = new MultipleChoiseFragment();
+            MultipleChoiceFragment displayFragment = new MultipleChoiceFragment();
             ftransaction.replace(R.id.answer_fragment, displayFragment).commitNow();
             fmanager.executePendingTransactions();
         }
         // Finds the fragment and prints the answers on the buttons
-        MultipleChoiseFragment fragment = (MultipleChoiseFragment) fmanager.findFragmentById(R.id.answer_fragment);
+        MultipleChoiceFragment fragment = (MultipleChoiceFragment) fmanager.findFragmentById(R.id.answer_fragment);
         fragment.printAnswers(answers);
     }
 
@@ -194,10 +191,13 @@ public class QuestionDisplayFragment extends Fragment {
 //                Log.d("QUIZ_APP", "onProgressUpdate() task[" + values[0] + "]");
                 // If the thread hasn't displayed on the board display the board and make the variable true
                 if(!isDisplayed) {
-                    Log.d("QUIZ_APP", "DisplayOn() task[" + values[0] + "]");
-                    displayQuestion(values[0]);
+                    Log.d("QUIZ_APP", "DisplayOn() task[" + questionId + "]");
+                    // Shows the progress bar
+                    progressBar.setVisibility(ProgressBar.VISIBLE);
+                    displayQuestion(questionId);
                     isDisplayed = true;
                 }
+                progressBar.setProgress(values[0]);
             }
 
             @Override
