@@ -1,7 +1,9 @@
 package a.b.c.quizmania.UI;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -36,15 +38,15 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     // Strings for dropdown
     private String[] categories = {
             "Random",
-            "Entertainment Random",
-            "Science Random",
+            "Film",
+            "Science & nature",
             "General Knowledge",
             "Sports",
-            "History & Mythology",
+            "Mythology",
             "Politics",
             "Geography",
             "Video Games",
-            "Television & Film",
+            "Television",
             "Music"};
     private String[] difficulties = {
             "Easy",
@@ -74,8 +76,8 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
 
         // Initialize the selection strings as empty strings
         selectedCategory = "";
-        selectedDifficulty = "";
-        selectedType = "";
+        selectedDifficulty = "&difficulty=easy";
+        selectedType = "&type=multiple";
 
         // Find Views
         categoryDropDown = (Spinner)findViewById(R.id.category_dropdown);
@@ -89,8 +91,9 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         typeDropDown.setOnItemSelectedListener(this);
 
         // While the data has not loaded the button is disabled
-        playBtn.setClickable(false);
-        playBtn.setText(getString(R.string.quiz_unavaliable));
+        //playBtn.setClickable(false);
+        playBtn.setOnClickListener(v -> playGame(v));
+        //playBtn.setText(getString(R.string.quiz_unavaliable));
 
         // Fill in Drop down
 
@@ -115,12 +118,15 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
 
     private void playGame(View v) {
         // Starts a Question activity
+        getQuestions();
+/*
         Intent intent = new Intent(this, QuestionActivity.class);
         intent.putExtra("CATEGORY", selectedCategory);
         intent.putExtra("DIFFICULTY", selectedDifficulty);
         intent.putExtra("TYPE", selectedType);
 
         startActivity(intent);
+        */
     }
 
     @Override
@@ -142,9 +148,18 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
             default:
                 break;
         }
-        // Fetches the data from the api
-        getQuestions();
+        /*
+        if(selectedCategory.equals(getCategory(categoryDropDown.getSelectedItem().toString())) &&
+                selectedDifficulty.equals("&difficulty=" + diffDropDown.getSelectedItem().toString()) &&
+                selectedType.equals("&type=" + typeDropDown.getSelectedItem().toString())) {
+            getQuestions();
+        }else if(selectedCategory.equals("") &&
+                selectedDifficulty.equals("&difficulty=" + diffDropDown.getSelectedItem().toString().toLowerCase()) &&
+                selectedType.equals(getType(typeDropDown.getSelectedItem().toString()))) {
+            getQuestions();
 
+        }
+        */
     }
 
     private String getType(String type) {
@@ -167,31 +182,33 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         String retVal = "&category=";
         switch (category) {
             case "Random":
-                return retVal + "9";
-            case "Entertainment Random":
-                return retVal + "9";
-            case "Science Random":
-                return retVal + "9";
+                return "";
+            case "Film":
+                return retVal + "11";
+            case "Science & nature":
+                return retVal + "17";
             case "General Knowledge":
                 return retVal + "9";
             case "Sports":
                 return retVal + "21";
-            case "History & Mythology":
-                return retVal + "23";
+            case "Mythology":
+                return retVal + "20";
             case "Politics":
                 return retVal + "24";
             case "Geography":
                 return retVal + "22";
             case "Video Games":
                 return retVal + "15";
-            case "Television & Film":
-                return retVal + "11";
+            case "Television":
+                return retVal + "14";
             case "Music":
                 return retVal + "12";
             default:
                 return "";
         }
     }
+
+
 
     private void getQuestions() {
         // Makes the buttons unclickable
@@ -208,8 +225,16 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                         Gson gson = new Gson();
                         question = gson.fromJson(result, Question.class);
                         // Makes the play button clickable again
-                        playBtn.setOnClickListener(v -> playGame(v));
+                        //playBtn.setOnClickListener(v -> playGame(v));
+                        //playBtn.setText(getString(R.string.quiz_avaliable));
+                        Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
+                        intent.putExtra("CATEGORY", selectedCategory);
+                        intent.putExtra("DIFFICULTY", selectedDifficulty);
+                        intent.putExtra("TYPE", selectedType);
+
+                        playBtn.setClickable(true);
                         playBtn.setText(getString(R.string.quiz_avaliable));
+                        startActivity(intent);
                     }
                 });
     }

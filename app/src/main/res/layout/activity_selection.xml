@@ -51,7 +51,7 @@
         android:id="@+id/sp_play_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Play"
+        android:text="@string/quiz_avaliable"
         android:textAllCaps="false"
         />
 
