@@ -40,7 +40,7 @@ public class MultipleChoiceFragment extends Fragment {
 
 
     public void printAnswers(String[] answers) {
-        // Get the actiity
+        // Get the activity
         Activity activity = getActivity();
 
         // Finding views
@@ -68,13 +68,13 @@ public class MultipleChoiceFragment extends Fragment {
     public void setBtnColors() {
         // Setting default colors on the buttons
         b1.setTextColor(Color.parseColor("#FFFFFF"));
-        b1.setBackgroundColor(Color.parseColor("#000000"));
+        b1.setBackgroundColor(Color.parseColor("#64686d"));
         b2.setTextColor(Color.parseColor("#FFFFFF"));
-        b2.setBackgroundColor(Color.parseColor("#000000"));
+        b2.setBackgroundColor(Color.parseColor("#64686d"));
         b3.setTextColor(Color.parseColor("#FFFFFF"));
-        b3.setBackgroundColor(Color.parseColor("#000000"));
+        b3.setBackgroundColor(Color.parseColor("#64686d"));
         b4.setTextColor(Color.parseColor("#FFFFFF"));
-        b4.setBackgroundColor(Color.parseColor("#000000"));
+        b4.setBackgroundColor(Color.parseColor("#64686d"));
     }
 
     public void btnClicked(View view) {
@@ -88,37 +88,37 @@ public class MultipleChoiceFragment extends Fragment {
             case R.id.answer_1:
                 if(questionFragment.checkAnswer(b1.getText().toString())) {
                     Toast.makeText(getActivity(), "Correct Answer", Toast.LENGTH_SHORT).show();
-                    b1.setBackgroundColor(Color.parseColor("#00FF00"));
+                    b1.setBackgroundColor(Color.parseColor("#08ad08"));
                 } else {
                     Toast.makeText(getActivity(), "Incorrect Answer", Toast.LENGTH_SHORT).show();
-                    b1.setBackgroundColor(Color.parseColor("#FF0000"));
+                    b1.setBackgroundColor(Color.parseColor("#e51010"));
                 }
                 break;
             case R.id.answer_2:
                 if(questionFragment.checkAnswer(b2.getText().toString())) {
                     Toast.makeText(getActivity(), "Correct Answer", Toast.LENGTH_SHORT).show();
-                    b2.setBackgroundColor(Color.parseColor("#00FF00"));
+                    b2.setBackgroundColor(Color.parseColor("#08ad08"));
                 } else {
                     Toast.makeText(getActivity(), "Incorrect Answer", Toast.LENGTH_SHORT).show();
-                    b2.setBackgroundColor(Color.parseColor("#FF0000"));
+                    b2.setBackgroundColor(Color.parseColor("#e51010"));
                 }
                 break;
             case R.id.answer_3:
                 if(questionFragment.checkAnswer(b3.getText().toString())) {
                     Toast.makeText(getActivity(), "Correct Answer", Toast.LENGTH_SHORT).show();
-                    b3.setBackgroundColor(Color.parseColor("#00FF00"));
+                    b3.setBackgroundColor(Color.parseColor("#08ad08"));
                 } else {
                     Toast.makeText(getActivity(), "Incorrect Answer", Toast.LENGTH_SHORT).show();
-                    b3.setBackgroundColor(Color.parseColor("#FF0000"));
+                    b3.setBackgroundColor(Color.parseColor("#e51010"));
                 }
                 break;
             case R.id.answer_4:
                 if(questionFragment.checkAnswer(b4.getText().toString())) {
                     Toast.makeText(getActivity(), "Correct Answer", Toast.LENGTH_SHORT).show();
-                    b4.setBackgroundColor(Color.parseColor("#00FF00"));
+                    b4.setBackgroundColor(Color.parseColor("#08ad08"));
                 } else {
                     Toast.makeText(getActivity(), "Incorrect Answer", Toast.LENGTH_SHORT).show();
-                    b4.setBackgroundColor(Color.parseColor("#FF0000"));
+                    b4.setBackgroundColor(Color.parseColor("#e51010"));
                 }
                 break;
             default:
@@ -143,13 +143,13 @@ public class MultipleChoiceFragment extends Fragment {
     private void printRightAnswer(String correctAnswer) {
         // Prints the right button green
         if(b1.getText().toString().matches(correctAnswer)) {
-            b1.setBackgroundColor(Color.parseColor("#00FF00"));
+            b1.setBackgroundColor(Color.parseColor("#08ad08"));
         } else if(b2.getText().toString().matches(correctAnswer)) {
-            b2.setBackgroundColor(Color.parseColor("#00FF00"));
+            b2.setBackgroundColor(Color.parseColor("#08ad08"));
         } else if(b3.getText().toString().matches(correctAnswer)) {
-            b3.setBackgroundColor(Color.parseColor("#00FF00"));
+            b3.setBackgroundColor(Color.parseColor("#08ad08"));
         } else {
-            b4.setBackgroundColor(Color.parseColor("#00FF00"));
+            b4.setBackgroundColor(Color.parseColor("#08ad08"));
         }
     }
 }
