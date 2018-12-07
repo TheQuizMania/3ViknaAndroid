@@ -21,6 +21,12 @@ public class ProfileActivity extends AppCompatActivity {
     private String theme;
     private String uID;
 
+    private String userName;
+    private String email;
+    private String phoneNumber;
+
+    private TextView userInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +34,11 @@ public class ProfileActivity extends AppCompatActivity {
         setAppTheme();
         setContentView(R.layout.activity_profile);
         themeSwitch = findViewById(R.id.theme_switch);
+        userInfo = findViewById(R.id.user_information);
         checkSwitch();
         writePreference();
+
+        setUserInfo();
     }
     private void setAppTheme() {
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
@@ -40,6 +49,18 @@ public class ProfileActivity extends AppCompatActivity {
             setTheme(R.style.DarkTheme);
         }
         theme = str;
+    }
+
+    private void setUserInfo() {
+        userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        phoneNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+
+        if(phoneNumber == null){
+            phoneNumber = "";
+        }
+
+        userInfo.setText(userName + "\n" + email + "\n" + phoneNumber);
     }
     private void writePreference() {
         themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
