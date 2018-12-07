@@ -3,11 +3,11 @@ package a.b.c.quizmania.Jobs;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 
-public class BackroundJob extends AsyncTask<Integer, Integer, Integer> {
+public class BackgroundJob extends AsyncTask<Integer, Integer, Integer> {
     // To call functions in Question fragment
     private UiCallback<Integer> callback;
 
-    public BackroundJob(UiCallback callback){
+    public BackgroundJob(UiCallback callback){
         this.callback = callback;
     }
 
@@ -16,17 +16,17 @@ public class BackroundJob extends AsyncTask<Integer, Integer, Integer> {
     protected Integer doInBackground(Integer... integers) {
         long startTime = System.currentTimeMillis();
         long endTime = startTime + 1000 * 20;
-        long currTime;
+        long currTime = 0;
         while(!this.isCancelled() && endTime > (currTime = System.currentTimeMillis())) {
             SystemClock.sleep(500);
             publishProgress(integers[0]);
         }
-
+        long timeToAnswer = currTime - startTime;
         return integers[0];
     }
 
 
-    // Runs when the thead is initiated
+    // Runs when the thread is initiated
     @Override
     protected void onPreExecute() {
         callback.onPreExecute();
@@ -39,7 +39,7 @@ public class BackroundJob extends AsyncTask<Integer, Integer, Integer> {
     }
 
 
-    // Runs when the thread stoppes
+    // Runs when the thread stops
     @Override
     protected void onPostExecute(Integer integer) {
         callback.onPostExecute(integer);

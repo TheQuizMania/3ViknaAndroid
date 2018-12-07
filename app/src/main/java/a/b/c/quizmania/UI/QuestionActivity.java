@@ -1,24 +1,18 @@
 package a.b.c.quizmania.UI;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 
-import a.b.c.quizmania.Entities.Question;
-import a.b.c.quizmania.Fragments.MultipleChoiseFragment;
+import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.R;
 
 public class QuestionActivity extends AppCompatActivity {
 
-    private int category;
+    private String category;
     private String difficulty;
     private String type;
     private String uID;
@@ -30,6 +24,7 @@ public class QuestionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         setAppTheme();
+        getInfo();
         setContentView(R.layout.activity_question);
     }
     private void setAppTheme() {
@@ -40,5 +35,16 @@ public class QuestionActivity extends AppCompatActivity {
         }else{
             setTheme(R.style.DarkTheme);
         }
+    }
+
+    private void getInfo(){
+        Intent i = getIntent();
+        category = i.getStringExtra("CATEGORY");
+        difficulty = i.getStringExtra("DIFFICULTY");
+        type = i.getStringExtra("TYPE");
+    }
+
+    public Score getGameMode(){
+        return new Score(difficulty, category, type);
     }
 }

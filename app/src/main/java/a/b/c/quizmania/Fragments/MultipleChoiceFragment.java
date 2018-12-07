@@ -9,24 +9,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import a.b.c.quizmania.Entities.Question;
+import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.R;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MultipleChoiseFragment extends Fragment {
+public class MultipleChoiceFragment extends Fragment {
 
     // Views
     private Button b1;
     private Button b2;
     private Button b3;
     private Button b4;
+    private TextView question;
 
-    public MultipleChoiseFragment() {
+    //Strings
+    String questionTxt;
+
+    public MultipleChoiceFragment() {
         // Required empty public constructor
     }
 
@@ -40,8 +45,11 @@ public class MultipleChoiseFragment extends Fragment {
 
 
     public void printAnswers(String[] answers) {
-        // Get the actiity
+        // Get the activity
         Activity activity = getActivity();
+
+        question = activity.findViewById(R.id.question);
+        questionTxt = question.getText().toString();
 
         // Finding views
         b1 = activity.findViewById(R.id.answer_1);
@@ -83,41 +91,52 @@ public class MultipleChoiseFragment extends Fragment {
         // Get the question fragment to call functions within
         QuestionDisplayFragment questionFragment = (QuestionDisplayFragment) getFragmentManager().findFragmentById(R.id.question_fragment);
 
+
+        QuestionStats stats;
         // Checks whether it was the right answer and changes the color of the button accordingly
         switch (view.getId()) {
             case R.id.answer_1:
                 if(questionFragment.checkAnswer(b1.getText().toString())) {
-                    Toast.makeText(getActivity(), "Correct Answer", Toast.LENGTH_SHORT).show();
+                    //TODO: add new questionstats
+                    stats = new QuestionStats(0, questionTxt, "", "", new String[]{"", ""}, true);
+//                    Toast.makeText(getActivity(), "Correct Answer", Toast.LENGTH_SHORT).show();
                     b1.setBackgroundColor(Color.parseColor("#00FF00"));
                 } else {
-                    Toast.makeText(getActivity(), "Incorrect Answer", Toast.LENGTH_SHORT).show();
+                    //TODO: add new questionstats
+//                    Toast.makeText(getActivity(), "Incorrect Answer", Toast.LENGTH_SHORT).show();
                     b1.setBackgroundColor(Color.parseColor("#FF0000"));
                 }
                 break;
             case R.id.answer_2:
                 if(questionFragment.checkAnswer(b2.getText().toString())) {
-                    Toast.makeText(getActivity(), "Correct Answer", Toast.LENGTH_SHORT).show();
+                    //TODO: increment correct answers and add new questionstats
+//                    Toast.makeText(getActivity(), "Correct Answer", Toast.LENGTH_SHORT).show();
                     b2.setBackgroundColor(Color.parseColor("#00FF00"));
                 } else {
-                    Toast.makeText(getActivity(), "Incorrect Answer", Toast.LENGTH_SHORT).show();
+                    //TODO: add new questionstats
+//                    Toast.makeText(getActivity(), "Incorrect Answer", Toast.LENGTH_SHORT).show();
                     b2.setBackgroundColor(Color.parseColor("#FF0000"));
                 }
                 break;
             case R.id.answer_3:
                 if(questionFragment.checkAnswer(b3.getText().toString())) {
-                    Toast.makeText(getActivity(), "Correct Answer", Toast.LENGTH_SHORT).show();
+                    //TODO: increment correct answers and add new questionstats
+//                    Toast.makeText(getActivity(), "Correct Answer", Toast.LENGTH_SHORT).show();
                     b3.setBackgroundColor(Color.parseColor("#00FF00"));
                 } else {
-                    Toast.makeText(getActivity(), "Incorrect Answer", Toast.LENGTH_SHORT).show();
+                    //TODO: add new questionstats
+//                    Toast.makeText(getActivity(), "Incorrect Answer", Toast.LENGTH_SHORT).show();
                     b3.setBackgroundColor(Color.parseColor("#FF0000"));
                 }
                 break;
             case R.id.answer_4:
                 if(questionFragment.checkAnswer(b4.getText().toString())) {
-                    Toast.makeText(getActivity(), "Correct Answer", Toast.LENGTH_SHORT).show();
+                    //TODO: increment correct answers and add new questionstats
+//                    Toast.makeText(getActivity(), "Correct Answer", Toast.LENGTH_SHORT).show();
                     b4.setBackgroundColor(Color.parseColor("#00FF00"));
                 } else {
-                    Toast.makeText(getActivity(), "Incorrect Answer", Toast.LENGTH_SHORT).show();
+                    //TODO: add new questionstats
+//                    Toast.makeText(getActivity(), "Incorrect Answer", Toast.LENGTH_SHORT).show();
                     b4.setBackgroundColor(Color.parseColor("#FF0000"));
                 }
                 break;

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -60,7 +61,6 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     String selectedCategory;
     String selectedDifficulty;
     String selectedType;
-    int[] ids = {0, 0, 0};
     private String uId;
 
 
@@ -116,9 +116,9 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     private void playGame(View v) {
         // Starts a Question activity
         Intent intent = new Intent(this, QuestionActivity.class);
-        intent.putExtra("CATEGORY", ids[0]);
-        intent.putExtra("DIFFICULTY", ids[1]);
-        intent.putExtra("TYPE", ids[2]);
+        intent.putExtra("CATEGORY", selectedCategory);
+        intent.putExtra("DIFFICULTY", selectedDifficulty);
+        intent.putExtra("TYPE", selectedType);
 
         startActivity(intent);
     }
@@ -128,19 +128,16 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         // Checks which drop down is pressed
         switch(parent.getId()){
             case R.id.category_dropdown:
-                Toast.makeText(getApplicationContext(),categories[position] , Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),categories[position] , Toast.LENGTH_LONG).show();
                 selectedCategory = getCategory(categories[position]);
-                ids[0] = position;
                 break;
             case R.id.difficulty_dropdown:
-                Toast.makeText(getApplicationContext(), difficulties[position], Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), difficulties[position], Toast.LENGTH_SHORT).show();
                 selectedDifficulty = "&difficulty=" + difficulties[position].toLowerCase();
-                ids[1] = position;
                 break;
             case R.id.type_dropdown:
-                Toast.makeText(getApplicationContext(), types[position], Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), types[position], Toast.LENGTH_SHORT).show();
                 selectedType = getType(types[position]);
-                ids[2] = position;
                 break;
             default:
                 break;
