@@ -1,30 +1,24 @@
 package a.b.c.quizmania.Entities;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class Score {
 
     private String difficulty;
     private String category;
-    private String mode;
     private int correctAnswers;
     private QuestionStats[] questionStats;
 
     public Score() {
     }
 
-    public Score(String difficulty, String category, String mode) {
+    public Score(String difficulty, String category) {
         this.difficulty = difficulty;
         this.category = category;
-        this.mode = mode;
     }
 
-    public Score(String difficulty, String category, String mode, int correctAnswers,
+    public Score(String difficulty, String category, int correctAnswers,
                  QuestionStats[] questionStats) {
         this.difficulty = difficulty;
         this.category = category;
-        this.mode = mode;
         this.correctAnswers = correctAnswers;
         this.questionStats = questionStats;
     }
@@ -45,14 +39,6 @@ public class Score {
         this.category = category;
     }
 
-    public String getMode() {
-        return mode;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
-
     public int getCorrectAnswers() {
         return correctAnswers;
     }
@@ -67,11 +53,5 @@ public class Score {
 
     public void setQuestionStats(QuestionStats[] questionStats) {
         this.questionStats = questionStats;
-    }
-
-    public void appendQuestionStats(QuestionStats newQuestion){
-        List<QuestionStats> d  = Arrays.asList(this.questionStats);
-        d.add(newQuestion);
-        this.questionStats = (QuestionStats[]) d.toArray();
     }
 }

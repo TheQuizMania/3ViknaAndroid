@@ -1,22 +1,18 @@
 package a.b.c.quizmania.UI;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.R;
 
 public class QuestionActivity extends AppCompatActivity {
 
-    private String category;
-    private String difficulty;
-    private String type;
+    public static String category;
+    public static String difficulty;
     private String uID;
 
 //    private String url;
@@ -43,10 +39,5 @@ public class QuestionActivity extends AppCompatActivity {
         Intent i = getIntent();
         category = i.getStringExtra("CATEGORY");
         difficulty = i.getStringExtra("DIFFICULTY");
-        type = i.getStringExtra("TYPE");
-    }
-
-    public Score getGameMode(){
-        return new Score(difficulty, category, type);
     }
 }
