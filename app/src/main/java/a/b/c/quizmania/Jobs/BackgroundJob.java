@@ -18,8 +18,8 @@ public class BackgroundJob extends AsyncTask<Integer, Integer, Integer> {
         long endTime = startTime + 1000 * 20;
         long currTime = 0;
         while(!this.isCancelled() && endTime > (currTime = System.currentTimeMillis())) {
-            SystemClock.sleep(500);
-            publishProgress(integers[0]);
+            SystemClock.sleep(2);
+            publishProgress((int)endTime - (int)currTime);
         }
         long timeToAnswer = currTime - startTime;
         return integers[0];

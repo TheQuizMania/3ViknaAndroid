@@ -12,8 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -26,6 +26,7 @@ import a.b.c.quizmania.R;
 import a.b.c.quizmania.UI.QuestionActivity;
 
 import static a.b.c.quizmania.UI.SelectionActivity.question;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +50,7 @@ public class QuestionDisplayFragment extends Fragment {
 
     // Views
     private TextView questionTxt;
+    private ProgressBar progressBar;
 
     public QuestionDisplayFragment() {
         // Required empty public constructor
@@ -73,6 +75,8 @@ public class QuestionDisplayFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         // Finds Views
         questionTxt = getActivity().findViewById(R.id.question);
+        progressBar = (ProgressBar)getActivity().findViewById(R.id.progress_bar_question_fragment);
+
         // Initiate questionid as 0
         questionId = 0;
         //Get game settings from the activity
@@ -90,6 +94,7 @@ public class QuestionDisplayFragment extends Fragment {
     }
 
     private void displayQuestion(int i) {
+
         // Checks whether the question variable initiated in Selection Activity was initialized
         if(question != null) {
             // Checks if the question type is multiple choice
@@ -191,11 +196,14 @@ public class QuestionDisplayFragment extends Fragment {
 //                Log.d("QUIZ_APP", "onProgressUpdate() task[" + values[0] + "]");
                 // If the thread hasn't displayed on the board display the board and make the variable true
                 if(!isDisplayed) {
-                    Log.d("QUIZ_APP", "DisplayOn() task[" + values[0] + "]");
-                    displayQuestion(values[0]);
+                    Log.d("QUIZ_APP", "DisplayOn() task[" + questionId + "]");
+                    // Shows the progress bar
+                    progressBar.setVisibility(ProgressBar.VISIBLE);
+                    displayQuestion(questionId);
                     isDisplayed = true;
                     //TODO: create new scorestats
                 }
+                progressBar.setProgress(values[0]);
             }
 
             @Override

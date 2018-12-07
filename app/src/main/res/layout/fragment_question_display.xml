@@ -7,10 +7,20 @@
     android:gravity="center"
     tools:context=".Fragments.QuestionDisplayFragment">
 
+    <ProgressBar
+        android:id="@+id/progress_bar_question_fragment"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:max="20000"
+        android:visibility="invisible"/>
+
     <TextView
         android:id="@+id/question"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="80"
         android:gravity="center"
         android:text="Question"
         />

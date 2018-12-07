@@ -1,6 +1,8 @@
 package a.b.c.quizmania.UI;
 
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
