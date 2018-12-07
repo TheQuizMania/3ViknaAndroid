@@ -10,6 +10,8 @@ import android.os.Bundle;
 import com.google.firebase.auth.FirebaseAuth;
 
 import a.b.c.quizmania.Entities.Score;
+import a.b.c.quizmania.Entities.Question;
+import a.b.c.quizmania.Fragments.MultipleChoiceFragment;
 import a.b.c.quizmania.R;
 
 public class QuestionActivity extends AppCompatActivity {
@@ -38,7 +40,6 @@ public class QuestionActivity extends AppCompatActivity {
             setTheme(R.style.DarkTheme);
         }
     }
-
     private void getInfo(){
         Intent i = getIntent();
         category = i.getStringExtra("CATEGORY");
@@ -48,5 +49,9 @@ public class QuestionActivity extends AppCompatActivity {
 
     public Score getGameMode(){
         return new Score(difficulty, category, type);
+    }
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

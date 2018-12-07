@@ -8,6 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="DarkTheme" parent="Theme.AppCompat">
-        <!-- Customize your theme here. -->
+
+    </style>
+    <style name="RedAccent" parent="ThemeOverlay.AppCompat">
+        <item name="colorAccent">#F00</item>
     </style>
 </resources>

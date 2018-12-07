@@ -215,7 +215,8 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         // Gets the questions from the api
         playBtn.setClickable(false);
         playBtn.setText(getString(R.string.quiz_unavaliable));
-        Ion.with(this)
+        String test = url + selectedCategory + selectedDifficulty + selectedType;
+                Ion.with(this)
                 .load(url + selectedCategory + selectedDifficulty + selectedType)
                 .asString()
                 .setCallback(new FutureCallback<String>() {
