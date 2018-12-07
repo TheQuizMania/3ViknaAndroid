@@ -1,6 +1,7 @@
 package a.b.c.quizmania.UI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,16 +37,16 @@ public class LoginActivity extends AppCompatActivity {
     final int RESULT_CODE = 9001;
 
     // Firebase
-    FirebaseAuth mAuth;
-    GoogleSignInClient googleClient;
-    GoogleSignInAccount account;
+    private FirebaseAuth mAuth;
+    private GoogleSignInClient googleClient;
+    private GoogleSignInAccount account;
 
     // Views
-    Button signInBtn;
-    SignInButton googleSigninBtn;
-    TextView registerBtn;
-    EditText emailEdit;
-    EditText passwdEdit;
+    private Button signInBtn;
+    private SignInButton googleSigninBtn;
+    private TextView registerBtn;
+    private EditText emailEdit;
+    private EditText passwdEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
