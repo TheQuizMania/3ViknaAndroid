@@ -1,6 +1,8 @@
 package a.b.c.quizmania.Fragments;
 
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -90,7 +92,7 @@ public class QuestionDisplayFragment extends Fragment {
 
         // Checks whether the question variable initiated in Selection Activity was initialized
         if(question != null) {
-            // Checks if the question type is multiplie choice
+            // Checks if the question type is multiple choice
             if(question.getResults()[i].getType().equals("multiple")) {
                 // Gets all the answers and displays them in the MultipleChoiceFragment
                 String[] answers = getAnswers(i);
@@ -107,7 +109,7 @@ public class QuestionDisplayFragment extends Fragment {
     }
 
     private void displayMultipleQuestion(String[] answers) {
-        Log.d("QUIZ_APP", "MultipleChoise() Called");
+        Log.d("QUIZ_APP", "MultipleChoice() Called");
         // Checks if Multiple Choice Fragment is already displayed on the screen
         if(!isMul) {
             // Makes boolean true and replaces the previous view with a multiple choice fragment

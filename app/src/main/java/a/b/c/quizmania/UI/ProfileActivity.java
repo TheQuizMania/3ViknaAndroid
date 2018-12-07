@@ -21,10 +21,6 @@ public class ProfileActivity extends AppCompatActivity {
     private String theme;
     private String uID;
 
-    private String userName;
-    private String email;
-    private String phoneNumber;
-
     private TextView userInfo;
 
     @Override
@@ -52,6 +48,10 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setUserInfo() {
+        String userName;
+        String email;
+        String phoneNumber;
+
         userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         phoneNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
@@ -60,7 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
             phoneNumber = "";
         }
 
-        userInfo.setText(userName + "\n" + email + "\n" + phoneNumber);
+        userInfo.setText(userName + "\n\n" + email + "\n\n" + phoneNumber);
     }
     private void writePreference() {
         themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {

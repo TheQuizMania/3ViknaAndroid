@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -201,7 +202,8 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         // Gets the questions from the api
         playBtn.setClickable(false);
         playBtn.setText(getString(R.string.quiz_unavaliable));
-        Ion.with(this)
+        String test = url + selectedCategory + selectedDifficulty + selectedType;
+                Ion.with(this)
                 .load(url + selectedCategory + selectedDifficulty + selectedType)
                 .asString()
                 .setCallback(new FutureCallback<String>() {

@@ -51,12 +51,6 @@ public class MainMenuActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
-        getPlayer();
-        try {
-            Thread.sleep(1300);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         setContentView(R.layout.activity_main_menu);
         Objects.requireNonNull(getSupportActionBar()).hide();
@@ -67,6 +61,8 @@ public class MainMenuActivity extends AppCompatActivity {
         quickMatchBtn = findViewById(R.id.quick_match_btn);
         settingsBtn = findViewById(R.id.settings_btn);
         nameBox = findViewById(R.id.main_menu_title);
+
+        getPlayer();
 
         // Setting Click listeners
         singlePlayerBtn.setOnClickListener(v -> singlePlayer(v));

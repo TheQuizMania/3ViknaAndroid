@@ -16,7 +16,7 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
 import a.b.c.quizmania.Entities.Question;
-import a.b.c.quizmania.Fragments.MultipleChoiseFragment;
+import a.b.c.quizmania.Fragments.MultipleChoiceFragment;
 import a.b.c.quizmania.R;
 
 public class QuestionActivity extends AppCompatActivity {
@@ -44,4 +44,9 @@ public class QuestionActivity extends AppCompatActivity {
             setTheme(R.style.DarkTheme);
         }
     }
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
 }
