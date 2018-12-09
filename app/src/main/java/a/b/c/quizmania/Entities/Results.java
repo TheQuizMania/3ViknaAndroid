@@ -1,18 +1,20 @@
 package a.b.c.quizmania.Entities;
 
+import java.util.List;
+
 public class Results {
     private String category;
     private String type;
     private String question;
     private String correct_answer;
-    private String[] incorrect_answers;
+    private List<String> incorrect_answers;
 
     public Results() {
     }
 
     public Results(String category, String type,
                    String question, String correctAnswer,
-                   String[] incorrectAnswers) {
+                   List<String> incorrectAnswers) {
         this.category = category;
         this.type = type;
         this.question = question;
@@ -52,11 +54,11 @@ public class Results {
         this.correct_answer = correctAnswer;
     }
 
-    public String[] getIncorrectAnswers() {
+    public List<String> getIncorrectAnswers() {
         return incorrect_answers;
     }
 
-    public void setIncorrectAnswers(String[] incorrectAnswers) {
+    public void setIncorrectAnswers(List<String> incorrectAnswers) {
         this.incorrect_answers = incorrectAnswers;
     }
 }

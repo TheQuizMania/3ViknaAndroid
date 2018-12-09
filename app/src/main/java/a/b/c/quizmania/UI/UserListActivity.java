@@ -1,5 +1,6 @@
 package a.b.c.quizmania.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,7 @@ import static a.b.c.quizmania.UI.MainMenuActivity.challengeList;
 
 public class UserListActivity extends AppCompatActivity implements RVAdapter.ItemClickListener {
 
+    public static Challenge pendingChallenge;
     private List<UserListItem> userList;
     private UserListItem currUser;
     RVAdapter adapter;
@@ -51,11 +53,14 @@ public class UserListActivity extends AppCompatActivity implements RVAdapter.Ite
     @Override
     public void onItemClick(View view, int position) {
         Toast.makeText(this, "You challenged " + adapter.getDisplayName(position), Toast.LENGTH_SHORT).show();
-        Challenge newChallenge = new Challenge(currUser, adapter.getUser(position), challengeList.size());
-        FirebaseDatabase.getInstance().getReference().child("root")
-                .child("challenges")
-                .child(String.valueOf(newChallenge.getId()))
-                .setValue(newChallenge);
+        pendingChallenge = new Challenge(currUser, adapter.getUser(position), challengeList.size());
+//        FirebaseDatabase.getInstance().getReference().child("root")
+//                .child("challenges")
+//                .child(String.valueOf(pendingChallenge.getId()))
+//                .setValue(pendingChallenge);
+        Intent intent = new Intent(this, SelectionActivity.class);
+        intent.putExtra("MODE", "CHALLENGE");
+        startActivity(intent);
     }
 
     private void fetchUserList() {

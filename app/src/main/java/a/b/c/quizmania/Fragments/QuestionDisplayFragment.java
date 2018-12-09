@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.Arrays;
@@ -24,7 +26,7 @@ import a.b.c.quizmania.Jobs.UiCallback;
 import a.b.c.quizmania.R;
 
 import static a.b.c.quizmania.UI.SelectionActivity.question;
-import static java.util.Collections.sort;
+import static a.b.c.quizmania.UI.UserListActivity.pendingChallenge;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -91,7 +93,7 @@ public class QuestionDisplayFragment extends Fragment {
         // Checks whether the question variable initiated in Selection Activity was initialized
         if(question != null) {
             // Checks if the question type is multiplie choice
-            if(question.getResults()[i].getType().equals("multiple")) {
+            if(question.getResults().get(i).getType().equals("multiple")) {
                 // Gets all the answers and displays them in the MultipleChoiceFragment
                 String[] answers = getAnswers(i);
                 displayMultipleQuestion(answers);
@@ -99,7 +101,7 @@ public class QuestionDisplayFragment extends Fragment {
                 displayTrueFalse();
             }
             // Displays the question
-            questionTxt.setText(StringEscapeUtils.unescapeHtml4(question.getResults()[i].getQuestion()));
+            questionTxt.setText(StringEscapeUtils.unescapeHtml4(question.getResults().get(i).getQuestion()));
         } else {
             // If the question variable was null, display error message
             questionTxt.setText(getString(R.string.question_null_error_message));
@@ -127,10 +129,10 @@ public class QuestionDisplayFragment extends Fragment {
 
     private String[] getAnswers(int id) {
         // Gets all the answers and stores them in variables
-        String answer1 = question.getResults()[id].getCorrectAnswer();
-        String answer2 = question.getResults()[id].getIncorrectAnswers()[0];
-        String answer3 = question.getResults()[id].getIncorrectAnswers()[1];
-        String answer4 = question.getResults()[id].getIncorrectAnswers()[2];
+        String answer1 = question.getResults().get(id).getCorrectAnswer();
+        String answer2 = question.getResults().get(id).getIncorrectAnswers().get(0);
+        String answer3 = question.getResults().get(id).getIncorrectAnswers().get(1);
+        String answer4 = question.getResults().get(id).getIncorrectAnswers().get(2);
 
         // Make an array out of the question
         String[] retVal = {
@@ -153,7 +155,7 @@ public class QuestionDisplayFragment extends Fragment {
 
     public boolean checkAnswer(String answer) {
         // Returns true if the answer matches the answer asked
-        if(StringEscapeUtils.unescapeHtml4(question.getResults()[questionId].getCorrectAnswer()).equals(answer)) {
+        if(StringEscapeUtils.unescapeHtml4(question.getResults().get(questionId).getCorrectAnswer()).equals(answer)) {
             return true;
         }
         return false;
@@ -166,12 +168,16 @@ public class QuestionDisplayFragment extends Fragment {
 
     private void showResults() {
         Log.d("QUIZ_APP", "showResults() called");
+        FirebaseDatabase.getInstance().getReference().child("root")
+            .child("challenges")
+            .child(String.valueOf(pendingChallenge.getId()))
+            .setValue(pendingChallenge);
     }
 
 
     public String getRightAnswer() {
         // Returns the right answer
-        return StringEscapeUtils.unescapeHtml4(question.getResults()[questionId].getCorrectAnswer());
+        return StringEscapeUtils.unescapeHtml4(question.getResults().get(questionId).getCorrectAnswer());
     }
 
     private BackroundJob createBackroundJob() {
@@ -206,6 +212,9 @@ public class QuestionDisplayFragment extends Fragment {
                 // If the time runs out make the boolean variable false and increment the questionId
                 isDisplayed = false;
                 questionId++;
+                if(questionId == 10) {
+                    showResults();
+                }
             }
 
             @Override

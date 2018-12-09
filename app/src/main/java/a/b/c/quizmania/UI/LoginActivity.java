@@ -154,6 +154,7 @@ public class LoginActivity extends AppCompatActivity {
         // Starting Main menu activity
         Intent intent = new Intent(this, MainMenuActivity.class);
         startActivity(intent);
+        finish();
     }
 
 

@@ -122,6 +122,8 @@ public class MainMenuActivity extends AppCompatActivity {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        challengeList.clear();
+                        myChallenges.clear();
                         for(DataSnapshot challengeInstance: dataSnapshot.getChildren()) {
                             Challenge challenge = challengeInstance.getValue(Challenge.class);
                             challengeList.add(challenge);

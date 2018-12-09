@@ -19,6 +19,9 @@ import com.koushikdutta.ion.Ion;
 import a.b.c.quizmania.Entities.Question;
 import a.b.c.quizmania.R;
 
+import static a.b.c.quizmania.UI.MainMenuActivity.myChallenges;
+import static a.b.c.quizmania.UI.UserListActivity.pendingChallenge;
+
 public class SelectionActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     // Question variable that is used in QuestionDisplayFragment
@@ -62,6 +65,8 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     String selectedType;
     int[] ids = {0, 0, 0};
     private String uId;
+    String mode;
+    int challengeId;
 
 
     @Override
@@ -71,6 +76,10 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         setAppTheme();
         setContentView(R.layout.activity_selection);
         getSupportActionBar().hide();
+
+        mode = getIntent().getStringExtra("MODE");
+        challengeId = getIntent().getIntExtra("CHALLENGEID", -1);
+
 
         // Initialize the selection strings as empty strings
         selectedCategory = "";
@@ -119,6 +128,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         intent.putExtra("CATEGORY", ids[0]);
         intent.putExtra("DIFFICULTY", ids[1]);
         intent.putExtra("TYPE", ids[2]);
+        intent.putExtra("MODE", mode);
 
         startActivity(intent);
     }
@@ -199,27 +209,33 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     private void getQuestions() {
         // Makes the buttons unclickable
         // Gets the questions from the api
-
-        playBtn.setClickable(false);
-        playBtn.setText(getString(R.string.quiz_unavaliable));
-        Ion.with(this)
-                .load(url + selectedCategory + selectedDifficulty + selectedType)
-                .asString()
-                .setCallback(new FutureCallback<String>() {
-                    @Override
-                    public void onCompleted(Exception e, String result) {
-                        // Converts the result from the api to a Question.class
-                        Gson gson = new Gson();
-                        question = gson.fromJson(result, Question.class);
-                        // Makes the play button clickable again
-                        if(question.getResults().length == 0) {
-                            playBtn.setText("Not enough questions available");
-                        } else {
-                            playBtn.setOnClickListener(v -> playGame(v));
-                            playBtn.setText(getString(R.string.quiz_avaliable));
+        if(challengeId == -1) {
+            playBtn.setClickable(false);
+            playBtn.setText(getString(R.string.quiz_unavaliable));
+            Ion.with(this)
+                    .load(url + selectedCategory + selectedDifficulty + selectedType)
+                    .asString()
+                    .setCallback(new FutureCallback<String>() {
+                        @Override
+                        public void onCompleted(Exception e, String result) {
+                            // Converts the result from the api to a Question.class
+                            Gson gson = new Gson();
+                            question = gson.fromJson(result, Question.class);
+                            if (mode.matches("CHALLENGE")) {
+                                pendingChallenge.setQuestion(question);
+                            }
+                            // Makes the play button clickable again
+                            if (question.getResults().size() == 0) {
+                                playBtn.setText("Not enough questions available");
+                            } else {
+                                playBtn.setOnClickListener(v -> playGame(v));
+                                playBtn.setText(getString(R.string.quiz_avaliable));
+                            }
                         }
-                    }
-                });
+                    });
+        } else {
+            question = myChallenges.get(challengeId).getQuestion();
+        }
     }
 
     @Override

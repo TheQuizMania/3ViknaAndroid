@@ -5,6 +5,8 @@ public class Challenge {
     private UserListItem challengee;
     private int id;
 
+    Question question;
+
     public Challenge() {}
 
     public Challenge(UserListItem challenger, UserListItem challengee, int id) {
@@ -24,6 +26,10 @@ public class Challenge {
     public int getId() {
         return id;
     }
+
+    public Question getQuestion() { return question; }
+
+    public void setQuestion(Question question) { this.question = question; }
 
     public void setChallenger(UserListItem challenger) {
         this.challenger = challenger;
