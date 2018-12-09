@@ -1,12 +1,9 @@
 package a.b.c.quizmania.UI;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.CompoundButton;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -21,6 +18,8 @@ public class ProfileActivity extends AppCompatActivity {
     private String theme;
     private String uID;
 
+    private TextView userInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +27,11 @@ public class ProfileActivity extends AppCompatActivity {
         setAppTheme();
         setContentView(R.layout.activity_profile);
         themeSwitch = findViewById(R.id.theme_switch);
+        userInfo = findViewById(R.id.user_information);
         checkSwitch();
         writePreference();
+
+        setUserInfo();
     }
     private void setAppTheme() {
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
@@ -40,6 +42,22 @@ public class ProfileActivity extends AppCompatActivity {
             setTheme(R.style.DarkTheme);
         }
         theme = str;
+    }
+
+    private void setUserInfo() {
+        String userName;
+        String email;
+        String phoneNumber;
+
+        userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        phoneNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+
+        if(phoneNumber == null){
+            phoneNumber = "";
+        }
+
+        userInfo.setText(userName + "\n\n" + email + "\n\n" + phoneNumber);
     }
     private void writePreference() {
         themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {

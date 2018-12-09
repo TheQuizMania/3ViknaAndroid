@@ -1,5 +1,9 @@
 package a.b.c.quizmania.Fragments;
 
+import android.app.Activity;
+
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
