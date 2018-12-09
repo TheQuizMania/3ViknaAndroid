@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -85,6 +84,7 @@ public class QuestionDisplayFragment extends Fragment {
         questionTxt = getActivity().findViewById(R.id.question);
         progressBar = (ProgressBar)getActivity().findViewById(R.id.progress_bar_question_fragment);
         questionsList = new ArrayList<>();
+        score = new Score();
 
 
         // Initiate questionid as 0
@@ -104,6 +104,7 @@ public class QuestionDisplayFragment extends Fragment {
     }
 
     private void displayQuestion(int i) {
+        Log.d("QUIZ_APP", "displayQuestion() called");
 
         // Checks whether the question variable initiated in Selection Activity was initialized
         if(question != null) {
@@ -136,10 +137,12 @@ public class QuestionDisplayFragment extends Fragment {
 
 
     private String[] getAnswers(int id) {
+        Log.d("QUIZ_APP", "getAnswers() called");
         // Gets all the answers and stores them in variables
         String answer1 = question.getResults()[id].getCorrectAnswer();
         String answer2 = question.getResults()[id].getIncorrectAnswers()[0];
         String answer3 = question.getResults()[id].getIncorrectAnswers()[1];
+        Log.d("QUIZ_APP", "getIncorrectAnswers()[1] called");
         String answer4 = question.getResults()[id].getIncorrectAnswers()[2];
 
         // Make an array out of the question
@@ -149,11 +152,6 @@ public class QuestionDisplayFragment extends Fragment {
                 answer3,
                 answer4
         };
-
-        if(retVal.length < 4){
-            Toast.makeText(getActivity(), "this dude", Toast.LENGTH_SHORT).show();
-        }
-
         // Decode the strings in the array
         for(int i = 0; i < retVal.length; i++) {
             // StringEscapeUtils library to decode html4 encoded strings
@@ -185,8 +183,18 @@ public class QuestionDisplayFragment extends Fragment {
     private void initScore(){
         QuestionStats[] retString = questionsList.toArray(new QuestionStats[10]);
         score.setQuestionStats(retString);
-        score.setCategory(category);
-        score.setDifficulty(difficulty);
+        if(category.equals("")){
+                score.setCategory("Random");
+        } else {
+            String[] ret = difficulty.split("=");
+            score.setCategory(ret[1]);
+        }
+        if(difficulty.equals("")){
+            score.setDifficulty("Random");
+        } else {
+            String[] ret = difficulty.split("=");
+            score.setDifficulty(ret[1]);
+        }
         int count = 0;
         for(QuestionStats q : questionsList){
             if(q.isWasCorrect()){
@@ -210,10 +218,6 @@ public class QuestionDisplayFragment extends Fragment {
         arrList.remove(getRightAnswer());
 
         answersArr = arrList.toArray(new String[3]);
-
-        if(answersArr.length < 3){
-            Toast.makeText(getActivity(), "FUCKER", Toast.LENGTH_SHORT).show();
-        }
 
         return answersArr;
     }
@@ -241,14 +245,16 @@ public class QuestionDisplayFragment extends Fragment {
                     progressBar.setVisibility(ProgressBar.VISIBLE);
                     displayQuestion(questionId);
                     isDisplayed = true;
-                    if(currQuest.getRightAnswer() == null || currQuest.getWrongAnswers() == null
-                            || currQuest.getStatsQuestion() == null) {
+//                    if(currQuest.getRightAnswer() == null || currQuest.getWrongAnswers() == null
+//                            || currQuest.getStatsQuestion() == null) {
                         Log.d("QUIZ_APP", "Setting currQuest parameters");
                         currQuest.setRightAnswer(getRightAnswer());
                         String[] answers = getWrongAnswers(questionId);
                         currQuest.setWrongAnswers(answers);
                         currQuest.setStatsQuestion(question.getResults()[questionId].getQuestion());
-                    }
+                        currQuest.setQuestionCategory(question.getResults()[questionId].getCategory());
+                        currQuest.setQuestionDifficulty(question.getResults()[questionId].getDifficulty());
+//                    }
                 }
                 progressBar.setProgress(values[0]);
                 currQuest.setTimeToAnswer(20000 - values[0]);

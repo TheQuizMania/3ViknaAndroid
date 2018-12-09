@@ -4,7 +4,8 @@ public class QuestionStats {
 
     private int timeToAnswer;
     private String statsQuestion;
-    private String questionType;
+    private String questionDifficulty;
+    private String questionCategory;
     private String rightAnswer;
     private String[] wrongAnswers;
     private boolean wasCorrect;
@@ -12,11 +13,13 @@ public class QuestionStats {
     public QuestionStats() {
     }
 
-    public QuestionStats(int timeToAnswer, String question, String questionType,
-                         String rightAnswer, String[] wrongAnswers, boolean wasCorrect) {
+    public QuestionStats(int timeToAnswer, String statsQuestion, String questionDifficulty,
+                         String questionCategory, String rightAnswer, String[] wrongAnswers,
+                         boolean wasCorrect) {
         this.timeToAnswer = timeToAnswer;
-        this.statsQuestion = question;
-        this.questionType = questionType;
+        this.statsQuestion = statsQuestion;
+        this.questionDifficulty = questionDifficulty;
+        this.questionCategory = questionCategory;
         this.rightAnswer = rightAnswer;
         this.wrongAnswers = wrongAnswers;
         this.wasCorrect = wasCorrect;
@@ -38,12 +41,20 @@ public class QuestionStats {
         this.statsQuestion = statsQuestion;
     }
 
-    public String getQuestionType() {
-        return questionType;
+    public String getQuestionDifficulty() {
+        return questionDifficulty;
     }
 
-    public void setQuestionType(String questionType) {
-        this.questionType = questionType;
+    public void setQuestionDifficulty(String questionDifficulty) {
+        this.questionDifficulty = questionDifficulty;
+    }
+
+    public String getQuestionCategory() {
+        return questionCategory;
+    }
+
+    public void setQuestionCategory(String questionCategory) {
+        this.questionCategory = questionCategory;
     }
 
     public String getRightAnswer() {

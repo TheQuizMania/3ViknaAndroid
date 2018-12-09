@@ -2,14 +2,13 @@ package a.b.c.quizmania.UI;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
@@ -17,7 +16,6 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
 import a.b.c.quizmania.Entities.Question;
-
 import a.b.c.quizmania.R;
 
 public class SelectionActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -118,7 +116,6 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         Intent intent = new Intent(this, QuestionActivity.class);
         intent.putExtra("CATEGORY", selectedCategory);
         intent.putExtra("DIFFICULTY", selectedDifficulty);
-        intent.putExtra("TYPE", selectedType);
 
         startActivity(intent);
     }
@@ -167,7 +164,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         String retVal = "&category=";
         switch (category) {
             case "Random":
-                return retVal + "9";
+                return "";
             case "Entertainment Random":
                 return retVal + "9";
             case "Science Random":
@@ -199,7 +196,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         playBtn.setClickable(false);
         playBtn.setText(getString(R.string.quiz_unavaliable));
         Ion.with(this)
-                .load(url + selectedCategory + selectedDifficulty + selectedType)
+                .load(url + selectedCategory + selectedDifficulty + "&type=multiple")
                 .asString()
                 .setCallback(new FutureCallback<String>() {
                     @Override
