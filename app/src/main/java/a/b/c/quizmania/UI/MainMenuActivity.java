@@ -68,6 +68,8 @@ public class MainMenuActivity extends AppCompatActivity {
         settingsBtn = findViewById(R.id.settings_btn);
         nameBox = findViewById(R.id.main_menu_title);
 
+        getPlayer();
+
         // Setting Click listeners
         singlePlayerBtn.setOnClickListener(v -> singlePlayer(v));
         multiPlayerBtn.setOnClickListener(v -> multiPlayer(v));
@@ -79,9 +81,9 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     private void getPlayer(){
-        String userId = mAuth.getCurrentUser().getDisplayName();
+        String user = Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName();
 
-        nameBox.setText("Welcome\n" + userId);
+        nameBox.setText("Welcome\n" + user);
     }
     private void multiPlayer(View v) {
         if(v.getId() == R.id.multi_player_btn) {

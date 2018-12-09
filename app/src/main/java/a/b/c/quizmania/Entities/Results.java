@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Results {
     private String category;
-    private String type;
+    private String difficulty;
     private String question;
     private String correct_answer;
     private List<String> incorrect_answers;
@@ -12,11 +12,10 @@ public class Results {
     public Results() {
     }
 
-    public Results(String category, String type,
-                   String question, String correctAnswer,
+
+    public Results(String category, String question, String correctAnswer,
                    List<String> incorrectAnswers) {
         this.category = category;
-        this.type = type;
         this.question = question;
         this.correct_answer = correctAnswer;
         this.incorrect_answers = incorrectAnswers;
@@ -30,12 +29,12 @@ public class Results {
         this.category = category;
     }
 
-    public String getType() {
-        return type;
+    public String getDifficulty() {
+        return difficulty;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
     }
 
     public String getQuestion() {

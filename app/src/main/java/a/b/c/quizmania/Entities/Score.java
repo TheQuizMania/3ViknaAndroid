@@ -1,23 +1,28 @@
 package a.b.c.quizmania.Entities;
 
+import java.util.List;
+
 public class Score {
 
     private String difficulty;
-    private int category;
-    private String mode;
-    private int totalQuestions;
+    private String category;
     private int correctAnswers;
+    private List<QuestionStats> questionStats;
 
     public Score() {
     }
 
-    public Score(String difficulty, int category, String mode,
-                 int totalQuestions, int correctAnswers) {
+    public Score(String difficulty, String category) {
         this.difficulty = difficulty;
         this.category = category;
-        this.mode = mode;
-        this.totalQuestions = totalQuestions;
+    }
+
+    public Score(String difficulty, String category, int correctAnswers,
+                 List<QuestionStats> questionStats) {
+        this.difficulty = difficulty;
+        this.category = category;
         this.correctAnswers = correctAnswers;
+        this.questionStats = questionStats;
     }
 
     public String getDifficulty() {
@@ -28,28 +33,12 @@ public class Score {
         this.difficulty = difficulty;
     }
 
-    public int getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(String category) {
         this.category = category;
-    }
-
-    public String getMode() {
-        return mode;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
-
-    public int getTotalQuestions() {
-        return totalQuestions;
-    }
-
-    public void setTotalQuestions(int totalQuestions) {
-        this.totalQuestions = totalQuestions;
     }
 
     public int getCorrectAnswers() {
@@ -58,5 +47,13 @@ public class Score {
 
     public void setCorrectAnswers(int correctAnswers) {
         this.correctAnswers = correctAnswers;
+    }
+
+    public List<QuestionStats> getQuestionStats() {
+        return questionStats;
+    }
+
+    public void setQuestionStats(List<QuestionStats> questionStats) {
+        this.questionStats = questionStats;
     }
 }

@@ -22,11 +22,14 @@ public class ProfileActivity extends AppCompatActivity {
     private String theme;
     private String uID;
 
+    
+
     // Firebase
     GoogleSignInClient mGoogleSignInClient;
 
     // Views
-    Button signOutBtn;
+    private Button signOutBtn;
+    private TextView userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +38,12 @@ public class ProfileActivity extends AppCompatActivity {
         setAppTheme();
         setContentView(R.layout.activity_profile);
         themeSwitch = findViewById(R.id.theme_switch);
+        userInfo = findViewById(R.id.user_information);
         checkSwitch();
         writePreference();
+
+
+        setUserInfo();
 
         // Setting google sign in client
         GoogleSignInOptions gso = new GoogleSignInOptions
@@ -74,6 +81,22 @@ public class ProfileActivity extends AppCompatActivity {
             setTheme(R.style.DarkTheme);
         }
         theme = str;
+    }
+
+    private void setUserInfo() {
+        String userName;
+        String email;
+        String phoneNumber;
+
+        userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        phoneNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+
+        if(phoneNumber == null){
+            phoneNumber = "";
+        }
+
+        userInfo.setText(userName + "\n\n" + email + "\n\n" + phoneNumber);
     }
     private void writePreference() {
         themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {

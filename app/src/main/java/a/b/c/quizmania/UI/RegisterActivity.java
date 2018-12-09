@@ -3,6 +3,7 @@ package a.b.c.quizmania.UI;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -124,21 +125,24 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void addUserIfNotInDb(User user){
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         db = FirebaseDatabase.getInstance();
         String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = db.getReference("root//Users//" + uId);
+        DatabaseReference ref = db.getReference().child("root").child("Users").child(uId);
         //Listener listens if there is an attempt to change data in the database
-        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.hasChild("root//Users//" + uId)){
-                    //insert user if they don't exist in database.
+                Log.d("DATACHANGE", "onDataChange");
+                if(!dataSnapshot.exists()){
                     ref.setValue(user);
+                    Toast.makeText(RegisterActivity.this, "Added User to database", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(RegisterActivity.this, "User already exists", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(RegisterActivity.this, "An error occured", Toast.LENGTH_SHORT).show();
             }
         });
     }

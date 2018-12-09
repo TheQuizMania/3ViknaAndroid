@@ -21,7 +21,9 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -105,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnCompleteListener(this, task -> {
                         if(task.isSuccessful()) {
                             // Sign in was successful
+                            addUserInfoToAuth();
                             Toast.makeText(LoginActivity.this,
                                     getString(R.string.login_success), Toast.LENGTH_SHORT).show();
                             Utility.addToUserList(FirebaseAuth.getInstance().getCurrentUser().getEmail(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
@@ -134,6 +137,12 @@ public class LoginActivity extends AppCompatActivity {
                 account = task.getResult(ApiException.class);
                 Toast.makeText(this, getString(R.string.google_signin_success),
                         Toast.LENGTH_SHORT).show();
+                final User user = new User();
+                user.setUserName(account.getDisplayName());
+                user.setScores(null);
+                user.setWins(0);
+                user.setLosses(0);
+                addUserIfNotInDb(user);
                 FirebaseGoogleSignup(account);
             }catch (ApiException e) {
                 // Sign in Google failed
@@ -180,24 +189,41 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    private void addUserInfoToAuth(){
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference rootRef = db.getReference();
+        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference ref = rootRef.child("root").child("Users").child(uId);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    User user = dataSnapshot.getValue(User.class);
+                    String userN = user.getUserName();
+                    FirebaseUser gUser = FirebaseAuth.getInstance().getCurrentUser();
+                    UserProfileChangeRequest changeRequest
+                            = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(userN)
+                            .build();
+                    assert gUser != null;
+                    gUser.updateProfile(changeRequest);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     private void addUserIfNotInDb(User user){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference ref = db.getReference("root//Users//" + uId);
-        // Add the user to the user list
-        Utility.addToUserList(FirebaseAuth.getInstance().getCurrentUser().getEmail(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.hasChildren()){
-                    // Insert user if they don't exist in database.
-                    ref.setValue(user);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
+      
+        ref.setValue(user);
     }
 }

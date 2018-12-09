@@ -1,18 +1,22 @@
 package a.b.c.quizmania.UI;
 
+
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import a.b.c.quizmania.Entities.Score;
+import a.b.c.quizmania.Entities.Question;
+import a.b.c.quizmania.Fragments.MultipleChoiceFragment;
 import a.b.c.quizmania.R;
 
 public class QuestionActivity extends AppCompatActivity {
 
-    private int category;
-    private String difficulty;
-    private String type;
+    public static String category;
+    public static String difficulty;
     private String uID;
 
 //    private String url;
@@ -22,6 +26,7 @@ public class QuestionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         setAppTheme();
+        getInfo();
         setContentView(R.layout.activity_question);
     }
     private void setAppTheme() {
@@ -32,5 +37,14 @@ public class QuestionActivity extends AppCompatActivity {
         }else{
             setTheme(R.style.DarkTheme);
         }
+    }
+    private void getInfo(){
+        Intent i = getIntent();
+        category = i.getStringExtra("CATEGORY");
+        difficulty = i.getStringExtra("DIFFICULTY");
+    }
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }
