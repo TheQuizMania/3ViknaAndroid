@@ -12,6 +12,7 @@ public class Results {
     public Results() {
     }
 
+
     public Results(String category, String question, String correctAnswer,
                    List<String> incorrectAnswers) {
         this.category = category;

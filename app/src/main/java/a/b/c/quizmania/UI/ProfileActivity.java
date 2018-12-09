@@ -4,9 +4,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Switch;
-import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 import a.b.c.quizmania.R;
@@ -18,6 +22,13 @@ public class ProfileActivity extends AppCompatActivity {
     private String theme;
     private String uID;
 
+    
+
+    // Firebase
+    GoogleSignInClient mGoogleSignInClient;
+
+    // Views
+    private Button signOutBtn;
     private TextView userInfo;
 
     @Override
@@ -31,8 +42,36 @@ public class ProfileActivity extends AppCompatActivity {
         checkSwitch();
         writePreference();
 
+
         setUserInfo();
+
+        // Setting google sign in client
+        GoogleSignInOptions gso = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        // Finding views
+        signOutBtn = (Button)findViewById(R.id.sign_out_profile);
+
+        // Setting click listeners
+        signOutBtn.setOnClickListener(v -> signOut(v));
     }
+
+    private void signOut(View v) {
+        if(GoogleSignIn.getLastSignedInAccount(this) != null){
+            mGoogleSignInClient.signOut();
+            FirebaseAuth.getInstance().signOut();
+        } else {
+            FirebaseAuth.getInstance().signOut();
+        }
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     private void setAppTheme() {
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");

@@ -39,7 +39,7 @@ import a.b.c.quizmania.UI.QuestionActivity;
 import static a.b.c.quizmania.UI.QuestionActivity.category;
 import static a.b.c.quizmania.UI.QuestionActivity.difficulty;
 import static a.b.c.quizmania.UI.SelectionActivity.question;
-
+import static a.b.c.quizmania.UI.UserListActivity.pendingChallenge;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -122,7 +122,7 @@ public class QuestionDisplayFragment extends Fragment {
             List<String> answers = getAnswers(i);
             displayMultipleQuestion(answers);
             // Displays the question
-            questionTxt.setText(StringEscapeUtils.unescapeHtml4(question.getResults()[i].getQuestion()));
+            questionTxt.setText(StringEscapeUtils.unescapeHtml4(question.getResults().get(i).getQuestion()));
         } else {
             // If the question variable was null, display error message
             questionTxt.setText(getString(R.string.question_null_error_message));
@@ -148,10 +148,10 @@ public class QuestionDisplayFragment extends Fragment {
     private List<String> getAnswers(int id) {
         Log.d("QUIZ_APP", "getAnswers() called");
         // Gets all the answers and stores them in variables
-        String answer1 = question.getResults()[id].getCorrectAnswer();
-        String answer2 = question.getResults()[id].getIncorrectAnswers().get(0);
-        String answer3 = question.getResults()[id].getIncorrectAnswers().get(1);
-        String answer4 = question.getResults()[id].getIncorrectAnswers().get(2);
+        String answer1 = question.getResults().get(id).getCorrectAnswer();
+        String answer2 = question.getResults().get(id).getIncorrectAnswers().get(0);
+        String answer3 = question.getResults().get(id).getIncorrectAnswers().get(1);
+        String answer4 = question.getResults().get(id).getIncorrectAnswers().get(2);
 
         // Make an array out of the question
         List<String> retVal = new ArrayList(){{
@@ -171,7 +171,10 @@ public class QuestionDisplayFragment extends Fragment {
 
     public boolean checkAnswer(String answer) {
         // Returns true if the answer matches the answer asked
-        return StringEscapeUtils.unescapeHtml4(question.getResults()[questionId].getCorrectAnswer()).equals(answer);
+        if(StringEscapeUtils.unescapeHtml4(question.getResults().get(questionId).getCorrectAnswer()).equals(answer)) {
+            return true;
+        }
+        return false;
     }
 
     public void stopCurrentTask() {
@@ -215,12 +218,16 @@ public class QuestionDisplayFragment extends Fragment {
             }
         }
         score.setCorrectAnswers(count);
+        FirebaseDatabase.getInstance().getReference().child("root")
+            .child("challenges")
+            .child(String.valueOf(pendingChallenge.getId()))
+            .setValue(pendingChallenge);
     }
 
 
     public String getRightAnswer() {
         // Returns the right answer
-        return StringEscapeUtils.unescapeHtml4(question.getResults()[questionId].getCorrectAnswer());
+        return StringEscapeUtils.unescapeHtml4(question.getResults().get(questionId).getCorrectAnswer());
     }
 
     public List<String> getWrongAnswers(int id){
