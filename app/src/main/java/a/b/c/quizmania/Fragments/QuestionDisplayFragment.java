@@ -14,11 +14,16 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
@@ -52,7 +57,7 @@ public class QuestionDisplayFragment extends Fragment {
 
     private Score score;
 
-    private ArrayList<QuestionStats> questionsList;
+    private List<QuestionStats> questionsList;
 
     // Views
     private TextView questionTxt;
@@ -82,8 +87,8 @@ public class QuestionDisplayFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         // Finds Views
         questionTxt = getActivity().findViewById(R.id.question);
-        progressBar = (ProgressBar)getActivity().findViewById(R.id.progress_bar_question_fragment);
-        questionsList = new ArrayList<>();
+        progressBar = getActivity().findViewById(R.id.progress_bar_question_fragment);
+        questionsList = new ArrayList();
         score = new Score();
 
 
@@ -110,7 +115,7 @@ public class QuestionDisplayFragment extends Fragment {
         if(question != null) {
             // Checks if the question type is multiple choice
             // Gets all the answers and displays them in the MultipleChoiceFragment
-            String[] answers = getAnswers(i);
+            List<String> answers = getAnswers(i);
             displayMultipleQuestion(answers);
             // Displays the question
             questionTxt.setText(StringEscapeUtils.unescapeHtml4(question.getResults()[i].getQuestion()));
@@ -120,7 +125,7 @@ public class QuestionDisplayFragment extends Fragment {
         }
     }
 
-    private void displayMultipleQuestion(String[] answers) {
+    private void displayMultipleQuestion(List<String> answers) {
         Log.d("QUIZ_APP", "MultipleChoice() Called");
         // Checks if Multiple Choice Fragment is already displayed on the screen
         if(!isMul) {
@@ -136,31 +141,27 @@ public class QuestionDisplayFragment extends Fragment {
     }
 
 
-    private String[] getAnswers(int id) {
+    private List<String> getAnswers(int id) {
         Log.d("QUIZ_APP", "getAnswers() called");
         // Gets all the answers and stores them in variables
         String answer1 = question.getResults()[id].getCorrectAnswer();
-        String answer2 = question.getResults()[id].getIncorrectAnswers()[0];
-        String answer3 = question.getResults()[id].getIncorrectAnswers()[1];
-        Log.d("QUIZ_APP", "getIncorrectAnswers()[1] called");
-        String answer4 = question.getResults()[id].getIncorrectAnswers()[2];
+        String answer2 = question.getResults()[id].getIncorrectAnswers().get(0);
+        String answer3 = question.getResults()[id].getIncorrectAnswers().get(1);
+        String answer4 = question.getResults()[id].getIncorrectAnswers().get(2);
 
         // Make an array out of the question
-        String[] retVal = {
-                answer1,
-                answer2,
-                answer3,
-                answer4
-        };
+        List<String> retVal = new ArrayList(){{
+            add(answer1);
+            add(answer2);
+            add(answer3);
+            add(answer4);
+        }};
         // Decode the strings in the array
-        for(int i = 0; i < retVal.length; i++) {
+        for(String l : retVal) {
             // StringEscapeUtils library to decode html4 encoded strings
-            retVal[i] = StringEscapeUtils.unescapeHtml4(retVal[i]);
+            l = StringEscapeUtils.unescapeHtml4(l);
         }
-
-        Arrays.sort(retVal);
-
-
+        Collections.sort(retVal);
         return retVal;
     }
 
@@ -177,11 +178,19 @@ public class QuestionDisplayFragment extends Fragment {
     private void showResults() {
         Log.d("QUIZ_APP", "showResults() called");
         initScore();
+        writeScoreToDatabase();
         getActivity().finish();
     }
 
+    private void writeScoreToDatabase() {
+        String uId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference("root").child("Users").child(uId).child("scores");
+        ref.push().setValue(score);
+    }
+
     private void initScore(){
-        QuestionStats[] retString = questionsList.toArray(new QuestionStats[10]);
+        List<QuestionStats> retString = questionsList;
         score.setQuestionStats(retString);
         if(category.equals("")){
                 score.setCategory("Random");
@@ -210,14 +219,10 @@ public class QuestionDisplayFragment extends Fragment {
         return StringEscapeUtils.unescapeHtml4(question.getResults()[questionId].getCorrectAnswer());
     }
 
-    public String[] getWrongAnswers(int id){
+    public List<String> getWrongAnswers(int id){
         Log.d("QUIZ_APP", "getWrongAnswers() called");
-        String[] answersArr = getAnswers(id);
-        ArrayList<String> arrList = new ArrayList<>();
-        Collections.addAll(arrList, answersArr);
-        arrList.remove(getRightAnswer());
-
-        answersArr = arrList.toArray(new String[3]);
+        List<String> answersArr = getAnswers(id);
+        answersArr.remove(getRightAnswer());
 
         return answersArr;
     }
@@ -249,7 +254,7 @@ public class QuestionDisplayFragment extends Fragment {
 //                            || currQuest.getStatsQuestion() == null) {
                         Log.d("QUIZ_APP", "Setting currQuest parameters");
                         currQuest.setRightAnswer(getRightAnswer());
-                        String[] answers = getWrongAnswers(questionId);
+                        List<String> answers = getWrongAnswers(questionId);
                         currQuest.setWrongAnswers(answers);
                         currQuest.setStatsQuestion(question.getResults()[questionId].getQuestion());
                         currQuest.setQuestionCategory(question.getResults()[questionId].getCategory());

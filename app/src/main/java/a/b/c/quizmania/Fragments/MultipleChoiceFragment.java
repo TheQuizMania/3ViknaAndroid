@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import a.b.c.quizmania.R;
 
 
@@ -44,7 +46,7 @@ public class MultipleChoiceFragment extends Fragment {
     }
 
 
-    public void printAnswers(String[] answers) {
+    public void printAnswers(List<String> answers) {
         // Get the activity
         Activity activity = getActivity();
 
@@ -58,10 +60,10 @@ public class MultipleChoiceFragment extends Fragment {
         b4 = activity.findViewById(R.id.answer_4);
 
         // Setting the answers
-        b1.setText(answers[0]);
-        b2.setText(answers[1]);
-        b3.setText(answers[2]);
-        b4.setText(answers[3]);
+        b1.setText(answers.get(0));
+        b2.setText(answers.get(1));
+        b3.setText(answers.get(2));
+        b4.setText(answers.get(3));
 
         // Changing the color of the buttons
         setBtnColors();

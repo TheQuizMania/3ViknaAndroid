@@ -1,5 +1,7 @@
 package a.b.c.quizmania.Entities;
 
+import java.util.List;
+
 public class QuestionStats {
 
     private int timeToAnswer;
@@ -7,14 +9,14 @@ public class QuestionStats {
     private String questionDifficulty;
     private String questionCategory;
     private String rightAnswer;
-    private String[] wrongAnswers;
+    private List<String> wrongAnswers;
     private boolean wasCorrect;
 
     public QuestionStats() {
     }
 
     public QuestionStats(int timeToAnswer, String statsQuestion, String questionDifficulty,
-                         String questionCategory, String rightAnswer, String[] wrongAnswers,
+                         String questionCategory, String rightAnswer, List<String> wrongAnswers,
                          boolean wasCorrect) {
         this.timeToAnswer = timeToAnswer;
         this.statsQuestion = statsQuestion;
@@ -65,11 +67,11 @@ public class QuestionStats {
         this.rightAnswer = rightAnswer;
     }
 
-    public String[] getWrongAnswers() {
+    public List<String> getWrongAnswers() {
         return wrongAnswers;
     }
 
-    public void setWrongAnswers(String[] wrongAnswers) {
+    public void setWrongAnswers(List<String> wrongAnswers) {
         this.wrongAnswers = wrongAnswers;
     }
 

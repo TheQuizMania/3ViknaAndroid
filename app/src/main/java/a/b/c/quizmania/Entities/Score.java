@@ -1,11 +1,13 @@
 package a.b.c.quizmania.Entities;
 
+import java.util.List;
+
 public class Score {
 
     private String difficulty;
     private String category;
     private int correctAnswers;
-    private QuestionStats[] questionStats;
+    private List<QuestionStats> questionStats;
 
     public Score() {
     }
@@ -16,7 +18,7 @@ public class Score {
     }
 
     public Score(String difficulty, String category, int correctAnswers,
-                 QuestionStats[] questionStats) {
+                 List<QuestionStats> questionStats) {
         this.difficulty = difficulty;
         this.category = category;
         this.correctAnswers = correctAnswers;
@@ -47,11 +49,11 @@ public class Score {
         this.correctAnswers = correctAnswers;
     }
 
-    public QuestionStats[] getQuestionStats() {
+    public List<QuestionStats> getQuestionStats() {
         return questionStats;
     }
 
-    public void setQuestionStats(QuestionStats[] questionStats) {
+    public void setQuestionStats(List<QuestionStats> questionStats) {
         this.questionStats = questionStats;
     }
 }
