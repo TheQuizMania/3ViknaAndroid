@@ -228,8 +228,7 @@ public class StatisticsActivity extends AppCompatActivity {
         List<String> categories = new Categories().getCategories();
         int[] counts = new int[categories.size()];
         for(Score s : scores){
-            int test = categories.indexOf(s.getCategory());
-            counts[test]++;
+            counts[categories.indexOf(s.getCategory())]++;
         }
         int largest = 0;
         for(int i = 0; i < counts.length; i++){
