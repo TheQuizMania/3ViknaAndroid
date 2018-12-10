@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 
+import a.b.c.quizmania.Entities.StaticVariables;
 import a.b.c.quizmania.R;
 
 import static android.support.test.espresso.Espresso.onData;
@@ -75,7 +76,7 @@ public class SelectionActivityTest {
         clickCategorySpinner("Science & nature");
         assertEquals(mActivity.selectedCategory, "&category=17");
 
-        clickCategorySpinner("General knowledge");
+        clickCategorySpinner("General Knowledge");
         assertEquals(mActivity.selectedCategory, "&category=9");
 
         clickCategorySpinner("Sports");
@@ -90,7 +91,7 @@ public class SelectionActivityTest {
         clickCategorySpinner("Geography");
         assertEquals(mActivity.selectedCategory, "&category=22");
 
-        clickCategorySpinner("Video games");
+        clickCategorySpinner("Video Games");
         assertEquals(mActivity.selectedCategory, "&category=15");
 
         clickCategorySpinner("Television");
@@ -107,12 +108,12 @@ public class SelectionActivityTest {
         startBtn.perform(click());
 
         try {
-            Thread.sleep(1500);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        assertEquals(mActivity.question.getResults().size(), 10);
+        assertEquals(StaticVariables.question.getResults().size(), 10);
 
     }
 
@@ -123,31 +124,31 @@ public class SelectionActivityTest {
         startBtn.perform(click());
 
 
-        //Sleep til að bíða eftir api request
+        //Sleep to wait for the api request
         try {
-            Thread.sleep(2000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        //loopar í gegnum allar spurningarnar og athugar hvort þær séu ekki allar
-        //í réttum category
+        //loop through all the questions and check whether they are all in
+        //the correct category and difficulty
         for(int i = 0; i < 10; i++){
-            assertEquals(mActivity.question.getResults().get(i).getCategory(), "Mythology");
-            assertEquals(mActivity.question.getResults().get(i).getDifficulty(), "medium");
+            assertEquals(StaticVariables.question.getResults().get(i).getCategory(), "Mythology");
+            assertEquals(StaticVariables.question.getResults().get(i).getDifficulty(), "medium");
         }
 
     }
 
     private void clickCategorySpinner(String categoryString) {
-        //Clickar á category dropdown, clickar á category sem matchar strengin categoryString
-        //athugar hvort spinnerText matchi við categoryString
+        //Click the category dropdown, then click the dropdown that matcher the string
         category.perform(click());
         onData(is(categoryString)).perform(click());
         category.check(matches(withSpinnerText(containsString(categoryString))));
     }
 
     private void clickDifficultySpinner(String difficultyString) {
+        //Click the difficulty dropdown, then click the dropdown that matcher the string
         difficulty.perform(click());
         onData(is(difficultyString)).perform(click());
         difficulty.check(matches(withSpinnerText(containsString(difficultyString))));

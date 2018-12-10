@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="50dp"
+        android:textSize="40dp"
         android:text="Quiz Mania"
         android:gravity="center"
         android:layout_marginVertical="0dp"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Sign up"
-        android:textSize="30dp"
+        android:textSize="20dp"
         />
 
     <EditText
@@ -30,6 +30,7 @@
         android:maxLines="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="text"
         android:layout_marginHorizontal="20dp"
         android:hint="Username"
         />
@@ -43,11 +44,18 @@
         android:inputType="textEmailAddress" />
 
     <EditText
-        android:id="@+id/passwd_signup"
+        android:id="@+id/passwd_signUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:hint="Password"
+        android:inputType="textPassword" />
+    <EditText
+        android:id="@+id/passwd_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:hint="@string/confirm_password"
         android:inputType="textPassword" />
 
 
