@@ -23,11 +23,10 @@ import a.b.c.quizmania.Entities.UserListItem;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.db.UsersRVAdapter;
 
-import static a.b.c.quizmania.UI.MainMenuActivity.challengeList;
+import static a.b.c.quizmania.Entities.StaticVariables.pendingChallenge;
 
 public class UserListActivity extends AppCompatActivity implements UsersRVAdapter.ItemClickListener {
 
-    public static Challenge pendingChallenge;
     private List<UserListItem> userList;
     private UserListItem currUser;
     UsersRVAdapter adapter;
@@ -53,7 +52,7 @@ public class UserListActivity extends AppCompatActivity implements UsersRVAdapte
     @Override
     public void onItemClick(View view, int position) {
         Toast.makeText(this, "You challenged " + adapter.getDisplayName(position), Toast.LENGTH_SHORT).show();
-        pendingChallenge = new Challenge(currUser, adapter.getUser(position), challengeList.size(), true);
+        pendingChallenge = new Challenge(currUser, adapter.getUser(position), true);
         Intent intent = new Intent(this, SelectionActivity.class);
         intent.putExtra("MODE", "CHALLENGER");
         startActivity(intent);

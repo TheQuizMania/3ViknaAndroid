@@ -24,7 +24,6 @@ import a.b.c.quizmania.R;
 
 public class MainMenuActivity extends AppCompatActivity {
 
-    public static List<Challenge> challengeList;
     public static List<Challenge> myChallenges;
 
     // Firebase
@@ -56,7 +55,6 @@ public class MainMenuActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         // Init challenge list
-        challengeList = new ArrayList<>();
         myChallenges = new ArrayList<>();
         fetchChallenges();
 
@@ -133,11 +131,10 @@ public class MainMenuActivity extends AppCompatActivity {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        challengeList.clear();
                         myChallenges.clear();
                         for(DataSnapshot challengeInstance: dataSnapshot.getChildren()) {
                             Challenge challenge = challengeInstance.getValue(Challenge.class);
-                            challengeList.add(challenge);
+                            challenge.setId(challengeInstance.getKey());
                             if(challenge.getChallengee().getEmail().matches(FirebaseAuth.getInstance().getCurrentUser().getEmail()) && challenge.isActive()) {
                                 myChallenges.add(challenge);
                             }

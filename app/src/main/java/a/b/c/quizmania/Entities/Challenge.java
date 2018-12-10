@@ -5,7 +5,7 @@ public class Challenge {
     private UserListItem challengee;
     private Score challengerScore;
     private Score challengeeScore;
-    private int id;
+    private String id;
     private String category;
     private String difficulty;
     private boolean isActive;
@@ -15,10 +15,10 @@ public class Challenge {
 
     public Challenge() {}
 
-    public Challenge(UserListItem challenger, UserListItem challengee, int id, boolean isActive) {
+    public Challenge(UserListItem challenger, UserListItem challengee, boolean isActive) {
         this.challenger = challenger;
         this.challengee = challengee;
-        this.id = id;
+        this.id = null;
         this.isActive = isActive;
         challengerScore = null;
         challengeeScore = null;
@@ -32,7 +32,7 @@ public class Challenge {
         return challengee;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -88,7 +88,7 @@ public class Challenge {
         this.challengee = challengee;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 }

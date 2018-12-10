@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Locale;
 
 import a.b.c.quizmania.Entities.Categories;
-import a.b.c.quizmania.Entities.CurrentScore;
+import a.b.c.quizmania.Entities.StaticVariables;
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.R;
@@ -41,7 +41,7 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
     }
 
     private void initVariables(){
-        resultScore = CurrentScore.getCurrScore();
+        resultScore = StaticVariables.getCurrScore();
         category = findViewById(R.id.results_category);
         difficulty = findViewById(R.id.results_difficulty);
         rightAnswers = findViewById(R.id.results_right_answers);

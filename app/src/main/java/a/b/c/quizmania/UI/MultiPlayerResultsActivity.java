@@ -9,13 +9,16 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.R;
 
-import static a.b.c.quizmania.UI.ChallengeListActivity.currChallenge;
+import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
 
 public class MultiPlayerResultsActivity extends AppCompatActivity {
+
+    private Challenge currentChallenge;
 
     // Views
     TextView categoryTV;
@@ -37,6 +40,8 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multi_player_result);
+
+        currentChallenge = currChallenge;
 
         // Finding Views
         categoryTV = (TextView)findViewById(R.id.mp_results_category);

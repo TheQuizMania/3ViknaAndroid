@@ -19,13 +19,12 @@ import com.koushikdutta.ion.Ion;
 import a.b.c.quizmania.Entities.Question;
 import a.b.c.quizmania.R;
 
-import static a.b.c.quizmania.UI.MainMenuActivity.myChallenges;
-import static a.b.c.quizmania.UI.UserListActivity.pendingChallenge;
+import static a.b.c.quizmania.Entities.StaticVariables.pendingChallenge;
+import static a.b.c.quizmania.Entities.StaticVariables.question;
 
 public class SelectionActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     // Question variable that is used in QuestionDisplayFragment
-    public static Question question;
     // Url for the api that will be appended strings
     public String url = "https://opentdb.com/api.php?amount=10";
 
@@ -174,38 +173,34 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     private void getQuestions() {
         // Makes the buttons unclickable
         // Gets the questions from the api
-        if(challengeId == -1) {
-          playBtn.setClickable(false);
-          playBtn.setText(getString(R.string.quiz_unavaliable));
-          Ion.with(this)
-                  .load(url + selectedCategory + selectedDifficulty + "&type=multiple")
-                  .asString()
-                  .setCallback(new FutureCallback<String>() {
-                      @Override
-                      public void onCompleted(Exception e, String result) {
-                          // Converts the result from the api to a Question.class
-                          Gson gson = new Gson();
-                          question = gson.fromJson(result, Question.class);
-                          // Makes the play button clickable again
-                          //playBtn.setOnClickListener(v -> playGame(v));
-                          //playBtn.setText(getString(R.string.quiz_avaliable));
-                          Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
-                          intent.putExtra("CATEGORY", selectedCategory);
-                          intent.putExtra("DIFFICULTY", selectedDifficulty);
-                          intent.putExtra("MODE", mode);
-                          if (mode.matches("CHALLENGER")) {
-                              pendingChallenge.setQuestion(question);
-                          }
-
-                          playBtn.setClickable(true);
-                          playBtn.setText(getString(R.string.quiz_avaliable));
-                          startActivity(intent);
-                          finish();
+      playBtn.setClickable(false);
+      playBtn.setText(getString(R.string.quiz_unavaliable));
+      Ion.with(this)
+              .load(url + selectedCategory + selectedDifficulty + "&type=multiple")
+              .asString()
+              .setCallback(new FutureCallback<String>() {
+                  @Override
+                  public void onCompleted(Exception e, String result) {
+                      // Converts the result from the api to a Question.class
+                      Gson gson = new Gson();
+                      question = gson.fromJson(result, Question.class);
+                      // Makes the play button clickable again
+                      //playBtn.setOnClickListener(v -> playGame(v));
+                      //playBtn.setText(getString(R.string.quiz_avaliable));
+                      Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
+                      intent.putExtra("CATEGORY", selectedCategory);
+                      intent.putExtra("DIFFICULTY", selectedDifficulty);
+                      intent.putExtra("MODE", mode);
+                      if (mode.matches("CHALLENGER")) {
+                          pendingChallenge.setQuestion(question);
                       }
-                  });
-          } else {
-            question = myChallenges.get(challengeId).getQuestion();
-          }
+
+                      playBtn.setClickable(true);
+                      playBtn.setText(getString(R.string.quiz_avaliable));
+                      startActivity(intent);
+                      finish();
+                  }
+              });
     }
 
     @Override
