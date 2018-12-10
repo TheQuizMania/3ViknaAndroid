@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.MultiPlayerResultsActivity"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="35sp"
+        android:text="Results" />
+    <TextView
+        android:id="@+id/mp_results_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="category:"/>
+    <TextView
+        android:id="@+id/mp_results_difficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="difficulty:"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+            <TextView
+                android:id="@+id/mp_results_challenger"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DisplayName"
+                />
+            <TextView
+                android:id="@+id/mp_challenger_results_right_answers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="right answers out of 10:"/>
+            <TextView
+                android:id="@+id/mp_challenger_results_average_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="average time to answer:"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+            <TextView
+                android:id="@+id/mp_results_challengee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DisplayName"
+                />
+            <TextView
+                android:id="@+id/mp_challengee_results_right_answers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="right answers out of 10: "/>
+            <TextView
+                android:id="@+id/mp_challengee_results_average_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="average time to answer:"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/mp_results_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="25dp"
+        android:text="You win!"
+        />
+
+    <Button
+        android:id="@+id/mp_main_menu_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Main menu"/>
+</LinearLayout>

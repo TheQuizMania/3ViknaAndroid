@@ -1,5 +1,6 @@
 package a.b.c.quizmania.Fragments;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -27,16 +28,19 @@ import java.util.Objects;
 
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
+import a.b.c.quizmania.Entities.StaticVariables;
 import a.b.c.quizmania.Jobs.BackgroundJob;
 import a.b.c.quizmania.Jobs.UiCallback;
 import a.b.c.quizmania.R;
+import a.b.c.quizmania.UI.MultiPlayerResultsActivity;
 import a.b.c.quizmania.UI.QuestionActivity;
+import a.b.c.quizmania.UI.SinglePlayerResultsActivity;
 
-import static a.b.c.quizmania.UI.ChallengeListActivity.currChallenge;
+import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
+import static a.b.c.quizmania.Entities.StaticVariables.pendingChallenge;
+import static a.b.c.quizmania.Entities.StaticVariables.question;
 import static a.b.c.quizmania.UI.QuestionActivity.category;
 import static a.b.c.quizmania.UI.QuestionActivity.difficulty;
-import static a.b.c.quizmania.UI.SelectionActivity.question;
-import static a.b.c.quizmania.UI.UserListActivity.pendingChallenge;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,7 +57,7 @@ public class QuestionDisplayFragment extends Fragment {
     // Array of AsyncTasks
     private BackgroundJob[] task;
 
-    private Score score;
+    public Score score;
 
     private List<QuestionStats> questionsList;
 
@@ -183,10 +187,19 @@ public class QuestionDisplayFragment extends Fragment {
 
         if(mode.matches("CHALLENGER")) {
             initChallenge();
+            getActivity().finish();
         } else if (mode.matches("CHALLENGEE")) {
             updateChallenge();
+            startMPResults();
+        } else {
+            startActivity(new Intent(getActivity(), SinglePlayerResultsActivity.class));
+            getActivity().finish();
         }
+    }
 
+    private void startMPResults() {
+        Intent intent = new Intent(getActivity(), MultiPlayerResultsActivity.class);
+        startActivity(intent);
         getActivity().finish();
     }
 
@@ -200,26 +213,20 @@ public class QuestionDisplayFragment extends Fragment {
     }
 
     private void initChallenge() {
-        String category = getActivity().getIntent().getStringExtra("CATEGORY");
-        String difficulty = getActivity().getIntent().getStringExtra("DIFFICULTY");
         if(category.equals("")){
             pendingChallenge.setCategory("Random");
         } else {
             String[] ret = difficulty.split("=");
             pendingChallenge.setCategory(ret[1]);
         }
-        if(difficulty.equals("")){
-            pendingChallenge.setDifficulty("Random");
-        } else {
-            String[] ret = difficulty.split("=");
-            pendingChallenge.setDifficulty(ret[1]);
-        }
+        String[] ret = difficulty.split("=");
+        pendingChallenge.setDifficulty(ret[1]);
 
         pendingChallenge.setChallengerScore(score);
 
         FirebaseDatabase.getInstance().getReference().child("root")
                 .child("challenges")
-                .child(String.valueOf(pendingChallenge.getId()))
+                .push()
                 .setValue(pendingChallenge);
     }
 
@@ -239,12 +246,9 @@ public class QuestionDisplayFragment extends Fragment {
             String[] ret = category.split("=");
             score.setCategory(ret[1]);
         }
-        if(difficulty.equals("")){
-            score.setDifficulty("Random");
-        } else {
-            String[] ret = difficulty.split("=");
-            score.setDifficulty(ret[1]);
-        }
+        String[] ret = difficulty.split("=");
+        score.setDifficulty(ret[1]);
+
         int count = 0;
         for(QuestionStats q : questionsList){
             if(q.isWasCorrect()){
@@ -252,7 +256,7 @@ public class QuestionDisplayFragment extends Fragment {
             }
         }
         score.setCorrectAnswers(count);
-
+        StaticVariables.setCurrScore(score);
     }
 
 
@@ -318,7 +322,7 @@ public class QuestionDisplayFragment extends Fragment {
                 questionId++;
                 questionsList.add(currQuest);
                 if(questionId == 10) {
-                    Log.d("QUIZ_APP", "10 questions answered. Exiting");
+                    Log.d("QUIZ`_APP", "10 questions answered. Exiting");
                     showResults();
                 }
             }
