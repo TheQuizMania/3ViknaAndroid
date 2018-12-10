@@ -61,9 +61,9 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
         for(QuestionStats q : questionList) {
             totalTimeToAnswer += (double) q.getTimeToAnswer();
         }
-        double avg = totalTimeToAnswer / 10;
+        double avg = totalTimeToAnswer / 10.0;
         DecimalFormat df = new DecimalFormat("##.##");
-        avg /= 1000;
+        avg /= 1000.0;
         return df.format(avg);
     }
 

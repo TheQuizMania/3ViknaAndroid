@@ -124,7 +124,11 @@ public class MainMenuActivity extends AppCompatActivity {
         theme = str;
     }
 
-
+    /************************************
+     *                                  *
+     *    Fetching data from the api    *
+     *                                  *
+     ************************************/
     private void fetchChallenges() {
         FirebaseDatabase.getInstance().getReference().child("root")
                 .child("challenges")

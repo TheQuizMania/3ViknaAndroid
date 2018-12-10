@@ -14,6 +14,7 @@ import a.b.c.quizmania.R;
 
 public class UsersRVAdapter extends RecyclerView.Adapter<UsersRVAdapter.ViewHolder> {
 
+    // Variables
     private List<UserListItem> mUsers;
     private LayoutInflater mInflater;
     private ItemClickListener mListener;
@@ -36,29 +37,36 @@ public class UsersRVAdapter extends RecyclerView.Adapter<UsersRVAdapter.ViewHold
     }
 
     public String getDisplayName(int position) {
+        // Returns the display name of the user
         return mUsers.get(position).getDisplayName();
     }
 
     @Override
     public int getItemCount() {
+        // Returns the number of users
         return mUsers.size();
     }
 
     public UserListItem getUser(int position) {
+        // Returns the user
         return mUsers.get(position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        // Views
         public TextView displayNameTxtView;
 
         ViewHolder(View itemView) {
             super(itemView);
+            // Finding views
             displayNameTxtView = itemView.findViewById(R.id.username_user_list_rv);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
+            // Sets on click listener if there is none
             if(mListener != null) {
                 mListener.onItemClick(v, getAdapterPosition());
             }
