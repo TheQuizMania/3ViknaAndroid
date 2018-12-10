@@ -1,7 +1,6 @@
 package a.b.c.quizmania.UI;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,7 +21,9 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import a.b.c.quizmania.Entities.User;
 import a.b.c.quizmania.R;
+import a.b.c.quizmania.db.Utility;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -105,8 +107,10 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnCompleteListener(this, task -> {
                         if(task.isSuccessful()) {
                             // Sign in was successful
+                            addUserInfoToAuth();
                             Toast.makeText(LoginActivity.this,
                                     getString(R.string.login_success), Toast.LENGTH_SHORT).show();
+                            Utility.addToUserList(FirebaseAuth.getInstance().getCurrentUser().getEmail(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                             startMainMenu();
                         } else {
                             // Sign in failed
@@ -153,6 +157,7 @@ public class LoginActivity extends AppCompatActivity {
         // Starting Main menu activity
         Intent intent = new Intent(this, MainMenuActivity.class);
         startActivity(intent);
+        finish();
     }
 
 
@@ -168,6 +173,7 @@ public class LoginActivity extends AppCompatActivity {
                         user.setScores(null);
                         user.setWins(0);
                         user.setLosses(0);
+                        Utility.addToUserList(mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getDisplayName());
                         //on sign in inserts new user into database if not exists
                         addUserIfNotInDb(user);
                         startMainMenu();
@@ -178,23 +184,41 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    private void addUserInfoToAuth(){
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference rootRef = db.getReference();
+        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference ref = rootRef.child("root").child("Users").child(uId);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    User user = dataSnapshot.getValue(User.class);
+                    String userN = user.getUserName();
+                    FirebaseUser gUser = FirebaseAuth.getInstance().getCurrentUser();
+                    UserProfileChangeRequest changeRequest
+                            = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(userN)
+                            .build();
+                    assert gUser != null;
+                    gUser.updateProfile(changeRequest);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     private void addUserIfNotInDb(User user){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference ref = db.getReference("root//Users//" + uId);
-
-        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.hasChild("root//Users//" + uId)){
-                    //insert user if they don't exist in database.
-                    ref.setValue(user);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
+      
+        ref.setValue(user);
     }
 }

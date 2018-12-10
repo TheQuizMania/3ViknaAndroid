@@ -1,17 +1,14 @@
 package a.b.c.quizmania.UI;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -20,8 +17,10 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
 import a.b.c.quizmania.Entities.Question;
-
 import a.b.c.quizmania.R;
+
+import static a.b.c.quizmania.UI.MainMenuActivity.myChallenges;
+import static a.b.c.quizmania.UI.UserListActivity.pendingChallenge;
 
 public class SelectionActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -65,6 +64,8 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     private String uId;
     private FirebaseDatabase db;
     private FirebaseAuth mAuth;
+    String mode;
+    int challengeId;
 
 
     @Override
@@ -83,6 +84,10 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         setAppTheme();
         setContentView(R.layout.activity_selection);
         getSupportActionBar().hide();
+
+        mode = getIntent().getStringExtra("MODE");
+        challengeId = getIntent().getIntExtra("CHALLENGEID", -1);
+
 
         // Initialize the selection strings as empty strings
         selectedCategory = "";
@@ -169,35 +174,43 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     private void getQuestions() {
         // Makes the buttons unclickable
         // Gets the questions from the api
-        playBtn.setClickable(false);
-        playBtn.setText(getString(R.string.quiz_unavaliable));
-                Ion.with(this)
-                .load(url + selectedCategory + selectedDifficulty + "&type=multiple")
-                .asString()
-                .setCallback(new FutureCallback<String>() {
-                    @Override
-                    public void onCompleted(Exception e, String result) {
-                        // Converts the result from the api to a Question.class
-                        Gson gson = new Gson();
-                        question = gson.fromJson(result, Question.class);
+        if(challengeId == -1) {
+          playBtn.setClickable(false);
+          playBtn.setText(getString(R.string.quiz_unavaliable));
+          Ion.with(this)
+                  .load(url + selectedCategory + selectedDifficulty + "&type=multiple")
+                  .asString()
+                  .setCallback(new FutureCallback<String>() {
+                      @Override
+                      public void onCompleted(Exception e, String result) {
+                          // Converts the result from the api to a Question.class
+                          Gson gson = new Gson();
+                          question = gson.fromJson(result, Question.class);
+                          // Makes the play button clickable again
+                          //playBtn.setOnClickListener(v -> playGame(v));
+                          //playBtn.setText(getString(R.string.quiz_avaliable));
+                          Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
+                          intent.putExtra("CATEGORY", selectedCategory);
+                          intent.putExtra("DIFFICULTY", selectedDifficulty);
+                          intent.putExtra("MODE", mode);
+                          if (mode.matches("CHALLENGER")) {
+                              pendingChallenge.setQuestion(question);
+                          }
 
-                        Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
-                        intent.putExtra("CATEGORY", selectedCategory);
-                        intent.putExtra("DIFFICULTY", selectedDifficulty);
-
-                        // Makes the play button clickable again
-                        playBtn.setClickable(true);
-                        playBtn.setText(getString(R.string.quiz_avaliable));
-
-                        startActivity(intent);
-                    }
-                });
+                          playBtn.setClickable(true);
+                          playBtn.setText(getString(R.string.quiz_avaliable));
+                          startActivity(intent);
+                          finish();
+                      }
+                  });
+          } else {
+            question = myChallenges.get(challengeId).getQuestion();
+          }
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
+    public void onNothingSelected(AdapterView<?> parent) { }
 
-    }
     private void setAppTheme() {
         SharedPreferences pref = getSharedPreferences(uId, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");
