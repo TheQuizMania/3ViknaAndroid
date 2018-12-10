@@ -95,23 +95,23 @@ public class StatisticsActivity extends AppCompatActivity {
     private void populateViews() {
         totalRight.setText("Right: " + getTotalRightAnswers());
         totalWrong.setText("Wrong: " + getTotalWrongAnswers());
-        totalRatio.setText("Ratio: " + getTotalRatio() + "%");
+        totalRatio.setText("Ratio: " + getTotalRatio());
 
         mPWins.setText("Wins: " + getTotalMPWins());
         mPLosses.setText("Losses: " + getTotalMPLosses());
-        winLossRatio.setText("Ratio: " + getWinLossRatio() + "%");
+        winLossRatio.setText("Ratio: " + getWinLossRatio());
 
         easyRight.setText("Right: " + getRightAnswersByDifficulty("easy"));
         easyWrong.setText("Wrong: " + getWrongAnswersByDifficulty("easy"));
-        easyRatio.setText("Ratio: " + getRatioByDifficulty("easy") + "%");
+        easyRatio.setText("Ratio: " + getRatioByDifficulty("easy"));
 
         mediumRight.setText("Right: " + getRightAnswersByDifficulty("medium"));
         mediumWrong.setText("Wrong: " + getWrongAnswersByDifficulty("medium"));
-        mediumRatio.setText("Ratio: " + getRatioByDifficulty("medium") + "%");
+        mediumRatio.setText("Ratio: " + getRatioByDifficulty("medium"));
 
         hardRight.setText("Right: " + getRightAnswersByDifficulty("hard"));
         hardWrong.setText("Wrong: " + getWrongAnswersByDifficulty("hard"));
-        hardRatio.setText("Ratio: " + getRatioByDifficulty("hard") + "%");
+        hardRatio.setText("Ratio: " + getRatioByDifficulty("hard"));
 
         favoriteCategory.setText(getFavoriteCategory());
     }
@@ -137,7 +137,7 @@ public class StatisticsActivity extends AppCompatActivity {
             return "inf";
         }
         Double ratio = (double) getTotalRightAnswers() / (double) getTotalWrongAnswers();
-        ratio = Math.round(ratio * 10000.0) / 100.0;
+        ratio = Math.round(ratio * 100.0) / 100.0;
         return ratio.toString();
     }
 
@@ -190,7 +190,7 @@ public class StatisticsActivity extends AppCompatActivity {
             return "inf";
         }
         Double ratio = (double) getTotalMPWins() / (double) getTotalMPLosses();
-        ratio = Math.round(ratio * 10000.0) / 100.0;
+        ratio = Math.round(ratio * 100.0) / 100.0;
         return ratio.toString();
     }
 
@@ -220,7 +220,7 @@ public class StatisticsActivity extends AppCompatActivity {
         }
         Double ratio = (double) getRightAnswersByDifficulty(difficulty)
                 / (double) getWrongAnswersByDifficulty(difficulty);
-        ratio = Math.round(ratio * 10000.0) / 100.0;
+        ratio = Math.round(ratio * 100.0) / 100.0;
         return ratio.toString();
     }
 

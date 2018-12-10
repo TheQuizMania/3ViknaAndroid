@@ -236,7 +236,7 @@ public class QuestionDisplayFragment extends Fragment {
         if(category.equals("")){
                 score.setCategory("Random");
         } else {
-            String[] ret = difficulty.split("=");
+            String[] ret = category.split("=");
             score.setCategory(ret[1]);
         }
         if(difficulty.equals("")){

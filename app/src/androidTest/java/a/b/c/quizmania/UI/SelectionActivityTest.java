@@ -112,7 +112,7 @@ public class SelectionActivityTest {
             e.printStackTrace();
         }
 
-        assertEquals(mActivity.question.getResults().length, 10);
+        assertEquals(mActivity.question.getResults().size(), 10);
 
     }
 
@@ -133,8 +133,8 @@ public class SelectionActivityTest {
         //loopar í gegnum allar spurningarnar og athugar hvort þær séu ekki allar
         //í réttum category
         for(int i = 0; i < 10; i++){
-            assertEquals(mActivity.question.getResults()[i].getCategory(), "Mythology");
-            assertEquals(mActivity.question.getResults()[i].getDifficulty(), "medium");
+            assertEquals(mActivity.question.getResults().get(i).getCategory(), "Mythology");
+            assertEquals(mActivity.question.getResults().get(i).getDifficulty(), "medium");
         }
 
     }
