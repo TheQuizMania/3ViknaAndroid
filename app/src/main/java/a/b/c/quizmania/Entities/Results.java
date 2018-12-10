@@ -2,7 +2,7 @@ package a.b.c.quizmania.Entities;
 
 public class Results {
     private String category;
-    private String type;
+    private String difficulty;
     private String question;
     private String correct_answer;
     private String[] incorrect_answers;
@@ -10,11 +10,11 @@ public class Results {
     public Results() {
     }
 
-    public Results(String category, String type,
+    public Results(String category, String difficulty,
                    String question, String correctAnswer,
                    String[] incorrectAnswers) {
         this.category = category;
-        this.type = type;
+        this.difficulty = difficulty;
         this.question = question;
         this.correct_answer = correctAnswer;
         this.incorrect_answers = incorrectAnswers;
@@ -28,12 +28,12 @@ public class Results {
         this.category = category;
     }
 
-    public String getType() {
-        return type;
+    public String getDifficulty() {
+        return difficulty;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setDifficulty(String type) {
+        this.difficulty = type;
     }
 
     public String getQuestion() {

@@ -100,15 +100,9 @@ public class QuestionDisplayFragment extends Fragment {
 
         // Checks whether the question variable initiated in Selection Activity was initialized
         if(question != null) {
-            // Checks if the question type is multiple choice
-            if(question.getResults()[i].getType().equals("multiple")) {
-                // Gets all the answers and displays them in the MultipleChoiceFragment
-                String[] answers = getAnswers(i);
-                displayMultipleQuestion(answers);
-            } else {
-                displayTrueFalse();
-            }
-            // Displays the question
+            // Gets all the answers and displays them in the MultipleChoiceFragment
+            String[] answers = getAnswers(i);
+            displayMultipleQuestion(answers);
             questionTxt.setText(StringEscapeUtils.unescapeHtml4(question.getResults()[i].getQuestion()));
         } else {
             // If the question variable was null, display error message
