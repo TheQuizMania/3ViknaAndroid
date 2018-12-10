@@ -7,6 +7,14 @@ import a.b.c.quizmania.Entities.UserListItem;
 
 public class Utility {
 
+    /*********************************************************************
+     *                                                                   *
+     *  Class for storing the users to the user list,                    *
+     *  It holds all the users that have logged in and can be challenged *
+     *                                                                   *
+     * @param email                                                      *
+     * @param displayName                                                *
+     *********************************************************************/
     public static void addToUserList(String email, String displayName) {
         UserListItem newUser = new UserListItem(email, displayName);
         FirebaseDatabase.getInstance().getReference().child("root")
@@ -15,10 +23,4 @@ public class Utility {
                 .setValue(newUser);
     }
 
-    public static String getUid() {
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
-            return "";
-        }
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
-    }
 }

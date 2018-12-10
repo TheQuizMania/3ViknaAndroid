@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import a.b.c.quizmania.Entities.Categories;
 
+import a.b.c.quizmania.Entities.Categories;
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.Entities.StaticVariables;
@@ -64,7 +64,9 @@ public class QuestionDisplayFragment extends Fragment {
 
     // Views
     private TextView questionTxt;
+    private TextView questionCountTxt;
     private ProgressBar progressBar;
+
 
     public QuestionDisplayFragment() {
         // Required empty public constructor
@@ -89,6 +91,7 @@ public class QuestionDisplayFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         // Finds Views
         questionTxt = getActivity().findViewById(R.id.question);
+        questionCountTxt = getActivity().findViewById(R.id.question_count);
         progressBar = getActivity().findViewById(R.id.progress_bar_question_fragment);
         questionsList = new ArrayList();
         score = new Score();
@@ -114,6 +117,7 @@ public class QuestionDisplayFragment extends Fragment {
         }
     }
 
+
     private void displayQuestion(int i) {
         Log.d("QUIZ_APP", "displayQuestion() called");
 
@@ -125,6 +129,8 @@ public class QuestionDisplayFragment extends Fragment {
             displayMultipleQuestion(answers);
             // Displays the question
             questionTxt.setText(StringEscapeUtils.unescapeHtml4(question.getResults().get(i).getQuestion()));
+            questionCountTxt.setText(String.format(getString(R.string.out_of_10), questionId + 1));
+
         } else {
             // If the question variable was null, display error message
             questionTxt.setText(getString(R.string.question_null_error_message));
@@ -188,6 +194,7 @@ public class QuestionDisplayFragment extends Fragment {
 
         if(mode.matches("CHALLENGER")) {
             initChallenge();
+            startActivity(new Intent(getActivity(), SinglePlayerResultsActivity.class));
             getActivity().finish();
         } else if (mode.matches("CHALLENGEE")) {
             updateChallenge();
@@ -205,8 +212,11 @@ public class QuestionDisplayFragment extends Fragment {
     }
 
     private void updateChallenge() {
+        // sets the boolean variable false that indicates that the challenge is finish
         currChallenge.setActive(false);
+        // Sets the score of the one that was challenged
         currChallenge.setChallengeeScore(score);
+        // Writes the new data to the database
         FirebaseDatabase.getInstance().getReference().child("root")
                 .child("challenges")
                 .child(String.valueOf(currChallenge.getId()))
@@ -214,6 +224,7 @@ public class QuestionDisplayFragment extends Fragment {
     }
 
     private void initChallenge() {
+        //  Sets the category and difficulty of the challenge
         if(category.equals("")){
             pendingChallenge.setCategory("Random");
         } else {
@@ -223,8 +234,10 @@ public class QuestionDisplayFragment extends Fragment {
         String[] ret = difficulty.split("=");
         pendingChallenge.setDifficulty(ret[1]);
 
+        // Sets the score of the challenger in
         pendingChallenge.setChallengerScore(score);
 
+        // Writes down the challenge to the database
         FirebaseDatabase.getInstance().getReference().child("root")
                 .child("challenges")
                 .push()

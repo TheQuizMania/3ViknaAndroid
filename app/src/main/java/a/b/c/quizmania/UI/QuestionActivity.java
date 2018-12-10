@@ -28,6 +28,12 @@ public class QuestionActivity extends AppCompatActivity {
         getInfo();
         setContentView(R.layout.activity_question);
     }
+
+    /*********************************
+     *                               *
+     *      Sets the app theme       *
+     *                               *
+     *********************************/
     private void setAppTheme() {
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");
@@ -37,6 +43,12 @@ public class QuestionActivity extends AppCompatActivity {
             setTheme(R.style.DarkTheme);
         }
     }
+
+    /***********************************
+     *                                 *
+     *  Gets the data from the intent  *
+     *                                 *
+     ***********************************/
     private void getInfo(){
         Intent i = getIntent();
         category = i.getStringExtra("CATEGORY");
@@ -44,8 +56,10 @@ public class QuestionActivity extends AppCompatActivity {
         mode = i.getStringExtra("MODE");
         challengeId = i.getIntExtra("CHALLENGEID", -1);
     }
+
     @Override
     public void onBackPressed() {
+        getSupportFragmentManager().findFragmentById(R.id.question_fragment).onDestroy();
         Log.d("OVERRIDE", "onBackPressed: called");
         Intent intent = new Intent(this, SelectionActivity.class);
         intent.putExtra("MODE", mode);
