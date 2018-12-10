@@ -232,7 +232,7 @@ public class StatisticsActivity extends AppCompatActivity {
         }
         int largest = 0;
         for(int i = 0; i < counts.length; i++){
-            if(counts[i] > largest){
+            if(counts[i] > counts[largest]){
                 largest = i;
             }
         }

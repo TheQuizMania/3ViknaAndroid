@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 
+import a.b.c.quizmania.Entities.Categories;
 import a.b.c.quizmania.Entities.CurrentScore;
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
@@ -47,19 +49,22 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
     }
 
     private void populateViews(){
-        category.setText(resultScore.getCategory());
-        difficulty.setText(resultScore.getDifficulty());
-        rightAnswers.setText(String.format(Locale.US, "%d", resultScore.getCorrectAnswers()));
-        averageTime.setText(String.format("%s seconds", String.format(Locale.US, "%d", calculateAverageTime())));
+        category.setText(String.format("Category: %s", getCategoryName()));
+        difficulty.setText(String.format("Difficulty: %s", resultScore.getDifficulty()));
+        rightAnswers.setText(String.format(Locale.US, "%d %s", resultScore.getCorrectAnswers(), "out of 10 right"));
+        averageTime.setText(String.format(Locale.US, "%s %s %s", "Average time to answer:", calculateAverageTime(), "seconds"));
     }
 
-    private double calculateAverageTime() {
+    private String calculateAverageTime() {
         List<QuestionStats> questionList = resultScore.getQuestionStats();
         double totalTimeToAnswer = 0;
         for(QuestionStats q : questionList) {
             totalTimeToAnswer += (double) q.getTimeToAnswer();
         }
-        return (totalTimeToAnswer / 10) / 100;
+        double avg = totalTimeToAnswer / 10;
+        DecimalFormat df = new DecimalFormat("##.##");
+        avg /= 1000;
+        return df.format(avg);
     }
 
     public void goToMainMenu(View view){
@@ -68,6 +73,18 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
 
     public void goToSelection(View view){
         startActivity(new Intent(this, SelectionActivity.class));
+    }
+
+    private String getCategoryName(){
+        List<String> categories = new Categories().getCategories();
+        List<String> catNumbers = new Categories().getCatNumbers();
+
+        if(resultScore.getCategory().equals("Random")){
+            return resultScore.getCategory();
+        } else {
+            return categories.get(catNumbers.indexOf(resultScore.getCategory()));
+        }
+
     }
 
 }
