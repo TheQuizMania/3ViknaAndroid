@@ -41,4 +41,6 @@
     <string name="hard">Hard</string>
     <string name="favorite_category">Favorite Category</string>
     <string name="sign_out">Sign out</string>
+    <string name="no_usernames_match">Usernames don\'t match</string>
+    <string name="username_same_as_old">Username can\'t be the same as the old one</string>
 </resources>

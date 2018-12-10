@@ -69,10 +69,12 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
 
     public void goToMainMenu(View view){
         startActivity(new Intent(this, MainMenuActivity.class));
+        finish();
     }
 
     public void goToSelection(View view){
         startActivity(new Intent(this, SelectionActivity.class));
+        finish();
     }
 
     private String getCategoryName(){

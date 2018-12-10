@@ -62,6 +62,16 @@ public class ProfileActivity extends AppCompatActivity {
         signOutBtn.setOnClickListener(v -> signOut(v));
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String[] userInfoBox = userInfo.getText().toString().split("\n\n");
+        String username = userInfoBox[0];
+        if(!username.equals(FirebaseAuth.getInstance().getCurrentUser().getDisplayName())){
+            recreate();
+        }
+    }
+
     private void signOut(View v) {
         if(GoogleSignIn.getLastSignedInAccount(this) != null){
             mGoogleSignInClient.signOut();
@@ -139,5 +149,9 @@ public class ProfileActivity extends AppCompatActivity {
         }else{
             themeSwitch.setChecked(true);
         }
+    }
+
+    public void changeUserName(View view) {
+        startActivity(new Intent(this, ChangeUsernameActivity.class));
     }
 }
