@@ -1,10 +1,7 @@
 package a.b.c.quizmania.UI;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -79,10 +76,10 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         selectedType = "&type=multiple";
 
         // Find Views
-        categoryDropDown = (Spinner)findViewById(R.id.category_dropdown);
-        diffDropDown = (Spinner)findViewById(R.id.difficulty_dropdown);
-        typeDropDown = (Spinner)findViewById(R.id.type_dropdown);
-        playBtn = (Button)findViewById(R.id.sp_play_btn);
+        categoryDropDown = findViewById(R.id.category_dropdown);
+        diffDropDown = findViewById(R.id.difficulty_dropdown);
+        typeDropDown = findViewById(R.id.type_dropdown);
+        playBtn = findViewById(R.id.sp_play_btn);
 
         // Listeners
         categoryDropDown.setOnItemSelectedListener(this);

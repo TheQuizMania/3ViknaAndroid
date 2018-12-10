@@ -24,6 +24,7 @@ import a.b.c.quizmania.R;
 
 public class StatisticsActivity extends AppCompatActivity {
 
+    //variables
     //List that stores all statistics for current user
     private List<Score> scores;
 
@@ -53,7 +54,6 @@ public class StatisticsActivity extends AppCompatActivity {
     //counters
     int winCount;
     int lossCount;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

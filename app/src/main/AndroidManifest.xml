@@ -21,7 +21,8 @@
         <activity android:name=".UI.SelectionActivity" />
         <activity android:name=".UI.ProfileActivity" />
         <activity android:name=".UI.QuestionActivity" />
-        <activity android:name=".UI.StatisticsActivity"></activity>
+        <activity android:name=".UI.StatisticsActivity" />
+        <activity android:name=".UI.ResultsActivity"></activity>
     </application>
 
 </manifest>
