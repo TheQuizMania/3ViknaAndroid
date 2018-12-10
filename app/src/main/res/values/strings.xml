@@ -19,7 +19,6 @@
     <string name="email_not_valid">Email needs to be valid</string>
     <string name="email_needed">Email is needed</string>
     <string name="password_needed">Password is needed</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="question_null_error_message">An error came up fetching the data</string>
     <string name="quiz_avaliable">Start Quiz</string>
@@ -36,4 +35,9 @@
     <string name="play">Play</string>
     <string name="difficulty">Difficulty</string>
     <string name="categories">Categories</string>
+    <string name="totals">Totals</string>
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
+    <string name="favorite_category">Favorite Category</string>
 </resources>

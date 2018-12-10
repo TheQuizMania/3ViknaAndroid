@@ -135,12 +135,6 @@ public class LoginActivity extends AppCompatActivity {
                 account = task.getResult(ApiException.class);
                 Toast.makeText(this, getString(R.string.google_signin_success),
                         Toast.LENGTH_SHORT).show();
-                final User user = new User();
-                user.setUserName(account.getDisplayName());
-                user.setScores(null);
-                user.setWins(0);
-                user.setLosses(0);
-                addUserIfNotInDb(user);
                 FirebaseGoogleSignup(account);
             }catch (ApiException e) {
                 // Sign in Google failed
@@ -221,14 +215,12 @@ public class LoginActivity extends AppCompatActivity {
         String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference ref = db.getReference("root//Users//" + uId);
 
-        ref.setValue(user);
+
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.exists()){
                     //insert user if they don't exist in database.
-                    ref.setValue(user);
-                } else {
                     ref.setValue(user);
                 }
             }

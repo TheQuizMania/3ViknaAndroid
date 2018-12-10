@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -42,6 +43,10 @@ public class ProfileActivity extends AppCompatActivity {
             setTheme(R.style.DarkTheme);
         }
         theme = str;
+    }
+
+    public void goToStats(View view){
+        startActivity(new Intent(this, StatisticsActivity.class));
     }
 
     private void setUserInfo() {
