@@ -1,10 +1,7 @@
 package a.b.c.quizmania.UI;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -239,14 +236,15 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                           Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
                           intent.putExtra("CATEGORY", selectedCategory);
                           intent.putExtra("DIFFICULTY", selectedDifficulty);
-                          intent.putExtra("MODE", mode)
-                          if (mode.matches("CHALLENGE")) {
+                          intent.putExtra("MODE", mode);
+                          if (mode.matches("CHALLENGER")) {
                               pendingChallenge.setQuestion(question);
                           }
 
                           playBtn.setClickable(true);
                           playBtn.setText(getString(R.string.quiz_avaliable));
                           startActivity(intent);
+                          finish();
                       }
                   });
           } else {

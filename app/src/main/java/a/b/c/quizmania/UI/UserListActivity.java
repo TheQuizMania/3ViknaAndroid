@@ -21,16 +21,16 @@ import java.util.List;
 import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.Entities.UserListItem;
 import a.b.c.quizmania.R;
-import a.b.c.quizmania.db.RVAdapter;
+import a.b.c.quizmania.db.UsersRVAdapter;
 
 import static a.b.c.quizmania.UI.MainMenuActivity.challengeList;
 
-public class UserListActivity extends AppCompatActivity implements RVAdapter.ItemClickListener {
+public class UserListActivity extends AppCompatActivity implements UsersRVAdapter.ItemClickListener {
 
     public static Challenge pendingChallenge;
     private List<UserListItem> userList;
     private UserListItem currUser;
-    RVAdapter adapter;
+    UsersRVAdapter adapter;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class UserListActivity extends AppCompatActivity implements RVAdapter.Ite
     private void updateList() {
         RecyclerView rv = findViewById(R.id.rv_user_list);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RVAdapter(this, userList);
+        adapter = new UsersRVAdapter(this, userList);
         adapter.setClickListener(this);
         rv.setAdapter(adapter);
     }
@@ -53,13 +53,13 @@ public class UserListActivity extends AppCompatActivity implements RVAdapter.Ite
     @Override
     public void onItemClick(View view, int position) {
         Toast.makeText(this, "You challenged " + adapter.getDisplayName(position), Toast.LENGTH_SHORT).show();
-        pendingChallenge = new Challenge(currUser, adapter.getUser(position), challengeList.size());
+        pendingChallenge = new Challenge(currUser, adapter.getUser(position), challengeList.size(), true);
 //        FirebaseDatabase.getInstance().getReference().child("root")
 //                .child("challenges")
 //                .child(String.valueOf(pendingChallenge.getId()))
 //                .setValue(pendingChallenge);
         Intent intent = new Intent(this, SelectionActivity.class);
-        intent.putExtra("MODE", "CHALLENGE");
+        intent.putExtra("MODE", "CHALLENGER");
         startActivity(intent);
     }
 

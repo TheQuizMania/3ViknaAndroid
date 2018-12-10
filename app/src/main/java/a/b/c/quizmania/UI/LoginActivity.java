@@ -137,12 +137,6 @@ public class LoginActivity extends AppCompatActivity {
                 account = task.getResult(ApiException.class);
                 Toast.makeText(this, getString(R.string.google_signin_success),
                         Toast.LENGTH_SHORT).show();
-                final User user = new User();
-                user.setUserName(account.getDisplayName());
-                user.setScores(null);
-                user.setWins(0);
-                user.setLosses(0);
-                addUserIfNotInDb(user);
                 FirebaseGoogleSignup(account);
             }catch (ApiException e) {
                 // Sign in Google failed

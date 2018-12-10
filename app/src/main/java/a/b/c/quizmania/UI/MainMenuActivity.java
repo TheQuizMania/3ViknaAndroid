@@ -35,7 +35,9 @@ public class MainMenuActivity extends AppCompatActivity {
     private Button multiPlayerBtn;
     private Button quickMatchBtn;
     private Button settingsBtn;
+    private Button matchesBtn;
     private TextView nameBox;
+
 
     //
     private String theme;
@@ -67,6 +69,7 @@ public class MainMenuActivity extends AppCompatActivity {
         quickMatchBtn = findViewById(R.id.quick_match_btn);
         settingsBtn = findViewById(R.id.settings_btn);
         nameBox = findViewById(R.id.main_menu_title);
+        matchesBtn = findViewById(R.id.matches_btn);
 
         getPlayer();
 
@@ -75,9 +78,15 @@ public class MainMenuActivity extends AppCompatActivity {
         multiPlayerBtn.setOnClickListener(v -> multiPlayer(v));
         quickMatchBtn.setOnClickListener(v -> multiPlayer(v));
         settingsBtn.setOnClickListener(v -> goToProfile(v));
+        matchesBtn.setOnClickListener(v -> startMatchActivity(v));
 
         // Displays the User name
         getPlayer();
+    }
+
+    private void startMatchActivity(View v) {
+        Intent intent = new Intent(this, ChallengeListActivity.class);
+        startActivity(intent);
     }
 
     private void getPlayer(){
@@ -129,7 +138,7 @@ public class MainMenuActivity extends AppCompatActivity {
                         for(DataSnapshot challengeInstance: dataSnapshot.getChildren()) {
                             Challenge challenge = challengeInstance.getValue(Challenge.class);
                             challengeList.add(challenge);
-                            if(challenge.getChallengee().getEmail().matches(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
+                            if(challenge.getChallengee().getEmail().matches(FirebaseAuth.getInstance().getCurrentUser().getEmail()) && challenge.isActive()) {
                                 myChallenges.add(challenge);
                             }
                         }

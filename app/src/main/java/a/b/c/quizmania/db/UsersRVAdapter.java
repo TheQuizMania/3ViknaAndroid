@@ -12,25 +12,25 @@ import java.util.List;
 import a.b.c.quizmania.Entities.UserListItem;
 import a.b.c.quizmania.R;
 
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
+public class UsersRVAdapter extends RecyclerView.Adapter<UsersRVAdapter.ViewHolder> {
 
     private List<UserListItem> mUsers;
     private LayoutInflater mInflater;
     private ItemClickListener mListener;
 
-    public RVAdapter(Context context, List<UserListItem> users) {
+    public UsersRVAdapter(Context context, List<UserListItem> users) {
         this.mUsers = users;
         this.mInflater = LayoutInflater.from(context);
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public UsersRVAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.user_list_layout, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(UsersRVAdapter.ViewHolder holder, int position) {
         String challenged = mUsers.get(position).getDisplayName();
         holder.displayNameTxtView.setText(challenged);
     }

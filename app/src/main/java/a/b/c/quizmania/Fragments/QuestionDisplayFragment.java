@@ -1,9 +1,5 @@
 package a.b.c.quizmania.Fragments;
 
-import android.app.Activity;
-
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -36,6 +32,7 @@ import a.b.c.quizmania.Jobs.UiCallback;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.UI.QuestionActivity;
 
+import static a.b.c.quizmania.UI.ChallengeListActivity.currChallenge;
 import static a.b.c.quizmania.UI.QuestionActivity.category;
 import static a.b.c.quizmania.UI.QuestionActivity.difficulty;
 import static a.b.c.quizmania.UI.SelectionActivity.question;
@@ -45,9 +42,6 @@ import static a.b.c.quizmania.UI.UserListActivity.pendingChallenge;
  * A simple {@link Fragment} subclass.
  */
 public class QuestionDisplayFragment extends Fragment {
-
-    // Boolean variable that is true when Multiple Choice fragment is displayed
-    private boolean isMul;
 
     // Fragment manager and transaction to Control the
     private FragmentManager fManager;
@@ -81,7 +75,6 @@ public class QuestionDisplayFragment extends Fragment {
 
 
         // Initiate the isMul as false because multiple choice is not visible
-        isMul = false;
         return inflater.inflate(R.layout.fragment_question_display, container, false);
 
     }
@@ -94,6 +87,10 @@ public class QuestionDisplayFragment extends Fragment {
         progressBar = getActivity().findViewById(R.id.progress_bar_question_fragment);
         questionsList = new ArrayList();
         score = new Score();
+
+        MultipleChoiceFragment displayFragment = new MultipleChoiceFragment();
+        fTransaction.replace(R.id.answer_fragment, displayFragment).commit();
+//        fManager.executePendingTransactions();
 
 
         // Initiate questionid as 0
@@ -132,13 +129,7 @@ public class QuestionDisplayFragment extends Fragment {
     private void displayMultipleQuestion(List<String> answers) {
         Log.d("QUIZ_APP", "MultipleChoice() Called");
         // Checks if Multiple Choice Fragment is already displayed on the screen
-        if(!isMul) {
-            // Makes boolean true and replaces the previous view with a multiple choice fragment
-            isMul = true;
-            MultipleChoiceFragment displayFragment = new MultipleChoiceFragment();
-            fTransaction.replace(R.id.answer_fragment, displayFragment).commitNow();
-            fManager.executePendingTransactions();
-        }
+
         // Finds the fragment and prints the answers on the buttons
         MultipleChoiceFragment fragment = (MultipleChoiceFragment) fManager.findFragmentById(R.id.answer_fragment);
         fragment.printAnswers(answers);
@@ -184,9 +175,45 @@ public class QuestionDisplayFragment extends Fragment {
 
     private void showResults() {
         Log.d("QUIZ_APP", "showResults() called");
+        String mode = getActivity().getIntent().getStringExtra("MODE");
+        if(mode.matches("CHALLENGER")) {
+            initChallenge();
+        } else if (mode.matches("CHALLENGEE")) {
+            updateChallenge();
+        }
+
         initScore();
         writeScoreToDatabase();
         getActivity().finish();
+    }
+
+    private void updateChallenge() {
+        currChallenge.setActive(false);
+        FirebaseDatabase.getInstance().getReference().child("root")
+                .child("challenges")
+                .child(String.valueOf(currChallenge.getId()))
+                .setValue(currChallenge);
+    }
+
+    private void initChallenge() {
+        String category = getActivity().getIntent().getStringExtra("CATEGORY");
+        String difficulty = getActivity().getIntent().getStringExtra("DIFFICULTY");
+        if(category.equals("")){
+            pendingChallenge.setCategory("Random");
+        } else {
+            String[] ret = difficulty.split("=");
+            pendingChallenge.setCategory(ret[1]);
+        }
+        if(difficulty.equals("")){
+            pendingChallenge.setDifficulty("Random");
+        } else {
+            String[] ret = difficulty.split("=");
+            pendingChallenge.setDifficulty(ret[1]);
+        }
+        FirebaseDatabase.getInstance().getReference().child("root")
+                .child("challenges")
+                .child(String.valueOf(pendingChallenge.getId()))
+                .setValue(pendingChallenge);
     }
 
     private void writeScoreToDatabase() {
@@ -218,10 +245,7 @@ public class QuestionDisplayFragment extends Fragment {
             }
         }
         score.setCorrectAnswers(count);
-        FirebaseDatabase.getInstance().getReference().child("root")
-            .child("challenges")
-            .child(String.valueOf(pendingChallenge.getId()))
-            .setValue(pendingChallenge);
+
     }
 
 
@@ -267,9 +291,9 @@ public class QuestionDisplayFragment extends Fragment {
                         currQuest.setRightAnswer(getRightAnswer());
                         List<String> answers = getWrongAnswers(questionId);
                         currQuest.setWrongAnswers(answers);
-                        currQuest.setStatsQuestion(question.getResults()[questionId].getQuestion());
-                        currQuest.setQuestionCategory(question.getResults()[questionId].getCategory());
-                        currQuest.setQuestionDifficulty(question.getResults()[questionId].getDifficulty());
+                        currQuest.setStatsQuestion(question.getResults().get(questionId).getQuestion());
+                        currQuest.setQuestionCategory(question.getResults().get(questionId).getCategory());
+                        currQuest.setQuestionDifficulty(question.getResults().get(questionId).getDifficulty());
 //                    }
                 }
                 progressBar.setProgress(values[0]);
