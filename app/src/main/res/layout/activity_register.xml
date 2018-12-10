@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20sp"
         android:hint="@string/username"
+        android:inputType="text"
         android:importantForAutofill="no"
         android:maxLines="1" />
     <EditText
@@ -43,6 +44,14 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20sp"
         android:hint="@string/password"
+        android:inputType="textPassword"
+        android:importantForAutofill="no" />
+    <EditText
+        android:id="@+id/passwd_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20sp"
+        android:hint="@string/confirm_password"
         android:inputType="textPassword"
         android:importantForAutofill="no" />
     <Button

@@ -38,6 +38,7 @@ public class RegisterActivityTest {
     private ViewInteraction userNameBox;
     private ViewInteraction emailBox;
     private ViewInteraction passWBox;
+    private ViewInteraction passWConfirmBox;
     private ViewInteraction registerBtn;
     private RegisterActivity activity;
 
@@ -69,32 +70,14 @@ public class RegisterActivityTest {
     @Before
     public void setUp() {
 
-
-
         RegisterActivity.setInstance(mDb);
         mActivity.launchActivity(new Intent());
         activity = mActivity.getActivity();
         userNameBox = onView(withId(R.id.username_signUp));
         emailBox = onView(withId(R.id.email_signUp));
         passWBox = onView(withId(R.id.passwd_signUp));
+        passWConfirmBox = onView(withId(R.id.passwd_confirm));
         registerBtn = onView(withId(R.id.sign_Up));
-
-//        mAuth.signInWithCredential(string, string).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//            @Override
-//            public void onComplete(@NonNull Task<AuthResult> task) {
-//                task.isSuccessful();
-//            }
-//        })
-
-//        String uId = Objects.requireNonNull(FirebaseAuth
-//                .getInstance()
-//                .getCurrentUser()).getUid();
-//        when(mDb.getReference("root//Users//" + uId)).thenReturn(mRef);
-//        when(mRef.setValue(any(String.class))).thenReturn(null);
-
-//        when(mAuth.createUserWithEmailAndPassword(any(String.class), any(String.class))
-//                .addOnCompleteListener(any(OnCompleteListener<AuthResult>.class))).thenReturn(mTask);
-//        when(mTask.isSuccessful()).thenReturn(false);
 
     }
 
@@ -156,5 +139,16 @@ public class RegisterActivityTest {
         passWBox.perform(clearText(), typeText(""), closeSoftKeyboard());
 //        passWBox.perform(typeText("Test123"), closeSoftKeyboard());
         registerBtn.perform(click());
+    }
+
+    @Test
+    public void confirmPasswordTest() {
+        userNameBox.perform(typeText("Test"), closeSoftKeyboard());
+        emailBox.perform(typeText("test@testdomain.tst"), closeSoftKeyboard());
+        passWBox.perform(typeText("YoloSwag6969"), closeSoftKeyboard());
+        passWConfirmBox.perform(typeText("Testing123"), closeSoftKeyboard());
+        registerBtn.perform(click());
+        passWConfirmBox.check(matches(hasFocus()));
+        passWConfirmBox.check(matches(hasErrorText(activity.getString(R.string.password_mismatch))));
     }
 }

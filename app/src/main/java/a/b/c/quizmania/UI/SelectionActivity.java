@@ -63,7 +63,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     private String uId;
     private FirebaseDatabase db;
     private FirebaseAuth mAuth;
-    String mode;
+    String mode = "";
     int challengeId;
 
 
@@ -85,6 +85,11 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         getSupportActionBar().hide();
 
         mode = getIntent().getStringExtra("MODE");
+        //Svo test keyri
+        if(mode == null){
+            mode = "";
+        }
+
         challengeId = getIntent().getIntExtra("CHALLENGEID", -1);
 
 
