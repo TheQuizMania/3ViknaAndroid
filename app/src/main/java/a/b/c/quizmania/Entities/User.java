@@ -1,15 +1,17 @@
 package a.b.c.quizmania.Entities;
 
+import java.util.List;
+
 public class User {
     private String userName;
-    private Score[] scores;
+    private List<Score> scores;
     private int wins;
     private int losses;
 
     public User() {
     }
 
-    public User(String userName, Score[] scores, int wins, int losses) {
+    public User(String userName, List<Score> scores, int wins, int losses) {
         this.userName = userName;
         this.scores = scores;
         this.wins = wins;
@@ -24,11 +26,11 @@ public class User {
         this.userName = userName;
     }
 
-    public Score[] getScores() {
+    public List<Score> getScores() {
         return scores;
     }
 
-    public void setScores(Score[] scores) {
+    public void setScores(List<Score> scores) {
         this.scores = scores;
     }
 

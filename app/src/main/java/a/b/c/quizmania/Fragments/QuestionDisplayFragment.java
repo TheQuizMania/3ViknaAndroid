@@ -1,9 +1,5 @@
 package a.b.c.quizmania.Fragments;
 
-import android.app.Activity;
-
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -18,26 +14,34 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
+import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.Jobs.BackgroundJob;
 import a.b.c.quizmania.Jobs.UiCallback;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.UI.QuestionActivity;
 
+import static a.b.c.quizmania.UI.ChallengeListActivity.currChallenge;
+import static a.b.c.quizmania.UI.QuestionActivity.category;
+import static a.b.c.quizmania.UI.QuestionActivity.difficulty;
 import static a.b.c.quizmania.UI.SelectionActivity.question;
-
+import static a.b.c.quizmania.UI.UserListActivity.pendingChallenge;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class QuestionDisplayFragment extends Fragment {
-
-    // Boolean variable that is true when Multiple Choice fragment is displayed
-    private boolean isMul;
 
     // Fragment manager and transaction to Control the
     private FragmentManager fManager;
@@ -50,6 +54,8 @@ public class QuestionDisplayFragment extends Fragment {
     private BackgroundJob[] task;
 
     private Score score;
+
+    private List<QuestionStats> questionsList;
 
     // Views
     private TextView questionTxt;
@@ -67,8 +73,8 @@ public class QuestionDisplayFragment extends Fragment {
         fManager = getFragmentManager();
         fTransaction = fManager.beginTransaction();
 
+
         // Initiate the isMul as false because multiple choice is not visible
-        isMul = false;
         return inflater.inflate(R.layout.fragment_question_display, container, false);
 
     }
@@ -78,13 +84,20 @@ public class QuestionDisplayFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         // Finds Views
         questionTxt = getActivity().findViewById(R.id.question);
-        progressBar = (ProgressBar)getActivity().findViewById(R.id.progress_bar_question_fragment);
+        progressBar = getActivity().findViewById(R.id.progress_bar_question_fragment);
+        questionsList = new ArrayList();
+        score = new Score();
+
+        MultipleChoiceFragment displayFragment = new MultipleChoiceFragment();
+        fTransaction.replace(R.id.answer_fragment, displayFragment).commit();
+//        fManager.executePendingTransactions();
+
 
         // Initiate questionid as 0
         questionId = 0;
         //Get game settings from the activity
         QuestionActivity a = (QuestionActivity) getActivity();
-        score = a.getGameMode();
+
         // Makes 10 AsyncTasks
         task = new BackgroundJob[10];
         for(int i = 0; i < 10; i++) {
@@ -97,67 +110,63 @@ public class QuestionDisplayFragment extends Fragment {
     }
 
     private void displayQuestion(int i) {
+        Log.d("QUIZ_APP", "displayQuestion() called");
 
         // Checks whether the question variable initiated in Selection Activity was initialized
         if(question != null) {
+            // Checks if the question type is multiple choice
             // Gets all the answers and displays them in the MultipleChoiceFragment
-            String[] answers = getAnswers(i);
+            List<String> answers = getAnswers(i);
             displayMultipleQuestion(answers);
-            questionTxt.setText(StringEscapeUtils.unescapeHtml4(question.getResults()[i].getQuestion()));
+            // Displays the question
+            questionTxt.setText(StringEscapeUtils.unescapeHtml4(question.getResults().get(i).getQuestion()));
         } else {
             // If the question variable was null, display error message
             questionTxt.setText(getString(R.string.question_null_error_message));
         }
     }
 
-    private void displayMultipleQuestion(String[] answers) {
+    private void displayMultipleQuestion(List<String> answers) {
         Log.d("QUIZ_APP", "MultipleChoice() Called");
         // Checks if Multiple Choice Fragment is already displayed on the screen
-        if(!isMul) {
-            // Makes boolean true and replaces the previous view with a multiple choice fragment
-            isMul = true;
-            MultipleChoiceFragment displayFragment = new MultipleChoiceFragment();
-            fTransaction.replace(R.id.answer_fragment, displayFragment).commitNow();
-            fManager.executePendingTransactions();
-        }
+
         // Finds the fragment and prints the answers on the buttons
         MultipleChoiceFragment fragment = (MultipleChoiceFragment) fManager.findFragmentById(R.id.answer_fragment);
         fragment.printAnswers(answers);
     }
 
-    private void displayTrueFalse() {
-        Log.d("QUIZ_APP", "True&False() Called");
-    }
 
-    private String[] getAnswers(int id) {
+    private List<String> getAnswers(int id) {
+        Log.d("QUIZ_APP", "getAnswers() called");
         // Gets all the answers and stores them in variables
-        String answer1 = question.getResults()[id].getCorrectAnswer();
-        String answer2 = question.getResults()[id].getIncorrectAnswers()[0];
-        String answer3 = question.getResults()[id].getIncorrectAnswers()[1];
-        String answer4 = question.getResults()[id].getIncorrectAnswers()[2];
+        String answer1 = question.getResults().get(id).getCorrectAnswer();
+        String answer2 = question.getResults().get(id).getIncorrectAnswers().get(0);
+        String answer3 = question.getResults().get(id).getIncorrectAnswers().get(1);
+        String answer4 = question.getResults().get(id).getIncorrectAnswers().get(2);
 
         // Make an array out of the question
-        String[] retVal = {
-                answer1,
-                answer2,
-                answer3,
-                answer4
-        };
-
+        List<String> retVal = new ArrayList(){{
+            add(answer1);
+            add(answer2);
+            add(answer3);
+            add(answer4);
+        }};
         // Decode the strings in the array
-        for(int i = 0; i < retVal.length; i++) {
+        for(int i = 0; i < 4; i++) {
             // StringEscapeUtils library to decode html4 encoded strings
-            retVal[i] = StringEscapeUtils.unescapeHtml4(retVal[i]);
+            retVal.set(i, StringEscapeUtils.unescapeHtml4(retVal.get(i)));
         }
 
-        Arrays.sort(retVal);
-
+        Collections.sort(retVal);
         return retVal;
     }
 
     public boolean checkAnswer(String answer) {
         // Returns true if the answer matches the answer asked
-        return StringEscapeUtils.unescapeHtml4(question.getResults()[questionId].getCorrectAnswer()).equals(answer);
+        if(StringEscapeUtils.unescapeHtml4(question.getResults().get(questionId).getCorrectAnswer()).equals(answer)) {
+            return true;
+        }
+        return false;
     }
 
     public void stopCurrentTask() {
@@ -167,25 +176,104 @@ public class QuestionDisplayFragment extends Fragment {
 
     private void showResults() {
         Log.d("QUIZ_APP", "showResults() called");
+        String mode = getActivity().getIntent().getStringExtra("MODE");
+        if(mode.matches("CHALLENGER")) {
+            initChallenge();
+        } else if (mode.matches("CHALLENGEE")) {
+            updateChallenge();
+        }
+
+        initScore();
+        writeScoreToDatabase();
         getActivity().finish();
+    }
+
+    private void updateChallenge() {
+        currChallenge.setActive(false);
+        FirebaseDatabase.getInstance().getReference().child("root")
+                .child("challenges")
+                .child(String.valueOf(currChallenge.getId()))
+                .setValue(currChallenge);
+    }
+
+    private void initChallenge() {
+        String category = getActivity().getIntent().getStringExtra("CATEGORY");
+        String difficulty = getActivity().getIntent().getStringExtra("DIFFICULTY");
+        if(category.equals("")){
+            pendingChallenge.setCategory("Random");
+        } else {
+            String[] ret = difficulty.split("=");
+            pendingChallenge.setCategory(ret[1]);
+        }
+        if(difficulty.equals("")){
+            pendingChallenge.setDifficulty("Random");
+        } else {
+            String[] ret = difficulty.split("=");
+            pendingChallenge.setDifficulty(ret[1]);
+        }
+        FirebaseDatabase.getInstance().getReference().child("root")
+                .child("challenges")
+                .child(String.valueOf(pendingChallenge.getId()))
+                .setValue(pendingChallenge);
+    }
+
+    private void writeScoreToDatabase() {
+        String uId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference("root").child("Users").child(uId).child("scores");
+        ref.push().setValue(score);
+    }
+
+    private void initScore(){
+        List<QuestionStats> retString = questionsList;
+        score.setQuestionStats(retString);
+        if(category.equals("")){
+                score.setCategory("Random");
+        } else {
+            String[] ret = difficulty.split("=");
+            score.setCategory(ret[1]);
+        }
+        if(difficulty.equals("")){
+            score.setDifficulty("Random");
+        } else {
+            String[] ret = difficulty.split("=");
+            score.setDifficulty(ret[1]);
+        }
+        int count = 0;
+        for(QuestionStats q : questionsList){
+            if(q.isWasCorrect()){
+                count++;
+            }
+        }
+        score.setCorrectAnswers(count);
+
     }
 
 
     public String getRightAnswer() {
         // Returns the right answer
-        return StringEscapeUtils.unescapeHtml4(question.getResults()[questionId].getCorrectAnswer());
+        return StringEscapeUtils.unescapeHtml4(question.getResults().get(questionId).getCorrectAnswer());
+    }
+
+    public List<String> getWrongAnswers(int id){
+        Log.d("QUIZ_APP", "getWrongAnswers() called");
+        List<String> answersArr = getAnswers(id);
+        answersArr.remove(getRightAnswer());
+
+        return answersArr;
     }
 
     private BackgroundJob createBackgroundJob() {
         return new BackgroundJob(new UiCallback<Integer>() {
             // Boolean to check if the answers have been displayed on the board
             private boolean isDisplayed;
+            private QuestionStats currQuest;
             @Override
             public void onPreExecute() {
                 Log.d("QUIZ_APP", "onPreExecute() task[" + questionId + "]");
                 // Initialize the boolean as false
                 isDisplayed = false;
-
+                currQuest = new QuestionStats();
             }
 
             @Override
@@ -198,44 +286,63 @@ public class QuestionDisplayFragment extends Fragment {
                     progressBar.setVisibility(ProgressBar.VISIBLE);
                     displayQuestion(questionId);
                     isDisplayed = true;
-                    //TODO: create new scorestats
+//                    if(currQuest.getRightAnswer() == null || currQuest.getWrongAnswers() == null
+//                            || currQuest.getStatsQuestion() == null) {
+                        Log.d("QUIZ_APP", "Setting currQuest parameters");
+                        currQuest.setRightAnswer(getRightAnswer());
+                        List<String> answers = getWrongAnswers(questionId);
+                        currQuest.setWrongAnswers(answers);
+                        currQuest.setStatsQuestion(question.getResults().get(questionId).getQuestion());
+                        currQuest.setQuestionCategory(question.getResults().get(questionId).getCategory());
+                        currQuest.setQuestionDifficulty(question.getResults().get(questionId).getDifficulty());
+//                    }
                 }
                 progressBar.setProgress(values[0]);
+                currQuest.setTimeToAnswer(20000 - values[0]);
             }
 
             @Override
             public void onPostExecute(Integer integer) {
                 Log.d("QUIZ_APP", "onPostExecute() task[" + questionId + "]");
                 // If the time runs out make the boolean variable false and increment the questionId
+
+                currQuest.setWasCorrect(false);
+                currQuest.setTimeToAnswer(20000);
                 isDisplayed = false;
                 questionId++;
+                questionsList.add(currQuest);
                 if(questionId == 10) {
-                    //TODO: get total answered right
+                    Log.d("QUIZ_APP", "10 questions answered. Exiting");
                     showResults();
-                    getActivity().finish();
                 }
-                //TODO: increment scores if time runs out
-                //create questionStats
             }
 
             @Override
             public void onCancelled() {
                 Log.d("QUIZ_APP", "onCancelled() task[" + questionId + "]");
+                MultipleChoiceFragment fragment
+                        = (MultipleChoiceFragment) fManager.findFragmentById(R.id.answer_fragment);
+                String pGuess = fragment.playerGuess();
+                if(pGuess.equals(getRightAnswer())){
+                    currQuest.setWasCorrect(true);
+                } else {
+                    currQuest.setWasCorrect(false);
+                }
                 // If an answer was selected make the boolean variable false and increment questionId
                 // Sleep for 1 sec to show the right answer and if all questions have been asked call showResult();
                 isDisplayed = false;
                 SystemClock.sleep(1000);
                 questionId++;
+                questionsList.add(currQuest);
                 if(questionId == 10) {
-                    //TODO: get total answered right
+                    Log.d("QUIZ_APP", "10 questions answered. Exiting");
                     showResults();
-                    getActivity().finish();
                 }
-                //TODO: call other fragment for info
-                //add new questionStats
             }
         });
     }
+
+
 
 
 }

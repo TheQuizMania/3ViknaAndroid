@@ -1,30 +1,26 @@
 package a.b.c.quizmania.Entities;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class Score {
 
     private String difficulty;
     private String category;
-    private String mode;
     private int correctAnswers;
-    private QuestionStats[] questionStats;
+    private List<QuestionStats> questionStats;
 
     public Score() {
     }
 
-    public Score(String difficulty, String category, String mode) {
+    public Score(String difficulty, String category) {
         this.difficulty = difficulty;
         this.category = category;
-        this.mode = mode;
     }
 
-    public Score(String difficulty, String category, String mode, int correctAnswers,
-                 QuestionStats[] questionStats) {
+    public Score(String difficulty, String category, int correctAnswers,
+                 List<QuestionStats> questionStats) {
         this.difficulty = difficulty;
         this.category = category;
-        this.mode = mode;
         this.correctAnswers = correctAnswers;
         this.questionStats = questionStats;
     }
@@ -45,14 +41,6 @@ public class Score {
         this.category = category;
     }
 
-    public String getMode() {
-        return mode;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
-
     public int getCorrectAnswers() {
         return correctAnswers;
     }
@@ -61,17 +49,11 @@ public class Score {
         this.correctAnswers = correctAnswers;
     }
 
-    public QuestionStats[] getQuestionStats() {
+    public List<QuestionStats> getQuestionStats() {
         return questionStats;
     }
 
-    public void setQuestionStats(QuestionStats[] questionStats) {
+    public void setQuestionStats(List<QuestionStats> questionStats) {
         this.questionStats = questionStats;
-    }
-
-    public void appendQuestionStats(QuestionStats newQuestion){
-        List<QuestionStats> d  = Arrays.asList(this.questionStats);
-        d.add(newQuestion);
-        this.questionStats = (QuestionStats[]) d.toArray();
     }
 }

@@ -1,11 +1,13 @@
 package a.b.c.quizmania.Entities;
 
+import java.util.List;
+
 public class Results {
     private String category;
     private String difficulty;
     private String question;
     private String correct_answer;
-    private String[] incorrect_answers;
+    private List<String> incorrect_answers;
 
     public Results() {
     }
@@ -32,8 +34,8 @@ public class Results {
         return difficulty;
     }
 
-    public void setDifficulty(String type) {
-        this.difficulty = type;
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
     }
 
     public String getQuestion() {
@@ -52,11 +54,11 @@ public class Results {
         this.correct_answer = correctAnswer;
     }
 
-    public String[] getIncorrectAnswers() {
+    public List<String> getIncorrectAnswers() {
         return incorrect_answers;
     }
 
-    public void setIncorrectAnswers(String[] incorrectAnswers) {
+    public void setIncorrectAnswers(List<String> incorrectAnswers) {
         this.incorrect_answers = incorrectAnswers;
     }
 }
