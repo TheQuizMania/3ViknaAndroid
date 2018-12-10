@@ -38,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText unEdit;
     private EditText emailEdit;
     private EditText passwdEdit;
+    private EditText passwdConfirmEdit;
 
 
     @Override
@@ -60,6 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
         unEdit = findViewById(R.id.username_signUp);
         emailEdit = findViewById(R.id.email_signUp);
         passwdEdit = findViewById(R.id.passwd_signUp);
+        passwdConfirmEdit = findViewById(R.id.passwd_confirm);
 
 
         // Click listeners
@@ -71,6 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
         String userName = unEdit.getText().toString();
         String email = emailEdit.getText().toString();
         String passW = passwdEdit.getText().toString();
+        String passWConfirm = passwdConfirmEdit.getText().toString();
 
         if(userName.trim().length() == 0) {
             unEdit.requestFocus();
@@ -91,7 +94,11 @@ public class RegisterActivity extends AppCompatActivity {
         } else if(passW.trim().matches("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})")){
             passwdEdit.requestFocus();
             passwdEdit.setError("Password invalid");
-        } else {
+        } else if(!passWConfirm.equals(passW)) {
+            passwdConfirmEdit.requestFocus();
+            passwdConfirmEdit.setError(getString(R.string.password_mismatch));
+        }
+        else {
             mAuth.createUserWithEmailAndPassword(email, passW)
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()) {

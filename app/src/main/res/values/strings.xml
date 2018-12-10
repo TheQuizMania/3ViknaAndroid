@@ -41,4 +41,6 @@
     <string name="hard">Hard</string>
     <string name="favorite_category">Favorite Category</string>
     <string name="sign_out">Sign out</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="password_mismatch">Password does not match</string>
 </resources>
