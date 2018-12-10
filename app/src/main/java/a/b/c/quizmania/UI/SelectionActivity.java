@@ -97,10 +97,10 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         selectedType = "&type=multiple";
 
         // Find Views
-        categoryDropDown = (Spinner)findViewById(R.id.category_dropdown);
-        diffDropDown = (Spinner)findViewById(R.id.difficulty_dropdown);
-        typeDropDown = (Spinner)findViewById(R.id.type_dropdown);
-        playBtn = (Button)findViewById(R.id.sp_play_btn);
+        categoryDropDown = findViewById(R.id.category_dropdown);
+        diffDropDown = findViewById(R.id.difficulty_dropdown);
+        typeDropDown = findViewById(R.id.type_dropdown);
+        playBtn = findViewById(R.id.sp_play_btn);
 
         // Listeners
         categoryDropDown.setOnItemSelectedListener(this);
@@ -171,7 +171,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         }
     }
 
-    public String getCategory(String category) {
+    private String getCategory(String category) {
         // If you changed category it will return a string with &category={selected category}
         String retVal = "&category=";
         switch (category) {
@@ -209,7 +209,6 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         // Gets the questions from the api
         playBtn.setClickable(false);
         playBtn.setText(getString(R.string.quiz_unavaliable));
-        String test = url + selectedCategory + selectedDifficulty + selectedType;
                 Ion.with(this)
                 .load(url + selectedCategory + selectedDifficulty + selectedType)
                 .asString()
@@ -228,6 +227,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                         // Makes the play button clickable again
                         playBtn.setClickable(true);
                         playBtn.setText(getString(R.string.quiz_avaliable));
+
                         startActivity(intent);
                     }
                 });
