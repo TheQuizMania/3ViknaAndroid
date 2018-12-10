@@ -14,7 +14,7 @@ public class Results {
 
     public Results(String category, String difficulty,
                    String question, String correctAnswer,
-                   String[] incorrectAnswers) {
+                   List<String> incorrectAnswers) {
         this.category = category;
         this.difficulty = difficulty;
         this.question = question;
