@@ -173,6 +173,7 @@ public class LoginActivity extends AppCompatActivity {
                         user.setScores(null);
                         user.setWins(0);
                         user.setLosses(0);
+                        Utility.addToUserList(mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getDisplayName());
                         //on sign in inserts new user into database if not exists
                         addUserIfNotInDb(user);
                         startMainMenu();

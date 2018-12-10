@@ -4,12 +4,10 @@ public class Challenge {
     private UserListItem challenger;
     private UserListItem challengee;
     private int id;
-
     private String category;
-
     private String difficulty;
-
     private boolean isActive;
+
 
     Question question;
 

@@ -152,10 +152,11 @@ public class QuestionDisplayFragment extends Fragment {
             add(answer4);
         }};
         // Decode the strings in the array
-        for(String l : retVal) {
+        for(int i = 0; i < 4; i++) {
             // StringEscapeUtils library to decode html4 encoded strings
-            l = StringEscapeUtils.unescapeHtml4(l);
+            retVal.set(i, StringEscapeUtils.unescapeHtml4(retVal.get(i)));
         }
+
         Collections.sort(retVal);
         return retVal;
     }
