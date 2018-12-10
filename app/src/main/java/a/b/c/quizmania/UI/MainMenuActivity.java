@@ -3,18 +3,29 @@ package a.b.c.quizmania.UI;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.R;
 
 public class MainMenuActivity extends AppCompatActivity {
+
+    public static List<Challenge> challengeList;
+    public static List<Challenge> myChallenges;
 
     // Firebase
     private FirebaseAuth mAuth;
@@ -24,7 +35,9 @@ public class MainMenuActivity extends AppCompatActivity {
     private Button multiPlayerBtn;
     private Button quickMatchBtn;
     private Button settingsBtn;
+    private Button matchesBtn;
     private TextView nameBox;
+
 
     //
     private String theme;
@@ -42,6 +55,11 @@ public class MainMenuActivity extends AppCompatActivity {
         // Firebase
         mAuth = FirebaseAuth.getInstance();
 
+        // Init challenge list
+        challengeList = new ArrayList<>();
+        myChallenges = new ArrayList<>();
+        fetchChallenges();
+
         setContentView(R.layout.activity_main_menu);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
@@ -51,6 +69,7 @@ public class MainMenuActivity extends AppCompatActivity {
         quickMatchBtn = findViewById(R.id.quick_match_btn);
         settingsBtn = findViewById(R.id.settings_btn);
         nameBox = findViewById(R.id.main_menu_title);
+        matchesBtn = findViewById(R.id.matches_btn);
 
         getPlayer();
 
@@ -59,6 +78,15 @@ public class MainMenuActivity extends AppCompatActivity {
         multiPlayerBtn.setOnClickListener(v -> multiPlayer(v));
         quickMatchBtn.setOnClickListener(v -> multiPlayer(v));
         settingsBtn.setOnClickListener(v -> goToProfile(v));
+        matchesBtn.setOnClickListener(v -> startMatchActivity(v));
+
+        // Displays the User name
+        getPlayer();
+    }
+
+    private void startMatchActivity(View v) {
+        Intent intent = new Intent(this, ChallengeListActivity.class);
+        startActivity(intent);
     }
 
     private void getPlayer(){
@@ -68,7 +96,8 @@ public class MainMenuActivity extends AppCompatActivity {
     }
     private void multiPlayer(View v) {
         if(v.getId() == R.id.multi_player_btn) {
-
+            Intent intent = new Intent(this, UserListActivity.class);
+            startActivity(intent);
         } else {
 
         }
@@ -76,6 +105,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private void singlePlayer(View v) {
         Intent intent = new Intent(this, SelectionActivity.class);
+        intent.putExtra("MODE", "single");
         startActivity(intent);
     }
 
@@ -94,5 +124,30 @@ public class MainMenuActivity extends AppCompatActivity {
             setTheme(R.style.DarkTheme);
         }
         theme = str;
+    }
+
+
+    private void fetchChallenges() {
+        FirebaseDatabase.getInstance().getReference().child("root")
+                .child("challenges")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        challengeList.clear();
+                        myChallenges.clear();
+                        for(DataSnapshot challengeInstance: dataSnapshot.getChildren()) {
+                            Challenge challenge = challengeInstance.getValue(Challenge.class);
+                            challengeList.add(challenge);
+                            if(challenge.getChallengee().getEmail().matches(FirebaseAuth.getInstance().getCurrentUser().getEmail()) && challenge.isActive()) {
+                                myChallenges.add(challenge);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 }

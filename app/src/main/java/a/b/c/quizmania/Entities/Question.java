@@ -1,13 +1,15 @@
 package a.b.c.quizmania.Entities;
 
+import java.util.List;
+
 public class Question {
     private int responseCode;
-    private Results[] results;
+    private List<Results> results;
 
     public Question() {
     }
 
-    public Question(int responseCode, Results[] results) {
+    public Question(int responseCode, List<Results> results) {
         this.responseCode = responseCode;
         this.results = results;
     }
@@ -20,11 +22,11 @@ public class Question {
         this.responseCode = responseCode;
     }
 
-    public Results[] getResults() {
+    public List<Results> getResults() {
         return results;
     }
 
-    public void setResults(Results[] results) {
+    public void setResults(List<Results> results) {
         this.results = results;
     }
 }
