@@ -24,7 +24,8 @@
         <activity android:name=".UI.StatisticsActivity" />
         <activity android:name=".UI.SinglePlayerResultsActivity"></activity>
         <activity android:name=".UI.UserListActivity" />
-        <activity android:name=".UI.ChallengeListActivity"></activity>
+        <activity android:name=".UI.ChallengeListActivity" />
+        <activity android:name=".UI.MultiPlayerResultsActivity"></activity>
     </application>
 
 </manifest>

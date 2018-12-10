@@ -54,10 +54,6 @@ public class UserListActivity extends AppCompatActivity implements UsersRVAdapte
     public void onItemClick(View view, int position) {
         Toast.makeText(this, "You challenged " + adapter.getDisplayName(position), Toast.LENGTH_SHORT).show();
         pendingChallenge = new Challenge(currUser, adapter.getUser(position), challengeList.size(), true);
-//        FirebaseDatabase.getInstance().getReference().child("root")
-//                .child("challenges")
-//                .child(String.valueOf(pendingChallenge.getId()))
-//                .setValue(pendingChallenge);
         Intent intent = new Intent(this, SelectionActivity.class);
         intent.putExtra("MODE", "CHALLENGER");
         startActivity(intent);

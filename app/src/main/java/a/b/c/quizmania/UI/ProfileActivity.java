@@ -44,6 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
         writePreference();
 
 
+
         setUserInfo();
 
         // Setting google sign in client
