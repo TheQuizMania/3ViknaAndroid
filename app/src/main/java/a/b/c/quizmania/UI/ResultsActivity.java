@@ -12,6 +12,5 @@ public class ResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
     }
-
-    private void
+    
 }

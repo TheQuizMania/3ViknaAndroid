@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import a.b.c.quizmania.Entities.User;
 import a.b.c.quizmania.R;
+import a.b.c.quizmania.db.Utility;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -109,6 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                             addUserInfoToAuth();
                             Toast.makeText(LoginActivity.this,
                                     getString(R.string.login_success), Toast.LENGTH_SHORT).show();
+                            Utility.addToUserList(FirebaseAuth.getInstance().getCurrentUser().getEmail(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                             startMainMenu();
                         } else {
                             // Sign in failed
@@ -155,6 +157,7 @@ public class LoginActivity extends AppCompatActivity {
         // Starting Main menu activity
         Intent intent = new Intent(this, MainMenuActivity.class);
         startActivity(intent);
+        finish();
     }
 
 
@@ -170,6 +173,7 @@ public class LoginActivity extends AppCompatActivity {
                         user.setScores(null);
                         user.setWins(0);
                         user.setLosses(0);
+                        Utility.addToUserList(mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getDisplayName());
                         //on sign in inserts new user into database if not exists
                         addUserIfNotInDb(user);
                         startMainMenu();
@@ -214,7 +218,6 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference ref = db.getReference("root//Users//" + uId);
-
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

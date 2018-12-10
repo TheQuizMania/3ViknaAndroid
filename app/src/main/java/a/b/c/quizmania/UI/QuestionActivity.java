@@ -1,15 +1,14 @@
 package a.b.c.quizmania.UI;
 
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import a.b.c.quizmania.Entities.Score;
-import a.b.c.quizmania.Entities.Question;
-import a.b.c.quizmania.Fragments.MultipleChoiceFragment;
 import a.b.c.quizmania.R;
 
 public class QuestionActivity extends AppCompatActivity {
@@ -17,7 +16,8 @@ public class QuestionActivity extends AppCompatActivity {
     public static String category;
     public static String difficulty;
     private String uID;
-
+    private String mode;
+    private int challengeId;
 //    private String url;
 
     @Override
@@ -41,9 +41,16 @@ public class QuestionActivity extends AppCompatActivity {
         Intent i = getIntent();
         category = i.getStringExtra("CATEGORY");
         difficulty = i.getStringExtra("DIFFICULTY");
+        mode = i.getStringExtra("MODE");
+        challengeId = i.getIntExtra("CHALLENGEID", -1);
     }
     @Override
     public void onBackPressed() {
+        Log.d("OVERRIDE", "onBackPressed: called");
+        Intent intent = new Intent(this, SelectionActivity.class);
+        intent.putExtra("MODE", mode);
+        intent.putExtra("CHALLENGEID", challengeId);
+        startActivity(intent);
         finish();
     }
 }

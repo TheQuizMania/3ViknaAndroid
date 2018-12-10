@@ -40,4 +40,5 @@
     <string name="medium">Medium</string>
     <string name="hard">Hard</string>
     <string name="favorite_category">Favorite Category</string>
+    <string name="sign_out">Sign out</string>
 </resources>
