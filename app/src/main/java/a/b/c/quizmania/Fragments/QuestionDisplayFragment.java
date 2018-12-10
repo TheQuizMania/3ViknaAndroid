@@ -1,5 +1,6 @@
 package a.b.c.quizmania.Fragments;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -30,6 +31,7 @@ import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.Jobs.BackgroundJob;
 import a.b.c.quizmania.Jobs.UiCallback;
 import a.b.c.quizmania.R;
+import a.b.c.quizmania.UI.MultiPlayerResultsActivity;
 import a.b.c.quizmania.UI.QuestionActivity;
 
 import static a.b.c.quizmania.UI.ChallengeListActivity.currChallenge;
@@ -185,9 +187,15 @@ public class QuestionDisplayFragment extends Fragment {
             initChallenge();
         } else if (mode.matches("CHALLENGEE")) {
             updateChallenge();
+            startMPResults();
         }
 
         getActivity().finish();
+    }
+
+    private void startMPResults() {
+        Intent intent = new Intent(getActivity(), MultiPlayerResultsActivity.class);
+        startActivity(intent);
     }
 
     private void updateChallenge() {
