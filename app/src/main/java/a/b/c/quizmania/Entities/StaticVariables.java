@@ -1,9 +1,10 @@
 package a.b.c.quizmania.Entities;
 
-public class CurrentScore {
+public class StaticVariables {
     private static Score currScore;
+    public static Challenge currChallenge;
 
-    public CurrentScore() {
+    public StaticVariables() {
     }
 
     public static Score getCurrScore() {
@@ -11,6 +12,6 @@ public class CurrentScore {
     }
 
     public static void setCurrScore(Score currScore) {
-        CurrentScore.currScore = currScore;
+        StaticVariables.currScore = currScore;
     }
 }

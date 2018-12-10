@@ -8,17 +8,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
-import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.db.ChallengeRVAdapter;
 
+import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
 import static a.b.c.quizmania.UI.MainMenuActivity.myChallenges;
 import static a.b.c.quizmania.UI.SelectionActivity.question;
 
 public class ChallengeListActivity extends AppCompatActivity implements ChallengeRVAdapter.ItemClickListener{
 
     private ChallengeRVAdapter adapter;
-    public static Challenge currChallenge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,5 +52,6 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
         intent.putExtra("MODE", "CHALLENGEE");
         question = currChallenge.getQuestion();
         startActivity(intent);
+        finish();
     }
 }

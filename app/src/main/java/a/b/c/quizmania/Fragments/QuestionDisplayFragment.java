@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import a.b.c.quizmania.Entities.CurrentScore;
+import a.b.c.quizmania.Entities.StaticVariables;
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.Jobs.BackgroundJob;
@@ -36,7 +36,7 @@ import a.b.c.quizmania.UI.MultiPlayerResultsActivity;
 import a.b.c.quizmania.UI.QuestionActivity;
 import a.b.c.quizmania.UI.SinglePlayerResultsActivity;
 
-import static a.b.c.quizmania.UI.ChallengeListActivity.currChallenge;
+import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
 import static a.b.c.quizmania.UI.QuestionActivity.category;
 import static a.b.c.quizmania.UI.QuestionActivity.difficulty;
 import static a.b.c.quizmania.UI.SelectionActivity.question;
@@ -187,6 +187,7 @@ public class QuestionDisplayFragment extends Fragment {
 
         if(mode.matches("CHALLENGER")) {
             initChallenge();
+            getActivity().finish();
         } else if (mode.matches("CHALLENGEE")) {
             updateChallenge();
             startMPResults();
@@ -211,20 +212,14 @@ public class QuestionDisplayFragment extends Fragment {
     }
 
     private void initChallenge() {
-        String category = getActivity().getIntent().getStringExtra("CATEGORY");
-        String difficulty = getActivity().getIntent().getStringExtra("DIFFICULTY");
         if(category.equals("")){
             pendingChallenge.setCategory("Random");
         } else {
             String[] ret = difficulty.split("=");
             pendingChallenge.setCategory(ret[1]);
         }
-        if(difficulty.equals("")){
-            pendingChallenge.setDifficulty("Random");
-        } else {
-            String[] ret = difficulty.split("=");
-            pendingChallenge.setDifficulty(ret[1]);
-        }
+        String[] ret = difficulty.split("=");
+        score.setDifficulty(ret[1]);
 
         pendingChallenge.setChallengerScore(score);
 
@@ -260,7 +255,7 @@ public class QuestionDisplayFragment extends Fragment {
             }
         }
         score.setCorrectAnswers(count);
-        CurrentScore.setCurrScore(score);
+        StaticVariables.setCurrScore(score);
     }
 
 
