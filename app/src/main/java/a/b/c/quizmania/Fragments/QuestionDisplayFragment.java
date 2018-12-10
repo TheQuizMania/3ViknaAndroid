@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import a.b.c.quizmania.Entities.CurrentScore;
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.Jobs.BackgroundJob;
@@ -33,6 +34,7 @@ import a.b.c.quizmania.Jobs.UiCallback;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.UI.MultiPlayerResultsActivity;
 import a.b.c.quizmania.UI.QuestionActivity;
+import a.b.c.quizmania.UI.SinglePlayerResultsActivity;
 
 import static a.b.c.quizmania.UI.ChallengeListActivity.currChallenge;
 import static a.b.c.quizmania.UI.QuestionActivity.category;
@@ -55,7 +57,7 @@ public class QuestionDisplayFragment extends Fragment {
     // Array of AsyncTasks
     private BackgroundJob[] task;
 
-    private Score score;
+    public Score score;
 
     private List<QuestionStats> questionsList;
 
@@ -188,9 +190,10 @@ public class QuestionDisplayFragment extends Fragment {
         } else if (mode.matches("CHALLENGEE")) {
             updateChallenge();
             startMPResults();
+        } else {
+            startActivity(new Intent(getActivity(), SinglePlayerResultsActivity.class));
+            getActivity().finish();
         }
-
-        getActivity().finish();
     }
 
     private void startMPResults() {
@@ -247,12 +250,9 @@ public class QuestionDisplayFragment extends Fragment {
             String[] ret = category.split("=");
             score.setCategory(ret[1]);
         }
-        if(difficulty.equals("")){
-            score.setDifficulty("Random");
-        } else {
-            String[] ret = difficulty.split("=");
-            score.setDifficulty(ret[1]);
-        }
+        String[] ret = difficulty.split("=");
+        score.setDifficulty(ret[1]);
+
         int count = 0;
         for(QuestionStats q : questionsList){
             if(q.isWasCorrect()){
@@ -260,7 +260,7 @@ public class QuestionDisplayFragment extends Fragment {
             }
         }
         score.setCorrectAnswers(count);
-
+        CurrentScore.setCurrScore(score);
     }
 
 
@@ -326,7 +326,7 @@ public class QuestionDisplayFragment extends Fragment {
                 questionId++;
                 questionsList.add(currQuest);
                 if(questionId == 10) {
-                    Log.d("QUIZ_APP", "10 questions answered. Exiting");
+                    Log.d("QUIZ`_APP", "10 questions answered. Exiting");
                     showResults();
                 }
             }
