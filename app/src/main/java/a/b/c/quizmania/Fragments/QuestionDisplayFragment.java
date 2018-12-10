@@ -177,19 +177,22 @@ public class QuestionDisplayFragment extends Fragment {
     private void showResults() {
         Log.d("QUIZ_APP", "showResults() called");
         String mode = getActivity().getIntent().getStringExtra("MODE");
+
+        initScore();
+        writeScoreToDatabase();
+
         if(mode.matches("CHALLENGER")) {
             initChallenge();
         } else if (mode.matches("CHALLENGEE")) {
             updateChallenge();
         }
 
-        initScore();
-        writeScoreToDatabase();
         getActivity().finish();
     }
 
     private void updateChallenge() {
         currChallenge.setActive(false);
+        currChallenge.setChallengeeScore(score);
         FirebaseDatabase.getInstance().getReference().child("root")
                 .child("challenges")
                 .child(String.valueOf(currChallenge.getId()))
@@ -211,6 +214,9 @@ public class QuestionDisplayFragment extends Fragment {
             String[] ret = difficulty.split("=");
             pendingChallenge.setDifficulty(ret[1]);
         }
+
+        pendingChallenge.setChallengerScore(score);
+
         FirebaseDatabase.getInstance().getReference().child("root")
                 .child("challenges")
                 .child(String.valueOf(pendingChallenge.getId()))
