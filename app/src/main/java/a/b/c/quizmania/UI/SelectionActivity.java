@@ -38,7 +38,6 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     // Views
     private Spinner categoryDropDown;
     private Spinner diffDropDown;
-    private Spinner typeDropDown;
     private Button playBtn;
 
     // Strings for dropdown
@@ -59,16 +58,10 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
             "Medium",
             "Hard"
     };
-    private String[] types = {
-            "Both",
-            "Multiple choice",
-            "True or False",
-    };
 
     // String that will be given values for the chosen from a specified dropdown
     String selectedCategory;
     String selectedDifficulty;
-    String selectedType;
     private String uId;
     private FirebaseDatabase db;
     private FirebaseAuth mAuth;
@@ -94,18 +87,15 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         // Initialize the selection strings as empty strings
         selectedCategory = "";
         selectedDifficulty = "&difficulty=easy";
-        selectedType = "&type=multiple";
 
         // Find Views
         categoryDropDown = findViewById(R.id.category_dropdown);
         diffDropDown = findViewById(R.id.difficulty_dropdown);
-        typeDropDown = findViewById(R.id.type_dropdown);
         playBtn = findViewById(R.id.sp_play_btn);
 
         // Listeners
         categoryDropDown.setOnItemSelectedListener(this);
         diffDropDown.setOnItemSelectedListener(this);
-        typeDropDown.setOnItemSelectedListener(this);
 
         playBtn.setOnClickListener(v -> playGame(v));
 
@@ -120,14 +110,6 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         ArrayAdapter diffAA = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, difficulties);
         diffAA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         diffDropDown.setAdapter(diffAA);
-
-        // For type
-        ArrayAdapter typeAA = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, types);
-        typeAA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        typeDropDown.setAdapter(typeAA);
-
-
-
     }
 
     private void playGame(View v) {
@@ -147,30 +129,10 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
 //                Toast.makeText(getApplicationContext(), difficulties[position], Toast.LENGTH_SHORT).show();
                 selectedDifficulty = "&difficulty=" + difficulties[position].toLowerCase();
                 break;
-            case R.id.type_dropdown:
-//                Toast.makeText(getApplicationContext(), types[position], Toast.LENGTH_SHORT).show();
-                selectedType = getType(types[position]);
-                break;
             default:
                 break;
         }
     }
-
-    private String getType(String type) {
-        // If you changed type it will return a string with &type={selected type}
-        String retVal = "&type=";
-        switch (type) {
-            case "Multiple choice":
-                return retVal + "multiple";
-            case "Both":
-                return retVal + "multiple";
-            case "True or False":
-                return retVal + "multiple";
-            default:
-                return retVal + "multiple";
-        }
-    }
-
     private String getCategory(String category) {
         // If you changed category it will return a string with &category={selected category}
         String retVal = "&category=";
@@ -210,7 +172,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         playBtn.setClickable(false);
         playBtn.setText(getString(R.string.quiz_unavaliable));
                 Ion.with(this)
-                .load(url + selectedCategory + selectedDifficulty + selectedType)
+                .load(url + selectedCategory + selectedDifficulty + "&type=multiple")
                 .asString()
                 .setCallback(new FutureCallback<String>() {
                     @Override
@@ -222,7 +184,6 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                         Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
                         intent.putExtra("CATEGORY", selectedCategory);
                         intent.putExtra("DIFFICULTY", selectedDifficulty);
-                        intent.putExtra("TYPE", selectedType);
 
                         // Makes the play button clickable again
                         playBtn.setClickable(true);
