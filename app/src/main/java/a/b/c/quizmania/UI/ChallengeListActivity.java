@@ -13,7 +13,8 @@ import a.b.c.quizmania.db.ChallengeRVAdapter;
 
 import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
 import static a.b.c.quizmania.UI.MainMenuActivity.myChallenges;
-import static a.b.c.quizmania.UI.SelectionActivity.question;
+import static a.b.c.quizmania.Entities.StaticVariables.question;
+
 
 public class ChallengeListActivity extends AppCompatActivity implements ChallengeRVAdapter.ItemClickListener{
 

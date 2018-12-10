@@ -2,7 +2,9 @@ package a.b.c.quizmania.Entities;
 
 public class StaticVariables {
     private static Score currScore;
+    public static Challenge pendingChallenge;
     public static Challenge currChallenge;
+    public static Question question;
 
     public StaticVariables() {
     }

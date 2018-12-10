@@ -26,9 +26,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import a.b.c.quizmania.Entities.StaticVariables;
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
+import a.b.c.quizmania.Entities.StaticVariables;
 import a.b.c.quizmania.Jobs.BackgroundJob;
 import a.b.c.quizmania.Jobs.UiCallback;
 import a.b.c.quizmania.R;
@@ -37,10 +37,10 @@ import a.b.c.quizmania.UI.QuestionActivity;
 import a.b.c.quizmania.UI.SinglePlayerResultsActivity;
 
 import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
+import static a.b.c.quizmania.Entities.StaticVariables.pendingChallenge;
+import static a.b.c.quizmania.Entities.StaticVariables.question;
 import static a.b.c.quizmania.UI.QuestionActivity.category;
 import static a.b.c.quizmania.UI.QuestionActivity.difficulty;
-import static a.b.c.quizmania.UI.SelectionActivity.question;
-import static a.b.c.quizmania.UI.UserListActivity.pendingChallenge;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -200,6 +200,7 @@ public class QuestionDisplayFragment extends Fragment {
     private void startMPResults() {
         Intent intent = new Intent(getActivity(), MultiPlayerResultsActivity.class);
         startActivity(intent);
+        getActivity().finish();
     }
 
     private void updateChallenge() {
@@ -219,13 +220,13 @@ public class QuestionDisplayFragment extends Fragment {
             pendingChallenge.setCategory(ret[1]);
         }
         String[] ret = difficulty.split("=");
-        score.setDifficulty(ret[1]);
+        pendingChallenge.setDifficulty(ret[1]);
 
         pendingChallenge.setChallengerScore(score);
 
         FirebaseDatabase.getInstance().getReference().child("root")
                 .child("challenges")
-                .child(String.valueOf(pendingChallenge.getId()))
+                .push()
                 .setValue(pendingChallenge);
     }
 
