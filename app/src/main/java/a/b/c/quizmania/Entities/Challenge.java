@@ -3,6 +3,8 @@ package a.b.c.quizmania.Entities;
 public class Challenge {
     private UserListItem challenger;
     private UserListItem challengee;
+    private Score challengerScore;
+    private Score challengeeScore;
     private int id;
     private String category;
     private String difficulty;
@@ -18,6 +20,8 @@ public class Challenge {
         this.challengee = challengee;
         this.id = id;
         this.isActive = isActive;
+        challengerScore = null;
+        challengeeScore = null;
     }
 
     public UserListItem getChallenger() {
@@ -44,6 +48,22 @@ public class Challenge {
 
     public boolean isActive() {
         return isActive;
+    }
+
+    public Score getChallengerScore() {
+        return challengerScore;
+    }
+
+    public Score getChallengeeScore() {
+        return challengeeScore;
+    }
+
+    public void setChallengerScore(Score challengerScore) {
+        this.challengerScore = challengerScore;
+    }
+
+    public void setChallengeeScore(Score challengeeScore) {
+        this.challengeeScore = challengeeScore;
     }
 
     public void setActive(boolean active) {
