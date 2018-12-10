@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -28,6 +29,11 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     public static Question question;
     // Url for the api that will be appended strings
     public String url = "https://opentdb.com/api.php?amount=10";
+
+    private static FirebaseDatabase INSTANCE = null;
+    public static void setInstance(FirebaseDatabase instance){
+        INSTANCE = instance;
+    }
 
     // Views
     private Spinner categoryDropDown;
@@ -64,12 +70,23 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     String selectedDifficulty;
     String selectedType;
     private String uId;
+    private FirebaseDatabase db;
+    private FirebaseAuth mAuth;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        //Þetta if/else statement er svo testin keyri
+        db = INSTANCE;
+        if(db == null){
+            FirebaseDatabase.getInstance();
+            uId = "";
+        }else{
+            mAuth = FirebaseAuth.getInstance();
+            uId = mAuth.getCurrentUser().getUid();
+        }
         setAppTheme();
         setContentView(R.layout.activity_selection);
         getSupportActionBar().hide();
@@ -90,10 +107,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         diffDropDown.setOnItemSelectedListener(this);
         typeDropDown.setOnItemSelectedListener(this);
 
-        // While the data has not loaded the button is disabled
-        //playBtn.setClickable(false);
         playBtn.setOnClickListener(v -> playGame(v));
-        //playBtn.setText(getString(R.string.quiz_unavaliable));
 
         // Fill in Drop down
 
@@ -117,16 +131,8 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     }
 
     private void playGame(View v) {
-        // Starts a Question activity
+        // Gets the questions on click, and starts the next activity
         getQuestions();
-/*
-        Intent intent = new Intent(this, QuestionActivity.class);
-        intent.putExtra("CATEGORY", selectedCategory);
-        intent.putExtra("DIFFICULTY", selectedDifficulty);
-        intent.putExtra("TYPE", selectedType);
-
-        startActivity(intent);
-        */
     }
 
     @Override
@@ -148,18 +154,6 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
             default:
                 break;
         }
-        /*
-        if(selectedCategory.equals(getCategory(categoryDropDown.getSelectedItem().toString())) &&
-                selectedDifficulty.equals("&difficulty=" + diffDropDown.getSelectedItem().toString()) &&
-                selectedType.equals("&type=" + typeDropDown.getSelectedItem().toString())) {
-            getQuestions();
-        }else if(selectedCategory.equals("") &&
-                selectedDifficulty.equals("&difficulty=" + diffDropDown.getSelectedItem().toString().toLowerCase()) &&
-                selectedType.equals(getType(typeDropDown.getSelectedItem().toString()))) {
-            getQuestions();
-
-        }
-        */
     }
 
     private String getType(String type) {
@@ -177,7 +171,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         }
     }
 
-    private String getCategory(String category) {
+    public String getCategory(String category) {
         // If you changed category it will return a string with &category={selected category}
         String retVal = "&category=";
         switch (category) {
@@ -225,14 +219,13 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                         // Converts the result from the api to a Question.class
                         Gson gson = new Gson();
                         question = gson.fromJson(result, Question.class);
-                        // Makes the play button clickable again
-                        //playBtn.setOnClickListener(v -> playGame(v));
-                        //playBtn.setText(getString(R.string.quiz_avaliable));
+
                         Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
                         intent.putExtra("CATEGORY", selectedCategory);
                         intent.putExtra("DIFFICULTY", selectedDifficulty);
                         intent.putExtra("TYPE", selectedType);
 
+                        // Makes the play button clickable again
                         playBtn.setClickable(true);
                         playBtn.setText(getString(R.string.quiz_avaliable));
                         startActivity(intent);
