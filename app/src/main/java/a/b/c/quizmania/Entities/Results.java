@@ -12,10 +12,11 @@ public class Results {
     public Results() {
     }
 
-
-    public Results(String category, String question, String correctAnswer,
-                   List<String> incorrectAnswers) {
+    public Results(String category, String difficulty,
+                   String question, String correctAnswer,
+                   String[] incorrectAnswers) {
         this.category = category;
+        this.difficulty = difficulty;
         this.question = question;
         this.correct_answer = correctAnswer;
         this.incorrect_answers = incorrectAnswers;
