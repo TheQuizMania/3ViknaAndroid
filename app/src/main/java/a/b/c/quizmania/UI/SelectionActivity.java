@@ -69,13 +69,13 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
 
         //Þetta if/else statement er svo testin keyri
         FirebaseDatabase db = INSTANCE;
-        if(db == null){
-            FirebaseDatabase.getInstance();
-            uId = "";
-        }else{
+//        if(db == null){
+//            FirebaseDatabase.getInstance();
+//            uId = "";
+//        }else{
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             uId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-        }
+//        }
         setAppTheme();
         setContentView(R.layout.activity_selection);
         Objects.requireNonNull(getSupportActionBar()).hide();
