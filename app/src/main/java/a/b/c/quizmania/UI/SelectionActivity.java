@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Switch;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -59,6 +58,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
 
     // String that will be given values for the chosen from a specified dropdown
     String selectedCategory;
+    String cat;
     String selectedDifficulty;
     private String uId;
     String mode = "";
@@ -183,8 +183,10 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     private String getCategory(String category) {
         // If you changed category it will return a string with &category={selected category}
         String retVal = "&category=";
+        cat = retVal + category;
         switch (category) {
             case "Random":
+                cat = "";
                 return "";
             case "Film":
                 return retVal + "11";
@@ -225,7 +227,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                   question = gson.fromJson(result, Question.class);
 
                   Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
-                  setExtrasIntent(intent, selectedCategory, selectedDifficulty, mode);
+                  setExtrasIntent(intent, cat, selectedDifficulty, mode);
                   playBtn.setClickable(true);
                   playBtn.setText(getString(R.string.quiz_avaliable));
                   startActivity(intent);
