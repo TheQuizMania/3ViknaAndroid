@@ -40,6 +40,7 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multi_player_result);
+        getSupportActionBar().hide();
 
         currentChallenge = currChallenge;
 

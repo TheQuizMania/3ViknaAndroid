@@ -39,6 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
         uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         setAppTheme();
         setContentView(R.layout.activity_profile);
+        getSupportActionBar().hide();
         themeSwitch = findViewById(R.id.theme_switch);
         userInfo = findViewById(R.id.user_information);
         changePassBtn = findViewById(R.id.change_password);

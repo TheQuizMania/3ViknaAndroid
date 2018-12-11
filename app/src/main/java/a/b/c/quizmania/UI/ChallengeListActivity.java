@@ -24,6 +24,7 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_liist);
+        getSupportActionBar().hide();
 
         listAllMatches();
 
