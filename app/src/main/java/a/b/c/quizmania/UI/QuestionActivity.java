@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
+import a.b.c.quizmania.Fragments.QuestionDisplayFragment;
 import a.b.c.quizmania.R;
 
 public class QuestionActivity extends AppCompatActivity {
@@ -63,7 +64,10 @@ public class QuestionActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        getSupportFragmentManager().findFragmentById(R.id.question_fragment).onDestroy();
+        QuestionDisplayFragment fragment = (QuestionDisplayFragment)getSupportFragmentManager().findFragmentById(R.id.question_fragment);
+        fragment.stopFragment();
+
+
         Log.d("OVERRIDE", "onBackPressed: called");
         Intent intent = new Intent(this, SelectionActivity.class);
         intent.putExtra("MODE", mode);
