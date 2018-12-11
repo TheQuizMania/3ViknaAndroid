@@ -16,9 +16,9 @@ jobs:
       - run:
           name: Store Google Cloud Account
           command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
-      - run:
-          name: Store Google Account
-          command: echo $GOOGLE_SERVICES_KEY > home/circleci/code/app/google-services.json
+#      - run:
+#          name: Store Google Account
+#          command: echo $GOOGLE_SERVICES_KEY > home/circleci/code/app/google-services.json
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
