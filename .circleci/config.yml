@@ -6,9 +6,6 @@ jobs:
       - image: circleci/android:api-25-alpha
     environment:
       JVM_OPTS: -Xmx3200m
-    auth:
-      username: _json_key
-      password: $GOOGLE_SERVICES_KEY
     steps:
       - checkout
       - restore_cache:
@@ -16,9 +13,9 @@ jobs:
       - run:
           name: Store Google Cloud Account
           command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
-#      - run:
-#          name: Store Google Account
-#          command: echo $GOOGLE_SERVICES_KEY > home/circleci/code/app/google-services.json
+      - run:
+          name: Store Google Account
+          command: echo $GOOGLE_SERVICES_KEY > ${HOME}/google-services.json
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
