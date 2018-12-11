@@ -1,77 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     tools:context=".UI.LoginActivity">
 
-
-    <TextView
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="50sp"
-        android:text="@string/quiz_mania"
-        android:gravity="center"
-        android:layout_marginVertical="40sp"
-        />
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_photo" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/log_in"
-        android:textSize="30sp"
-        />
-
-    <EditText
-        android:id="@+id/email_sign_in"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress" />
-
-    <EditText
-        android:id="@+id/password_sign_in"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:hint="@string/password"
-        android:inputType="textPassword" />
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/web_hi_res_512"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout"
+        tools:layout_editor_absoluteX="0dp" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-        <Button
-            android:id="@+id/sign_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_in"
-            android:textAllCaps="false"
-            />
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/google_signin"
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="40sp"
+            android:gravity="center"
+            android:text="@string/quiz_mania"
+            android:textColor="#ffffff"
+            android:textSize="50sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/log_in"
+            android:textColor="#ffffff"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/email_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:backgroundTint="#ffffff"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:textColor="#ffffff"
+            android:textColorHint="#808080" />
+
+        <EditText
+            android:id="@+id/password_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:backgroundTint="#ffffff"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:textColor="#ffffff"
+            android:textColorHint="#808080" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/sign_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:height="52dp"
+                android:backgroundTint="#ffffff"
+                android:fontFamily="@fonts/Roboto_2"
+                android:text="@string/sign_in"
+                android:textAllCaps="false"
+                android:textColor="#6f6f6f"
+                android:textStyle="bold" />
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/google_signin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/google"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/register_me"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:text="@string/google"
-            />
+            android:layout_marginTop="15sp"
+            android:text="@string/register_me"
+            android:textColor="#ffffff"
+            android:textSize="15sp" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/register_me"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15sp"
-        android:text="@string/register_me"
-        />
-
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
