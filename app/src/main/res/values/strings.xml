@@ -44,4 +44,6 @@
     <string name="out_of_10">%d out of 10</string>
     <string name="confirm_password">Confirm password</string>
     <string name="password_mismatch">Password does not match</string>
+    <string name="no_usernames_match">Usernames don\'t match</string>
+    <string name="username_same_as_old">Username can\'t be the same as the old one</string>
 </resources>
