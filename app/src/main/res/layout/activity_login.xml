@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,7 +12,6 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@drawable/background_photo" />
-
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -46,10 +44,10 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:backgroundTint="#ffffff"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress"
             android:textColor="#ffffff"
-            android:textColorHint="#808080" />
+            android:textColorHint="#808080"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"/>
 
         <EditText
             android:id="@+id/password_sign_in"
@@ -57,10 +55,10 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:backgroundTint="#ffffff"
-            android:hint="@string/password"
-            android:inputType="textPassword"
             android:textColor="#ffffff"
-            android:textColorHint="#808080" />
+            android:textColorHint="#808080"
+            android:hint="@string/password"
+            android:inputType="textPassword"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -75,10 +73,10 @@
                 android:height="52dp"
                 android:backgroundTint="#ffffff"
                 android:fontFamily="@fonts/Roboto_2"
-                android:text="@string/sign_in"
                 android:textAllCaps="false"
                 android:textColor="#6f6f6f"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+            android:text="@string/sign_in"/>
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/google_signin"
