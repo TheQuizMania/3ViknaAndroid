@@ -180,7 +180,7 @@ public class QuestionDisplayFragment extends Fragment {
             retVal.set(i, StringEscapeUtils.unescapeHtml4(retVal.get(i)));
         }
 
-        Collections.sort(retVal);
+        Collections.shuffle(retVal);
         return retVal;
     }
 
