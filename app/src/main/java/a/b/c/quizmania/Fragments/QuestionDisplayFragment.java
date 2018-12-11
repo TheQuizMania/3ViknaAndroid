@@ -194,13 +194,17 @@ public class QuestionDisplayFragment extends Fragment {
 
         if(mode.matches("CHALLENGER")) {
             initChallenge();
-            startActivity(new Intent(getActivity(), SinglePlayerResultsActivity.class));
+            Intent i = new Intent(getActivity(), SinglePlayerResultsActivity.class);
+            i.putExtra("MODE", "MULTI");
+            startActivity(i);
             getActivity().finish();
         } else if (mode.matches("CHALLENGEE")) {
             updateChallenge();
             startMPResults();
         } else {
-            startActivity(new Intent(getActivity(), SinglePlayerResultsActivity.class));
+            Intent i = new Intent(getActivity(), SinglePlayerResultsActivity.class);
+            i.putExtra("MODE", "SINGLE");
+            startActivity(i);
             getActivity().finish();
         }
     }
