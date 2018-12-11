@@ -40,7 +40,11 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
         Toast.makeText(this, "Clicked " + position, Toast.LENGTH_SHORT).show();
         currChallenge = adapter.getChallenge(position);
         Intent intent = new Intent(this, QuestionActivity.class);
-        intent.putExtra("CATEGORY", "&category=" + currChallenge.getCategory());
+        if(currChallenge.getCategory().matches("Random")) {
+            intent.putExtra("CATEGORY", "");
+        } else {
+            intent.putExtra("CATEGORY", "&category=" + currChallenge.getCategory());
+        }
         intent.putExtra("DIFFICULTY", "&difficulty=" + currChallenge.getDifficulty());
         intent.putExtra("MODE", "CHALLENGEE");
         question = currChallenge.getQuestion();
