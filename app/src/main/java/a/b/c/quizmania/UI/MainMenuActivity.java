@@ -65,12 +65,18 @@ public class MainMenuActivity extends AppCompatActivity {
         // Setting Click listeners
         singlePlayerBtn.setOnClickListener(v -> singlePlayer());
         multiPlayerBtn.setOnClickListener(v -> multiPlayer(v));
-        quickMatchBtn.setOnClickListener(v -> multiPlayer(v));
+        quickMatchBtn.setOnClickListener(v -> quickMatch(v));
         settingsBtn.setOnClickListener(v -> goToProfile(v));
         matchesBtn.setOnClickListener(v -> startMatchActivity());
 
         // Displays the User name
         getPlayer();
+    }
+
+    private void quickMatch(View v) {
+        Intent intent = new Intent(this, SelectionActivity.class);
+        intent.putExtra("QUICK_MATCH", 1);
+        startActivity(intent);
     }
 
     private void startMatchActivity() {
