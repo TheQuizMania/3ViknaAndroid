@@ -11,6 +11,12 @@ jobs:
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
+          name: Store Google Cloud Account
+          command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+      - run:
+          name: Store Google Account
+          command: echo $GOOGLE_SERVICES | base64 --decode > ~/${HOME}/app/google-services.json
+      - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
       - run:
@@ -18,12 +24,6 @@ jobs:
           command: |
             ./gradlew :app:assembleDebug
             ./gradlew :app:assembleDebugAndroidTest
-      - run:
-          name: Store Google Cloud Account
-          command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
-      - run:
-          name: Store Google Account
-          command: echo $GOOGLE_SERVICES | base64 --decode > ~/${HOME}/app/google-services.json
       - run:
           name: Authorize gcloud and set config defaults
           command: |
