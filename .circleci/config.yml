@@ -14,14 +14,6 @@ jobs:
           name: Download Dependencies
           command: ./gradlew androidDependencies
       - run:
-          name: Run Unit Tests
-          command: ./gradlew test
-      - store_artifacts:
-          path: app/build/reports
-          destination: reports
-      - store_test_results:
-          path: app/build/test-results
-      - run:
           name: Build debug APK and release APK
           command: |
             ./gradlew :app:assembleDebug
@@ -42,6 +34,12 @@ jobs:
             echo 'export APK_PATH=`find . -path "*.apk" ! -path "*unaligned.apk" ! -path "*Test*.apk" -print -quit`' >> $BASH_ENV
             echo 'export TEST_APK_PATH=`find "." "-path" "*Test*.apk" -print -quit`' >> $BASH_ENV
       - run:
+          name: Run Lint Tests
+          command: ./gradlew lint test
+      - run:
+          name: Run Unit Tests
+          command: ./gradlew test
+      - run:
           name: Run UI Tests
           command: |
             sudo gcloud config set project ${PROJECT_ID}
@@ -51,9 +49,6 @@ jobs:
 #     - run:
 #         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
 #         command: sudo chmod +x ./gradlew
-      - run:
-          name: Run Lint Tests
-          command: ./gradlew lint test
       - store_artifacts:
           path: app/build/reports
           destination: reports
