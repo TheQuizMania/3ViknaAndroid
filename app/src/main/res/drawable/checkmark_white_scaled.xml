@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scale android:drawable="@drawable/round_done_white_18dp"
+    android:scaleHeight="50%"
+    android:scaleWidth="50%"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
