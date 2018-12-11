@@ -360,6 +360,9 @@ public class QuestionDisplayFragment extends Fragment {
             @Override
             public void onCancelled() {
                 Log.d("QUIZ_APP", "onCancelled() task[" + questionId + "]");
+                if(!isRunning) {
+                    return;
+                }
                 MultipleChoiceFragment fragment
                         = (MultipleChoiceFragment) fManager.findFragmentById(R.id.answer_fragment);
                 String pGuess = fragment.playerGuess();
@@ -371,9 +374,8 @@ public class QuestionDisplayFragment extends Fragment {
                 // If an answer was selected make the boolean variable false and increment questionId
                 // Sleep for 1 sec to show the right answer and if all questions have been asked call showResult();
                 isDisplayed = false;
-                isRunning {
-                    SystemClock.sleep(1000);
-                }
+                SystemClock.sleep(1000);
+
                 questionId++;
                 questionsList.add(currQuest);
                 if(questionId == 10 && isRunning) {
