@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +36,10 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_results);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
+        Intent ret = getIntent();
+        if(ret.getStringExtra("MODE").matches("MULTI")) {
+            ((Button)findViewById(R.id.sp_result_play_again)).setVisibility(Button.GONE);
+        }
         initVariables();
         populateViews();
     }
@@ -58,11 +63,13 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
     }
 
     private void initVariables(){
+
         resultScore = StaticVariables.getCurrScore();
         category = findViewById(R.id.results_category);
         difficulty = findViewById(R.id.results_difficulty);
         rightAnswers = findViewById(R.id.results_right_answers);
         averageTime = findViewById(R.id.results_average_time);
+
     }
 
     private void populateViews(){

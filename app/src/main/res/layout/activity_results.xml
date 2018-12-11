@@ -40,6 +40,7 @@
         android:orientation="horizontal"
         android:gravity="center">
         <Button
+            android:id="@+id/sp_result_play_again"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="goToSelection"
