@@ -14,10 +14,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import a.b.c.quizmania.Entities.Categories;
-import a.b.c.quizmania.Entities.StaticVariables;
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
+import a.b.c.quizmania.Entities.StaticVariables;
 import a.b.c.quizmania.R;
 
 public class SinglePlayerResultsActivity extends AppCompatActivity {
@@ -96,15 +95,7 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
     }
 
     private String getCategoryName(){
-        List<String> categories = new Categories().getCategories();
-        List<String> catNumbers = new Categories().getCatNumbers();
-
-        if(resultScore.getCategory().equals("Random")){
-            return resultScore.getCategory();
-        } else {
-            return categories.get(catNumbers.indexOf(resultScore.getCategory()));
-        }
-
+        return resultScore.getCategory();
     }
 
 }
