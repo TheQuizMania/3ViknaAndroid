@@ -9,6 +9,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -16,6 +18,7 @@ import com.google.gson.Gson;
 import com.koushikdutta.ion.Ion;
 
 import java.util.Objects;
+import java.util.Random;
 
 import a.b.c.quizmania.Entities.Question;
 import a.b.c.quizmania.R;
@@ -57,6 +60,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
 
     // String that will be given values for the chosen from a specified dropdown
     String selectedCategory;
+    String cat;
     String selectedDifficulty;
     private String uId;
     String mode = "";
@@ -67,55 +71,100 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Þetta if/else statement er svo testin keyri
-        FirebaseDatabase db = INSTANCE;
-//        if(db == null){
-//            FirebaseDatabase.getInstance();
-//            uId = "";
-//        }else{
+        int quickPlayCheck = getIntent().getIntExtra("QUICK_MATCH", -1);
+        if(quickPlayCheck == 1){
+            setMode();
+            runQuickPlay();
+        }else {
+            //else covers everything, so it doesn't run when you quickplay.
+            setAppTheme();
+            setContentView(R.layout.activity_selection);
+            Objects.requireNonNull(getSupportActionBar()).hide();
+
+            FirebaseDatabase db = INSTANCE;
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             uId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-//        }
-        setAppTheme();
-        setContentView(R.layout.activity_selection);
-        Objects.requireNonNull(getSupportActionBar()).hide();
 
+            setMode();
+
+            challengeId = getIntent().getIntExtra("CHALLENGEID", -1);
+
+
+            // Initialize the selection strings as empty strings
+            selectedCategory = "";
+            selectedDifficulty = "&difficulty=easy";
+
+            // Find Views
+            // Views
+            Spinner categoryDropDown = findViewById(R.id.category_dropdown);
+            Spinner diffDropDown = findViewById(R.id.difficulty_dropdown);
+            playBtn = findViewById(R.id.sp_play_btn);
+
+            // Listeners
+            categoryDropDown.setOnItemSelectedListener(this);
+            diffDropDown.setOnItemSelectedListener(this);
+
+            playBtn.setOnClickListener(v -> playGame());
+
+            // Fill in Drop down
+
+            // For category
+            ArrayAdapter categoryAA = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories);
+            categoryAA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            categoryDropDown.setAdapter(categoryAA);
+
+            // For difficulty
+            ArrayAdapter diffAA = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, difficulties);
+            diffAA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            diffDropDown.setAdapter(diffAA);
+        }
+    }
+    private void setMode() {
         mode = getIntent().getStringExtra("MODE");
         //Svo test keyri
-        if(mode == null){
+        if (mode == null) {
             mode = "";
         }
+    }
 
-        challengeId = getIntent().getIntExtra("CHALLENGEID", -1);
+    private void runQuickPlay() {
+
+        String difficultyString = getRandomDifficulty();
 
 
-        // Initialize the selection strings as empty strings
-        selectedCategory = "";
-        selectedDifficulty = "&difficulty=easy";
+        Ion.with(this)
+                .load(url + difficultyString + "&type=multiple")
+                .asString()
+                .setCallback((e, result) -> {
+                    // Converts the result from the api to a Question.class
+                    Gson gson = new Gson();
+                    question = gson.fromJson(result, Question.class);
 
-        // Find Views
-        // Views
-        Spinner categoryDropDown = findViewById(R.id.category_dropdown);
-        Spinner diffDropDown = findViewById(R.id.difficulty_dropdown);
-        playBtn = findViewById(R.id.sp_play_btn);
+                    if(question.getResponseCode() != 0){
+                        Toast.makeText(this, "Error fetching data", Toast.LENGTH_SHORT).show();
+                        recreate();
+                    }else{
+                        Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
+                        setExtrasIntent(intent, "", difficultyString, "");
+                        startActivity(intent);
+                        finish();
+                    }
 
-        // Listeners
-        categoryDropDown.setOnItemSelectedListener(this);
-        diffDropDown.setOnItemSelectedListener(this);
-
-        playBtn.setOnClickListener(v -> playGame());
-
-        // Fill in Drop down
-
-        // For category
-        ArrayAdapter categoryAA = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories);
-        categoryAA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categoryDropDown.setAdapter(categoryAA);
-
-        // For difficulty
-        ArrayAdapter diffAA = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, difficulties);
-        diffAA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        diffDropDown.setAdapter(diffAA);
+                });
+    }
+    private String getRandomDifficulty() {
+        Random rand = new Random();
+        int i = rand.nextInt(3) + 1;
+        switch (i) {
+            case 1:
+                return "&difficulty=easy";
+            case 2:
+                return "&difficulty=medium";
+            case 3:
+                return "difficulty=hard";
+            default:
+                return "&difficulty=easy";
+        }
     }
 
     private void playGame() {
@@ -142,8 +191,10 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     private String getCategory(String category) {
         // If you changed category it will return a string with &category={selected category}
         String retVal = "&category=";
+        cat = retVal + category;
         switch (category) {
             case "Random":
+                cat = "";
                 return "";
             case "Film":
                 return retVal + "11";
@@ -182,22 +233,30 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                   // Converts the result from the api to a Question.class
                   Gson gson = new Gson();
                   question = gson.fromJson(result, Question.class);
-                  // Makes the play button clickable again
-                  //playBtn.setOnClickListener(v -> playGame(v));
-                  //playBtn.setText(getString(R.string.quiz_avaliable));
-                  Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
-                  intent.putExtra("CATEGORY", selectedCategory);
-                  intent.putExtra("DIFFICULTY", selectedDifficulty);
-                  intent.putExtra("MODE", mode);
-                  if (mode.matches("CHALLENGER")) {
-                      pendingChallenge.setQuestion(question);
+
+                  if(question.getResponseCode() != 0){
+                      Toast.makeText(this, "Error fetching data", Toast.LENGTH_SHORT).show();
+                      return;
                   }
 
+                  Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
+                  setExtrasIntent(intent, cat, selectedDifficulty, mode);
                   playBtn.setClickable(true);
                   playBtn.setText(getString(R.string.quiz_avaliable));
                   startActivity(intent);
                   finish();
               });
+    }
+    private void setExtrasIntent(Intent intent, String c, String d, String m) {
+        //c = category string,
+        //d = difficulty string,
+        //m = mode String
+        intent.putExtra("CATEGORY", c);
+        intent.putExtra("DIFFICULTY", d);
+        intent.putExtra("MODE", m);
+        if (mode.matches("CHALLENGER")) {
+            pendingChallenge.setQuestion(question);
+        }
     }
 
     @Override

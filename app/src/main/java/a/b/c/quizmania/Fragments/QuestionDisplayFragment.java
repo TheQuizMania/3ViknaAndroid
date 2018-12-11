@@ -26,7 +26,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import a.b.c.quizmania.Entities.Categories;
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.Entities.StaticVariables;
@@ -161,6 +160,7 @@ public class QuestionDisplayFragment extends Fragment {
 
     private List<String> getAnswers(int id) {
         Log.d("QUIZ_APP", "getAnswers() called");
+
         // Gets all the answers and stores them in variables
         String answer1 = question.getResults().get(id).getCorrectAnswer();
         String answer2 = question.getResults().get(id).getIncorrectAnswers().get(0);
@@ -274,7 +274,7 @@ public class QuestionDisplayFragment extends Fragment {
                 score.setCategory("Random");
         } else {
             String[] ret = category.split("=");
-            score.setCategory(new Categories().getCatNameByNumber(ret[1]));
+            score.setCategory(ret[1]);
         }
         String[] ret = difficulty.split("=");
         score.setDifficulty(ret[1]);

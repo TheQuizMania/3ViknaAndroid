@@ -67,12 +67,6 @@ public class QuestionActivity extends AppCompatActivity {
         QuestionDisplayFragment fragment = (QuestionDisplayFragment)getSupportFragmentManager().findFragmentById(R.id.question_fragment);
         fragment.stopFragment();
 
-
-        Log.d("OVERRIDE", "onBackPressed: called");
-        Intent intent = new Intent(this, SelectionActivity.class);
-        intent.putExtra("MODE", mode);
-        intent.putExtra("CHALLENGEID", challengeId);
-        startActivity(intent);
         finish();
     }
 }
