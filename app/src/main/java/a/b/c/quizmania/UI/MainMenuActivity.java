@@ -56,7 +56,7 @@ public class MainMenuActivity extends AppCompatActivity {
         Button singlePlayerBtn = findViewById(R.id.single_player_btn);
         Button multiPlayerBtn = findViewById(R.id.multi_player_btn);
         Button quickMatchBtn = findViewById(R.id.quick_match_btn);
-        Button settingsBtn = findViewById(R.id.settings_btn);
+        Button profileBtn = findViewById(R.id.profile_btn);
         nameBox = findViewById(R.id.main_menu_title);
         Button matchesBtn = findViewById(R.id.matches_btn);
 
@@ -65,15 +65,15 @@ public class MainMenuActivity extends AppCompatActivity {
         // Setting Click listeners
         singlePlayerBtn.setOnClickListener(v -> singlePlayer());
         multiPlayerBtn.setOnClickListener(v -> multiPlayer(v));
-        quickMatchBtn.setOnClickListener(v -> quickMatch(v));
-        settingsBtn.setOnClickListener(v -> goToProfile(v));
+        quickMatchBtn.setOnClickListener(v -> quickMatch());
+        profileBtn.setOnClickListener(v -> goToProfile(v));
         matchesBtn.setOnClickListener(v -> startMatchActivity());
 
         // Displays the User name
         getPlayer();
     }
 
-    private void quickMatch(View v) {
+    private void quickMatch() {
         Intent intent = new Intent(this, SelectionActivity.class);
         intent.putExtra("QUICK_MATCH", 1);
         startActivity(intent);

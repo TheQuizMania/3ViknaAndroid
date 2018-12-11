@@ -1,5 +1,6 @@
 package a.b.c.quizmania.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,7 +34,6 @@ import a.b.c.quizmania.Jobs.BackgroundJob;
 import a.b.c.quizmania.Jobs.UiCallback;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.UI.MultiPlayerResultsActivity;
-import a.b.c.quizmania.UI.QuestionActivity;
 import a.b.c.quizmania.UI.SinglePlayerResultsActivity;
 
 import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
@@ -74,6 +74,7 @@ public class QuestionDisplayFragment extends Fragment {
     }
 
 
+    @SuppressLint("CommitTransaction")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -94,7 +95,7 @@ public class QuestionDisplayFragment extends Fragment {
         questionTxt = getActivity().findViewById(R.id.question);
         questionCountTxt = getActivity().findViewById(R.id.question_count);
         progressBar = getActivity().findViewById(R.id.progress_bar_question_fragment);
-        questionsList = new ArrayList();
+        questionsList = new ArrayList<>();
         score = new Score();
 
         MultipleChoiceFragment displayFragment = new MultipleChoiceFragment();
@@ -106,7 +107,6 @@ public class QuestionDisplayFragment extends Fragment {
         // Initiate questionid as 0
         questionId = 0;
         //Get game settings from the activity
-        QuestionActivity a = (QuestionActivity) getActivity();
 
         // Makes 10 AsyncTasks
         task = new BackgroundJob[10];
@@ -168,12 +168,11 @@ public class QuestionDisplayFragment extends Fragment {
         String answer4 = question.getResults().get(id).getIncorrectAnswers().get(2);
 
         // Make an array out of the question
-        List<String> retVal = new ArrayList(){{
-            add(answer1);
-            add(answer2);
-            add(answer3);
-            add(answer4);
-        }};
+        List<String> retVal = new ArrayList<>();
+        retVal.add(answer1);
+        retVal.add(answer2);
+        retVal.add(answer3);
+        retVal.add(answer4);
         // Decode the strings in the array
         for(int i = 0; i < 4; i++) {
             // StringEscapeUtils library to decode html4 encoded strings
@@ -186,10 +185,7 @@ public class QuestionDisplayFragment extends Fragment {
 
     public boolean checkAnswer(String answer) {
         // Returns true if the answer matches the answer asked
-        if(StringEscapeUtils.unescapeHtml4(question.getResults().get(questionId).getCorrectAnswer()).equals(answer)) {
-            return true;
-        }
-        return false;
+        return StringEscapeUtils.unescapeHtml4(question.getResults().get(questionId).getCorrectAnswer()).equals(answer);
     }
 
     public void stopCurrentTask() {

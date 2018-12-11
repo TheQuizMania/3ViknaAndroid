@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -27,10 +26,7 @@ public class MultipleChoiceFragment extends Fragment {
     private Button b2;
     private Button b3;
     private Button b4;
-    private TextView question;
 
-    //Strings
-    private String questionTxt;
     private String guess;
 
     public MultipleChoiceFragment() {
@@ -50,16 +46,12 @@ public class MultipleChoiceFragment extends Fragment {
         // Get the activity
         Activity activity = getActivity();
 
-        question = activity.findViewById(R.id.question);
-        questionTxt = question.getText().toString();
-
         // Finding views
         b1 = activity.findViewById(R.id.answer_1);
         b2 = activity.findViewById(R.id.answer_2);
         b3 = activity.findViewById(R.id.answer_3);
         b4 = activity.findViewById(R.id.answer_4);
 
-        //TODO: remove checkmark
         b1.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         b2.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         b3.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);

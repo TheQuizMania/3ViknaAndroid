@@ -39,13 +39,13 @@
         android:id="@+id/matches_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Matches"
+        android:text="@string/matches"
         android:textAllCaps="false"  />
 
     <Button
-        android:id="@+id/settings_btn"
+        android:id="@+id/profile_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/settings"
+        android:text="@string/profile"
         android:textAllCaps="false" />
 </LinearLayout>
