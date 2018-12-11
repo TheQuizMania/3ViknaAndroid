@@ -31,7 +31,7 @@ jobs:
           command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
       - run:
           name: Store Google Account
-          command: echo $GOOGLE_SERVICE_KEY > ${HOME}/google-services.json
+          command: echo $GOOGLE_SERVICE_KEY > ${HOME}/circleci/code/app/google-services.json
       - run:
           name: Authorize gcloud and set config defaults
           command: |
