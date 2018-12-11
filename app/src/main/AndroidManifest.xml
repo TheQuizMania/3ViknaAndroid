@@ -11,25 +11,37 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".UI.LoginActivity">
+        <activity android:name=".UI.LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.RegisterActivity" />
-        <activity android:name=".UI.MainMenuActivity" />
-        <activity android:name=".UI.SelectionActivity" />
-        <activity android:name=".UI.ProfileActivity" />
-        <activity android:name=".UI.QuestionActivity" />
-        <activity android:name=".UI.StatisticsActivity" />
-        <activity android:name=".UI.SinglePlayerResultsActivity" />
-        <activity android:name=".UI.UserListActivity" />
-        <activity android:name=".UI.ChallengeListActivity" />
-        <activity android:name=".UI.MultiPlayerResultsActivity" />
-        <activity android:name=".UI.ChangeUsernameActivity" />
-        <activity android:name=".UI.ChangePasswordActivity"></activity>
+        <activity android:name=".UI.RegisterActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UI.MainMenuActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UI.SelectionActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UI.ProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UI.QuestionActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UI.StatisticsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UI.SinglePlayerResultsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UI.UserListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UI.ChallengeListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UI.MultiPlayerResultsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UI.ChangeUsernameActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UI.ChangePasswordActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
