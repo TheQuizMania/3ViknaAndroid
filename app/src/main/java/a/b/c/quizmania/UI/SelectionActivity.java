@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -138,10 +139,16 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                     Gson gson = new Gson();
                     question = gson.fromJson(result, Question.class);
 
-                    Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
-                    setExtrasIntent(intent, "", difficultyString, "");
-                    startActivity(intent);
-                    finish();
+                    if(question.getResponseCode() != 0){
+                        Toast.makeText(this, "Error fetching data", Toast.LENGTH_SHORT).show();
+                        recreate();
+                    }else{
+                        Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
+                        setExtrasIntent(intent, "", difficultyString, "");
+                        startActivity(intent);
+                        finish();
+                    }
+
                 });
     }
     private String getRandomDifficulty() {
@@ -223,6 +230,11 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                   // Converts the result from the api to a Question.class
                   Gson gson = new Gson();
                   question = gson.fromJson(result, Question.class);
+
+                  if(question.getResponseCode() != 0){
+                      Toast.makeText(this, "Error fetching data", Toast.LENGTH_SHORT).show();
+                      return;
+                  }
 
                   Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
                   setExtrasIntent(intent, selectedCategory, selectedDifficulty, mode);
