@@ -20,6 +20,7 @@
         android:layout_marginTop="8dp"
         android:src="@drawable/web_hi_res_512"
         app:layout_constraintTop_toTopOf="@+id/linearLayout"
+        app:layout_constraintHorizontal_weight="1"
         tools:layout_editor_absoluteX="0dp" />
 
     <LinearLayout
