@@ -76,13 +76,13 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
             runQuickPlay();
         }else {
             //else covers everything, so it doesn't run when you quickplay.
+            FirebaseDatabase db = INSTANCE;
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            uId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
             setAppTheme();
             setContentView(R.layout.activity_selection);
             Objects.requireNonNull(getSupportActionBar()).hide();
 
-            FirebaseDatabase db = INSTANCE;
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            uId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
             setMode();
 
@@ -140,7 +140,6 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                     question = gson.fromJson(result, Question.class);
 
                     if(question.getResponseCode() != 0){
-                        Toast.makeText(this, "Error fetching data", Toast.LENGTH_SHORT).show();
                         recreate();
                     }else{
                         Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
@@ -233,15 +232,16 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
 
                   if(question.getResponseCode() != 0){
                       Toast.makeText(this, "Error fetching data", Toast.LENGTH_SHORT).show();
-                      return;
+                      recreate();
+                  }else{
+                      Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
+                      setExtrasIntent(intent, selectedCategory, selectedDifficulty, mode);
+                      playBtn.setClickable(true);
+                      playBtn.setText(getString(R.string.quiz_avaliable));
+                      startActivity(intent);
+                      finish();
                   }
 
-                  Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
-                  setExtrasIntent(intent, selectedCategory, selectedDifficulty, mode);
-                  playBtn.setClickable(true);
-                  playBtn.setText(getString(R.string.quiz_avaliable));
-                  startActivity(intent);
-                  finish();
               });
     }
     private void setExtrasIntent(Intent intent, String c, String d, String m) {
