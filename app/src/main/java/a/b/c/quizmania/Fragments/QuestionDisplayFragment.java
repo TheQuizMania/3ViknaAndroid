@@ -244,7 +244,7 @@ public class QuestionDisplayFragment extends Fragment {
         if(category.equals("")){
             pendingChallenge.setCategory("Random");
         } else {
-            String[] ret = difficulty.split("=");
+            String[] ret = category.split("=");
             pendingChallenge.setCategory(ret[1]);
         }
         String[] ret = difficulty.split("=");

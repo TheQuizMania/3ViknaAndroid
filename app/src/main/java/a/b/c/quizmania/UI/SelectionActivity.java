@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -238,7 +237,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                       recreate();
                   }else{
                       Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
-                      setExtrasIntent(intent, selectedCategory, selectedDifficulty, mode);
+                      setExtrasIntent(intent, cat, selectedDifficulty, mode);
                       playBtn.setClickable(true);
                       playBtn.setText(getString(R.string.quiz_avaliable));
                       startActivity(intent);
