@@ -160,6 +160,7 @@ public class QuestionDisplayFragment extends Fragment {
 
     private List<String> getAnswers(int id) {
         Log.d("QUIZ_APP", "getAnswers() called");
+
         // Gets all the answers and stores them in variables
         String answer1 = question.getResults().get(id).getCorrectAnswer();
         String answer2 = question.getResults().get(id).getIncorrectAnswers().get(0);
