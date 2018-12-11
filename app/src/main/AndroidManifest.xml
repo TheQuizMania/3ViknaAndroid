@@ -26,7 +26,8 @@
         <activity android:name=".UI.UserListActivity" />
         <activity android:name=".UI.ChallengeListActivity" />
         <activity android:name=".UI.MultiPlayerResultsActivity" />
-        <activity android:name=".UI.ChangeUsernameActivity"></activity>
+        <activity android:name=".UI.ChangeUsernameActivity" />
+        <activity android:name=".UI.ChangePasswordActivity"></activity>
     </application>
 
 </manifest>

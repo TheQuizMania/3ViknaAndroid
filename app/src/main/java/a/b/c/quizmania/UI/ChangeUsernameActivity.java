@@ -82,4 +82,5 @@ public class ChangeUsernameActivity extends AppCompatActivity {
     public void cancelUsernameChange(View view) {
         finish();
     }
+
 }

@@ -30,6 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     // Views
     private Button signOutBtn;
+    private Button changePassBtn;
     private TextView userInfo;
 
     @Override
@@ -40,6 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         themeSwitch = findViewById(R.id.theme_switch);
         userInfo = findViewById(R.id.user_information);
+        changePassBtn = findViewById(R.id.change_password);
         checkSwitch();
         writePreference();
 
@@ -60,6 +62,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Setting click listeners
         signOutBtn.setOnClickListener(v -> signOut(v));
+
+        if(GoogleSignIn.getLastSignedInAccount(this) == null){
+            changePassBtn.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -153,5 +159,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void changeUserName(View view) {
         startActivity(new Intent(this, ChangeUsernameActivity.class));
+    }
+
+    public void changePassWord(View view) {
+        startActivity(new Intent(this, ChangePasswordActivity.class));
     }
 }
