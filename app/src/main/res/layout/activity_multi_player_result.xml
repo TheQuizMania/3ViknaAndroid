@@ -12,6 +12,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:textSize="35sp"
         android:text="Results" />
     <TextView
@@ -23,6 +24,7 @@
         android:id="@+id/mp_results_difficulty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20sp"
         android:text="difficulty:"/>
 
     <LinearLayout
@@ -37,7 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="50"
             android:orientation="vertical"
-            android:gravity="center"
+            android:gravity="start"
+            android:layout_marginStart="10dp"
             >
             <TextView
                 android:id="@+id/mp_results_challenger"
@@ -61,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="50"
             android:orientation="vertical"
-            android:gravity="center"
+            android:gravity="start"
             >
             <TextView
                 android:id="@+id/mp_results_challengee"
@@ -87,6 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_marginTop="20dp"
         android:textSize="25dp"
         android:text="You win!"
         />

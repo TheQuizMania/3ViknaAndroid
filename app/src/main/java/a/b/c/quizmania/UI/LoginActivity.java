@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,6 +29,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 import a.b.c.quizmania.Entities.User;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.db.Utility;
@@ -43,10 +44,6 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient googleClient;
     private GoogleSignInAccount account;
 
-    // Views
-    private Button signInBtn;
-    private SignInButton googleSigninBtn;
-    private TextView registerBtn;
     private EditText emailEdit;
     private EditText passwdEdit;
 
@@ -54,8 +51,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
+        initVariables();
+    }
+
+    private void initVariables(){
         // Firebase
         mAuth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions
@@ -70,23 +71,24 @@ public class LoginActivity extends AppCompatActivity {
         passwdEdit = findViewById(R.id.password_sign_in);
 
         // Finding Clickables
-        signInBtn = findViewById(R.id.sign_in);
-        googleSigninBtn = findViewById(R.id.google_signin);
-        registerBtn = findViewById(R.id.register_me);
+        // Views
+        Button signInBtn = findViewById(R.id.sign_in);
+        SignInButton googleSigninBtn = findViewById(R.id.google_signin);
+        TextView registerBtn = findViewById(R.id.register_me);
 
         // Click listeners
-        signInBtn.setOnClickListener(v -> signIn(v));
-        googleSigninBtn.setOnClickListener(v -> signInGoogle(v));
-        registerBtn.setOnClickListener(v -> registerMe(v));
-
+        signInBtn.setOnClickListener(v -> signIn());
+        googleSigninBtn.setOnClickListener(v -> signInGoogle());
+        registerBtn.setOnClickListener(v -> registerMe());
     }
 
-    /*
-    Sign in
-    Runs when sign in button is clicked,
-    should sign in the user
-     */
-    private void signIn(View view) {
+    /**
+     Sign in
+     Runs when sign in button is clicked,
+     should sign in the user
+     **/
+
+    private void signIn() {
         String email = emailEdit.getText().toString();
         String passW = passwdEdit.getText().toString();
         //regex looks for any number of characters, then a @ and any number of characters.
@@ -102,14 +104,16 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             //Event listener that tries to sign in the user
             mAuth.signInWithEmailAndPassword(emailEdit.getText().toString(),
-                                passwdEdit.getText().toString())
+                    passwdEdit.getText().toString())
                     .addOnCompleteListener(this, task -> {
                         if(task.isSuccessful()) {
                             // Sign in was successful
                             addUserInfoToAuth();
                             Toast.makeText(LoginActivity.this,
                                     getString(R.string.login_success), Toast.LENGTH_SHORT).show();
-                            Utility.addToUserList(FirebaseAuth.getInstance().getCurrentUser().getEmail(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                            Utility.addToUserList(Objects.requireNonNull(FirebaseAuth
+                                            .getInstance().getCurrentUser()).getEmail(),
+                                    FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                             startMainMenu();
                         } else {
                             // Sign in failed
@@ -121,7 +125,86 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void signInGoogle(View view) {
+    private void addUserInfoToAuth(){
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference rootRef = db.getReference();
+        String uId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        DatabaseReference ref = rootRef.child("root").child("Users").child(uId);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    User user = dataSnapshot.getValue(User.class);
+                    assert user != null;
+                    String userN = user.getUserName();
+                    FirebaseUser gUser = FirebaseAuth.getInstance().getCurrentUser();
+                    UserProfileChangeRequest changeRequest
+                            = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(userN)
+                            .build();
+                    assert gUser != null;
+                    gUser.updateProfile(changeRequest);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void startMainMenu() {
+        // Starting Main menu activity
+        Intent intent = new Intent(this, MainMenuActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void FirebaseGoogleSignup(GoogleSignInAccount acct) {
+        Log.d("GOOGLE_LOGIN", "FirebaseAuthWithGoogle: " + acct.getIdToken());
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if(task.isSuccessful()) {
+                        //Create user to be inserted
+                        final User user = new User();
+                        user.setUserName(account.getDisplayName());
+                        user.setScores(null);
+                        user.setWins(0);
+                        user.setLosses(0);
+                        Utility.addToUserList(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail(), mAuth.getCurrentUser().getDisplayName());
+                        //on sign in inserts new user into database if not exists
+                        addUserIfNotInDb(user);
+                        startMainMenu();
+                    } else {
+                        Toast.makeText(LoginActivity.this,
+                                R.string.google_signin_fail, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void addUserIfNotInDb(User user){
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        String uId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        DatabaseReference ref = db.getReference("root//Users//" + uId);
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    //insert user if they don't exist in database.
+                    ref.setValue(user);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void signInGoogle() {
         Intent signInIntent = googleClient.getSignInIntent();
         startActivityForResult(signInIntent, RESULT_CODE);
     }
@@ -146,89 +229,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void registerMe(View view) {
+    private void registerMe() {
         // Starting Register activity
         Intent i = new Intent(this, RegisterActivity.class);
         startActivity(i);
     }
 
-    private void startMainMenu() {
-        // Starting Main menu activity
-        Intent intent = new Intent(this, MainMenuActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-
-    private void FirebaseGoogleSignup(GoogleSignInAccount acct) {
-        Log.d("GOOGLE_LOGIN", "FirebaseAuthWithGoogle: " + acct.getIdToken());
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
-                    if(task.isSuccessful()) {
-                        //Create user to be inserted
-                        final User user = new User();
-                        user.setUserName(account.getDisplayName());
-                        user.setScores(null);
-                        user.setWins(0);
-                        user.setLosses(0);
-                        Utility.addToUserList(mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getDisplayName());
-                        //on sign in inserts new user into database if not exists
-                        addUserIfNotInDb(user);
-                        startMainMenu();
-                    } else {
-                        Toast.makeText(LoginActivity.this,
-                                R.string.google_signin_fail, Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void addUserInfoToAuth(){
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference rootRef = db.getReference();
-        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = rootRef.child("root").child("Users").child(uId);
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.exists()){
-                    User user = dataSnapshot.getValue(User.class);
-                    String userN = user.getUserName();
-                    FirebaseUser gUser = FirebaseAuth.getInstance().getCurrentUser();
-                    UserProfileChangeRequest changeRequest
-                            = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(userN)
-                            .build();
-                    assert gUser != null;
-                    gUser.updateProfile(changeRequest);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
-    private void addUserIfNotInDb(User user){
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = db.getReference("root//Users//" + uId);
-
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.exists()){
-                    //insert user if they don't exist in database.
-                    ref.setValue(user);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-    }
 }

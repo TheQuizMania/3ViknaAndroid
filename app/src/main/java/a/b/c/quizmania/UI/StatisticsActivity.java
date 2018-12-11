@@ -16,6 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import a.b.c.quizmania.Entities.Categories;
@@ -59,17 +60,18 @@ public class StatisticsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_statistics);
-        getSupportActionBar().hide();
         setAppTheme();
+        setContentView(R.layout.activity_statistics);
+        Objects.requireNonNull(getSupportActionBar()).hide();
         initVariables();
         readData();
     }
 
     private void setAppTheme() {
-        String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");
+        assert str != null;
         if(str.equals("AppTheme")) {
             setTheme(R.style.AppTheme);
         }else{
@@ -107,25 +109,25 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void populateViews() {
-        totalRight.setText("Right: " + getTotalRightAnswers());
-        totalWrong.setText("Wrong: " + getTotalWrongAnswers());
-        totalRatio.setText("Ratio: " + getTotalRatio());
+        totalRight.setText(String.format(Locale.US, "Right: %d", getTotalRightAnswers()));
+        totalWrong.setText(String.format(Locale.US, "Wrong: %d", getTotalWrongAnswers()));
+        totalRatio.setText(String.format(Locale.US, "Ratio: %s", getTotalRatio()));
 
-        mPWins.setText("Wins: " + getTotalMPWins());
-        mPLosses.setText("Losses: " + getTotalMPLosses());
-        winLossRatio.setText("Ratio: " + getWinLossRatio());
+        mPWins.setText(String.format(Locale.US, "Wins: %d", getTotalMPWins()));
+        mPLosses.setText(String.format(Locale.US, "Losses: %d", getTotalMPLosses()));
+        winLossRatio.setText(String.format(Locale.US, "Ratio: %s", getWinLossRatio()));
 
-        easyRight.setText("Right: " + getRightAnswersByDifficulty("easy"));
-        easyWrong.setText("Wrong: " + getWrongAnswersByDifficulty("easy"));
-        easyRatio.setText("Ratio: " + getRatioByDifficulty("easy"));
+        easyRight.setText(String.format(Locale.US, "Right: %d", getRightAnswersByDifficulty("easy")));
+        easyWrong.setText(String.format(Locale.US, "Wrong: %d", getWrongAnswersByDifficulty("easy")));
+        easyRatio.setText(String.format(Locale.US, "Ratio: %s", getRatioByDifficulty("easy")));
 
-        mediumRight.setText("Right: " + getRightAnswersByDifficulty("medium"));
-        mediumWrong.setText("Wrong: " + getWrongAnswersByDifficulty("medium"));
-        mediumRatio.setText("Ratio: " + getRatioByDifficulty("medium"));
+        mediumRight.setText(String.format(Locale.US, "Right: %d", getRightAnswersByDifficulty("medium")));
+        mediumWrong.setText(String.format(Locale.US, "Wrong: %d", getWrongAnswersByDifficulty("medium")));
+        mediumRatio.setText(String.format(Locale.US, "Ratio: %s", getRatioByDifficulty("medium")));
 
-        hardRight.setText("Right: " + getRightAnswersByDifficulty("hard"));
-        hardWrong.setText("Wrong: " + getWrongAnswersByDifficulty("hard"));
-        hardRatio.setText("Ratio: " + getRatioByDifficulty("hard"));
+        hardRight.setText(String.format(Locale.US, "Right: %d", getRightAnswersByDifficulty("hard")));
+        hardWrong.setText(String.format(Locale.US, "Wrong: %d", getWrongAnswersByDifficulty("hard")));
+        hardRatio.setText(String.format(Locale.US, "Ratio: %s", getRatioByDifficulty("hard")));
 
         favoriteCategory.setText(getFavoriteCategory());
     }

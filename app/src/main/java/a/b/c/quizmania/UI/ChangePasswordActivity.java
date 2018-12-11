@@ -10,6 +10,8 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 import a.b.c.quizmania.R;
 
 public class ChangePasswordActivity extends AppCompatActivity {
@@ -22,25 +24,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_password);
-        getSupportActionBar().hide();
         setAppTheme();
+        setContentView(R.layout.activity_change_password);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         newPass = findViewById(R.id.new_pass);
         confirmNewPass = findViewById(R.id.confirm_new_pass);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-    }
-
-    private void setAppTheme() {
-        String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
-        String str = pref.getString("THEME_PREF", "AppTheme");
-        if(str.equals("AppTheme")) {
-            setTheme(R.style.AppTheme);
-        }else{
-            setTheme(R.style.DarkTheme);
-        }
     }
 
     public void submitPassChange(View view) {
@@ -69,7 +60,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
         finish();
     }
 
-
     private boolean passwordIsValid() {
         return newPass.length() != 0;
     }
@@ -79,10 +69,22 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private boolean passwordIsSameAsOld() {
-        return user.getDisplayName().equals(newPass.getText().toString());
+        return Objects.equals(user.getDisplayName(), newPass.getText().toString());
     }
 
     public void cancelPassChange(View view) {
         finish();
+    }
+
+    private void setAppTheme() {
+        String uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
+        String str = pref.getString("THEME_PREF", "AppTheme");
+        assert str != null;
+        if(str.equals("AppTheme")) {
+            setTheme(R.style.AppTheme);
+        }else{
+            setTheme(R.style.DarkTheme);
+        }
     }
 }

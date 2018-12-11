@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
+import java.util.Objects;
 
-import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.R;
@@ -20,8 +20,6 @@ import a.b.c.quizmania.R;
 import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
 
 public class MultiPlayerResultsActivity extends AppCompatActivity {
-
-    private Challenge currentChallenge;
 
     // Views
     TextView categoryTV;
@@ -42,27 +40,25 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_multi_player_result);
-        getSupportActionBar().hide();
         setAppTheme();
-
-        currentChallenge = currChallenge;
+        setContentView(R.layout.activity_multi_player_result);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         // Finding Views
-        categoryTV = (TextView)findViewById(R.id.mp_results_category);
-        difficultyTV = (TextView)findViewById(R.id.mp_results_difficulty);
+        categoryTV = findViewById(R.id.mp_results_category);
+        difficultyTV = findViewById(R.id.mp_results_difficulty);
 
-        challengerNameTV = (TextView)findViewById(R.id.mp_results_challenger);
-        challengerRightAnswersTV = (TextView)findViewById(R.id.mp_challenger_results_right_answers);
-        challengerAvgTimeTV = (TextView)findViewById(R.id.mp_challenger_results_average_time);
+        challengerNameTV = findViewById(R.id.mp_results_challenger);
+        challengerRightAnswersTV = findViewById(R.id.mp_challenger_results_right_answers);
+        challengerAvgTimeTV = findViewById(R.id.mp_challenger_results_average_time);
 
-        challengeeNameTV = (TextView)findViewById(R.id.mp_results_challengee);
-        challengeeRightAnswersTV = (TextView)findViewById(R.id.mp_challengee_results_right_answers);
-        challengeeAvgTimeTV = (TextView)findViewById(R.id.mp_challengee_results_average_time);
+        challengeeNameTV = findViewById(R.id.mp_results_challengee);
+        challengeeRightAnswersTV = findViewById(R.id.mp_challengee_results_right_answers);
+        challengeeAvgTimeTV = findViewById(R.id.mp_challengee_results_average_time);
 
-        resultsTV = (TextView)findViewById(R.id.mp_results_result);
+        resultsTV = findViewById(R.id.mp_results_result);
 
-        mainMenuBtn = (Button)findViewById(R.id.mp_main_menu_btn);
+        mainMenuBtn = findViewById(R.id.mp_main_menu_btn);
 
         // Displays the information
         displayInfo();
@@ -74,13 +70,14 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
         displayWinner();
 
         // Setting listeners
-        mainMenuBtn.setOnClickListener(v -> startMainMenu(v));
+        mainMenuBtn.setOnClickListener(v -> startMainMenu());
     }
 
     private void setAppTheme() {
-        String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");
+        assert str != null;
         if(str.equals("AppTheme")) {
             setTheme(R.style.AppTheme);
         }else{
@@ -110,7 +107,9 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
         double avgTime = getAvg(currChallenge.getChallengerScore().getQuestionStats());
         // Displays the name, number of questions answered right and average time
         changeText(challengerNameTV, currChallenge.getChallenger().getDisplayName());
-        changeText(challengerRightAnswersTV, (challengerRightAnswersTV.getText() + " " + currChallenge.getChallengerScore().getCorrectAnswers()));
+        changeText(challengerRightAnswersTV,
+                (challengerRightAnswersTV.getText()
+                        + " " + currChallenge.getChallengerScore().getCorrectAnswers()));
         changeText(challengerAvgTimeTV, (challengerAvgTimeTV.getText() + " " + avgTime));
     }
 
@@ -124,7 +123,8 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
         double avgTime = getAvg(currChallenge.getChallengeeScore().getQuestionStats());
         // Displays the name, number of questions answered right and average time
         changeText(challengeeNameTV, currChallenge.getChallengee().getDisplayName());
-        changeText(challengeeRightAnswersTV, (challengeeRightAnswersTV.getText() + " " + currChallenge.getChallengeeScore().getCorrectAnswers()));
+        changeText(challengeeRightAnswersTV, (challengeeRightAnswersTV.getText() + " "
+                + currChallenge.getChallengeeScore().getCorrectAnswers()));
         changeText(challengeeAvgTimeTV, (challengeeAvgTimeTV.getText() + " " + avgTime));
     }
 
@@ -141,16 +141,24 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
         challengerRA = challengerScore.getCorrectAnswers();
         challengeeRA = challengeeScore.getCorrectAnswers();
         if(challengerRA < challengeeRA) {
-            changeText(resultsTV, "Winner: " + currChallenge.getChallengee().getDisplayName());
+            changeText(resultsTV, "Winner: " + currChallenge.getChallengee()
+                    .getDisplayName());
         } else if (challengerRA > challengeeRA) {
-            changeText(resultsTV, "Winner: " + currChallenge.getChallenger().getDisplayName());
+            changeText(resultsTV, "Winner: " + currChallenge.getChallenger()
+                    .getDisplayName());
         } else {
-            double challengerAvgTime = getAvg(currChallenge.getChallengerScore().getQuestionStats());
-            double challengeeAvgTime = getAvg(currChallenge.getChallengeeScore().getQuestionStats());
+            double challengerAvgTime = getAvg(currChallenge.getChallengerScore()
+                    .getQuestionStats());
+            double challengeeAvgTime
+                    = getAvg(currChallenge
+                        .getChallengeeScore()
+                        .getQuestionStats());
             if(challengerAvgTime < challengeeAvgTime) {
-                changeText(resultsTV, "Winner: " + currChallenge.getChallengee().getDisplayName());
+                changeText(resultsTV, "Winner: " + currChallenge.getChallengee()
+                        .getDisplayName());
             } else if (challengerAvgTime > challengeeAvgTime) {
-                changeText(resultsTV, "Winner: " + currChallenge.getChallenger().getDisplayName());
+                changeText(resultsTV, "Winner: " + currChallenge.getChallenger()
+                        .getDisplayName());
             } else {
                 changeText(resultsTV, "Tie");
             }
@@ -172,7 +180,7 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
      *      Starts the main menu activity       *
      *                                          *
      ********************************************/
-    private void startMainMenu(View v) {
+    private void startMainMenu() {
         Intent intent = new Intent(this, MainMenuActivity.class);
         startActivity(intent);
         finish();

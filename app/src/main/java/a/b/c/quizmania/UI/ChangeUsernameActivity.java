@@ -13,6 +13,8 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Objects;
+
 import a.b.c.quizmania.R;
 
 public class ChangeUsernameActivity extends AppCompatActivity {
@@ -25,24 +27,13 @@ public class ChangeUsernameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_username);
-        getSupportActionBar().hide();
         setAppTheme();
+        setContentView(R.layout.activity_change_username);
+        Objects.requireNonNull(getSupportActionBar()).hide();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         newUsername = findViewById(R.id.new_username);
         confirmNewUsername = findViewById(R.id.confirm_new_user);
-    }
-
-    private void setAppTheme() {
-        String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
-        String str = pref.getString("THEME_PREF", "AppTheme");
-        if(str.equals("AppTheme")) {
-            setTheme(R.style.AppTheme);
-        }else{
-            setTheme(R.style.DarkTheme);
-        }
     }
 
     public void submitUsernameChange(View view) {
@@ -90,11 +81,22 @@ public class ChangeUsernameActivity extends AppCompatActivity {
     }
 
     private boolean usernameIsSameAsOld() {
-        return user.getDisplayName().equals(newUsername.getText().toString());
+        return Objects.equals(user.getDisplayName(), newUsername.getText().toString());
     }
 
     public void cancelUsernameChange(View view) {
         finish();
     }
 
+    private void setAppTheme() {
+        String uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
+        String str = pref.getString("THEME_PREF", "AppTheme");
+        assert str != null;
+        if(str.equals("AppTheme")) {
+            setTheme(R.style.AppTheme);
+        }else{
+            setTheme(R.style.DarkTheme);
+        }
+    }
 }

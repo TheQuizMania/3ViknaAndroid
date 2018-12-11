@@ -29,27 +29,17 @@ public class MainMenuActivity extends AppCompatActivity {
     // Firebase
     private FirebaseAuth mAuth;
 
-    // Views
-    private Button singlePlayerBtn;
-    private Button multiPlayerBtn;
-    private Button quickMatchBtn;
-    private Button settingsBtn;
-    private Button matchesBtn;
     private TextView nameBox;
-
-
-    //
-    private String theme;
     private String uID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         setAppTheme();
         setContentView(R.layout.activity_main_menu);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         // Firebase
         mAuth = FirebaseAuth.getInstance();
@@ -62,27 +52,28 @@ public class MainMenuActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         // Finding views
-        singlePlayerBtn = findViewById(R.id.single_player_btn);
-        multiPlayerBtn = findViewById(R.id.multi_player_btn);
-        quickMatchBtn = findViewById(R.id.quick_match_btn);
-        settingsBtn = findViewById(R.id.settings_btn);
+        // Views
+        Button singlePlayerBtn = findViewById(R.id.single_player_btn);
+        Button multiPlayerBtn = findViewById(R.id.multi_player_btn);
+        Button quickMatchBtn = findViewById(R.id.quick_match_btn);
+        Button settingsBtn = findViewById(R.id.settings_btn);
         nameBox = findViewById(R.id.main_menu_title);
-        matchesBtn = findViewById(R.id.matches_btn);
+        Button matchesBtn = findViewById(R.id.matches_btn);
 
         getPlayer();
 
         // Setting Click listeners
-        singlePlayerBtn.setOnClickListener(v -> singlePlayer(v));
+        singlePlayerBtn.setOnClickListener(v -> singlePlayer());
         multiPlayerBtn.setOnClickListener(v -> multiPlayer(v));
         quickMatchBtn.setOnClickListener(v -> multiPlayer(v));
         settingsBtn.setOnClickListener(v -> goToProfile(v));
-        matchesBtn.setOnClickListener(v -> startMatchActivity(v));
+        matchesBtn.setOnClickListener(v -> startMatchActivity());
 
         // Displays the User name
         getPlayer();
     }
 
-    private void startMatchActivity(View v) {
+    private void startMatchActivity() {
         Intent intent = new Intent(this, ChallengeListActivity.class);
         startActivity(intent);
     }
@@ -90,18 +81,16 @@ public class MainMenuActivity extends AppCompatActivity {
     private void getPlayer(){
         String user = Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName();
 
-        nameBox.setText("Welcome\n" + user);
+        nameBox.setText(String.format("Welcome\n%s", user));
     }
     private void multiPlayer(View v) {
         if(v.getId() == R.id.multi_player_btn) {
             Intent intent = new Intent(this, UserListActivity.class);
             startActivity(intent);
-        } else {
-
         }
     }
 
-    private void singlePlayer(View v) {
+    private void singlePlayer() {
         Intent intent = new Intent(this, SelectionActivity.class);
         intent.putExtra("MODE", "single");
         startActivity(intent);
@@ -116,12 +105,13 @@ public class MainMenuActivity extends AppCompatActivity {
     private void setAppTheme() {
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");
+        assert str != null;
         if(str.equals("AppTheme")) {
             setTheme(R.style.AppTheme);
         }else{
             setTheme(R.style.DarkTheme);
         }
-        theme = str;
+        //
     }
 
     /************************************
@@ -138,8 +128,13 @@ public class MainMenuActivity extends AppCompatActivity {
                         myChallenges.clear();
                         for(DataSnapshot challengeInstance: dataSnapshot.getChildren()) {
                             Challenge challenge = challengeInstance.getValue(Challenge.class);
+                            assert challenge != null;
                             challenge.setId(challengeInstance.getKey());
-                            if(challenge.getChallengee().getEmail().matches(FirebaseAuth.getInstance().getCurrentUser().getEmail()) && challenge.isActive()) {
+                            if(challenge.getChallengee().getEmail()
+                                    .matches(Objects.requireNonNull(Objects
+                                            .requireNonNull(FirebaseAuth.getInstance()
+                                            .getCurrentUser())
+                                            .getEmail())) && challenge.isActive()) {
                                 myChallenges.add(challenge);
                             }
                         }

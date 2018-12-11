@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.db.ChallengeRVAdapter;
 
@@ -26,30 +28,11 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_match_liist);
-        getSupportActionBar().hide();
         setAppTheme();
+        setContentView(R.layout.activity_match_liist);
+        Objects.requireNonNull(getSupportActionBar()).hide();
         listAllMatches();
 
-    }
-
-    private void setAppTheme() {
-        String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
-        String str = pref.getString("THEME_PREF", "AppTheme");
-        if(str.equals("AppTheme")) {
-            setTheme(R.style.AppTheme);
-        }else{
-            setTheme(R.style.DarkTheme);
-        }
-    }
-
-    private void listAllMatches() {
-        RecyclerView rv = findViewById(R.id.rv_matches);
-        rv.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ChallengeRVAdapter(this, myChallenges);
-        adapter.setClickListener(this);
-        rv.setAdapter(adapter);
     }
 
     @Override
@@ -63,5 +46,25 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
         question = currChallenge.getQuestion();
         startActivity(intent);
         finish();
+    }
+
+    private void listAllMatches() {
+        RecyclerView rv = findViewById(R.id.rv_matches);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new ChallengeRVAdapter(this, myChallenges);
+        adapter.setClickListener(this);
+        rv.setAdapter(adapter);
+    }
+
+    private void setAppTheme() {
+        String uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
+        String str = pref.getString("THEME_PREF", "AppTheme");
+        assert str != null;
+        if(str.equals("AppTheme")) {
+            setTheme(R.style.AppTheme);
+        }else{
+            setTheme(R.style.DarkTheme);
+        }
     }
 }

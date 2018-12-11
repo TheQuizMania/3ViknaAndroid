@@ -13,8 +13,9 @@ import android.widget.Spinner;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
-import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+
+import java.util.Objects;
 
 import a.b.c.quizmania.Entities.Question;
 import a.b.c.quizmania.R;
@@ -29,13 +30,10 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     public String url = "https://opentdb.com/api.php?amount=10";
 
     private static FirebaseDatabase INSTANCE = null;
-    public static void setInstance(FirebaseDatabase instance){
-        INSTANCE = instance;
-    }
+//    public static void setInstance(FirebaseDatabase instance){
+//        INSTANCE = instance;
+//    }
 
-    // Views
-    private Spinner categoryDropDown;
-    private Spinner diffDropDown;
     private Button playBtn;
 
     // Strings for dropdown
@@ -61,8 +59,6 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     String selectedCategory;
     String selectedDifficulty;
     private String uId;
-    private FirebaseDatabase db;
-    private FirebaseAuth mAuth;
     String mode = "";
     int challengeId;
 
@@ -72,17 +68,17 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         super.onCreate(savedInstanceState);
 
         //Þetta if/else statement er svo testin keyri
-        db = INSTANCE;
+        FirebaseDatabase db = INSTANCE;
         if(db == null){
             FirebaseDatabase.getInstance();
             uId = "";
         }else{
-            mAuth = FirebaseAuth.getInstance();
-            uId = mAuth.getCurrentUser().getUid();
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            uId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         }
         setAppTheme();
         setContentView(R.layout.activity_selection);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         mode = getIntent().getStringExtra("MODE");
         //Svo test keyri
@@ -98,30 +94,31 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         selectedDifficulty = "&difficulty=easy";
 
         // Find Views
-        categoryDropDown = findViewById(R.id.category_dropdown);
-        diffDropDown = findViewById(R.id.difficulty_dropdown);
+        // Views
+        Spinner categoryDropDown = findViewById(R.id.category_dropdown);
+        Spinner diffDropDown = findViewById(R.id.difficulty_dropdown);
         playBtn = findViewById(R.id.sp_play_btn);
 
         // Listeners
         categoryDropDown.setOnItemSelectedListener(this);
         diffDropDown.setOnItemSelectedListener(this);
 
-        playBtn.setOnClickListener(v -> playGame(v));
+        playBtn.setOnClickListener(v -> playGame());
 
         // Fill in Drop down
 
         // For category
-        ArrayAdapter categoryAA = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, categories);
+        ArrayAdapter categoryAA = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories);
         categoryAA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categoryDropDown.setAdapter(categoryAA);
 
         // For difficulty
-        ArrayAdapter diffAA = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, difficulties);
+        ArrayAdapter diffAA = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, difficulties);
         diffAA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         diffDropDown.setAdapter(diffAA);
     }
 
-    private void playGame(View v) {
+    private void playGame() {
         // Gets the questions on click, and starts the next activity
         getQuestions();
     }
@@ -173,8 +170,6 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         }
     }
 
-
-
     private void getQuestions() {
         // Makes the buttons unclickable
         // Gets the questions from the api
@@ -183,28 +178,25 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
       Ion.with(this)
               .load(url + selectedCategory + selectedDifficulty + "&type=multiple")
               .asString()
-              .setCallback(new FutureCallback<String>() {
-                  @Override
-                  public void onCompleted(Exception e, String result) {
-                      // Converts the result from the api to a Question.class
-                      Gson gson = new Gson();
-                      question = gson.fromJson(result, Question.class);
-                      // Makes the play button clickable again
-                      //playBtn.setOnClickListener(v -> playGame(v));
-                      //playBtn.setText(getString(R.string.quiz_avaliable));
-                      Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
-                      intent.putExtra("CATEGORY", selectedCategory);
-                      intent.putExtra("DIFFICULTY", selectedDifficulty);
-                      intent.putExtra("MODE", mode);
-                      if (mode.matches("CHALLENGER")) {
-                          pendingChallenge.setQuestion(question);
-                      }
-
-                      playBtn.setClickable(true);
-                      playBtn.setText(getString(R.string.quiz_avaliable));
-                      startActivity(intent);
-                      finish();
+              .setCallback((e, result) -> {
+                  // Converts the result from the api to a Question.class
+                  Gson gson = new Gson();
+                  question = gson.fromJson(result, Question.class);
+                  // Makes the play button clickable again
+                  //playBtn.setOnClickListener(v -> playGame(v));
+                  //playBtn.setText(getString(R.string.quiz_avaliable));
+                  Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
+                  intent.putExtra("CATEGORY", selectedCategory);
+                  intent.putExtra("DIFFICULTY", selectedDifficulty);
+                  intent.putExtra("MODE", mode);
+                  if (mode.matches("CHALLENGER")) {
+                      pendingChallenge.setQuestion(question);
                   }
+
+                  playBtn.setClickable(true);
+                  playBtn.setText(getString(R.string.quiz_avaliable));
+                  startActivity(intent);
+                  finish();
               });
     }
 
@@ -214,6 +206,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     private void setAppTheme() {
         SharedPreferences pref = getSharedPreferences(uId, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");
+        assert str != null;
         if(str.equals("AppTheme")) {
             setTheme(R.style.AppTheme);
         }else{

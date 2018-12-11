@@ -33,8 +33,6 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseDatabase db;
     private FirebaseAuth mAuth;
 
-    // Views
-    private Button signupBtn;
     private EditText unEdit;
     private EditText emailEdit;
     private EditText passwdEdit;
@@ -45,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         // Firebase
@@ -56,7 +54,8 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         // Buttons
-        signupBtn = findViewById(R.id.sign_Up);
+        // Views
+        Button signupBtn = findViewById(R.id.sign_Up);
 
         // Input
         unEdit = findViewById(R.id.username_signUp);
@@ -134,7 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void addUserIfNotInDb(User user){
         db = FirebaseDatabase.getInstance();
-        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         DatabaseReference ref = db.getReference().child("root").child("Users").child(uId);
         //Listener listens if there is an attempt to change data in the database
         ref.addListenerForSingleValueEvent(new ValueEventListener() {

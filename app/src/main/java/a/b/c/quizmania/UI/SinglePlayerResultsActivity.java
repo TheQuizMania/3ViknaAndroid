@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import a.b.c.quizmania.Entities.Categories;
 import a.b.c.quizmania.Entities.StaticVariables;
@@ -31,18 +32,19 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_results);
-        getSupportActionBar().hide();
         setAppTheme();
+        setContentView(R.layout.activity_results);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         initVariables();
         populateViews();
     }
 
     private void setAppTheme() {
-        String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");
+        assert str != null;
         if(str.equals("AppTheme")) {
             setTheme(R.style.AppTheme);
         }else{

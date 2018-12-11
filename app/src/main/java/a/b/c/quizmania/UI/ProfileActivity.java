@@ -14,6 +14,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 import a.b.c.quizmania.R;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -28,21 +30,18 @@ public class ProfileActivity extends AppCompatActivity {
     // Firebase
     GoogleSignInClient mGoogleSignInClient;
 
-    // Views
-    private Button signOutBtn;
-    private Button changePassBtn;
     private TextView userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         setAppTheme();
         setContentView(R.layout.activity_profile);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         themeSwitch = findViewById(R.id.theme_switch);
         userInfo = findViewById(R.id.user_information);
-        changePassBtn = findViewById(R.id.change_password);
+        Button changePassBtn = findViewById(R.id.change_password);
         checkSwitch();
         writePreference();
 
@@ -59,10 +58,11 @@ public class ProfileActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         // Finding views
-        signOutBtn = (Button)findViewById(R.id.sign_out_profile);
+        // Views
+        Button signOutBtn = findViewById(R.id.sign_out_profile);
 
         // Setting click listeners
-        signOutBtn.setOnClickListener(v -> signOut(v));
+        signOutBtn.setOnClickListener(v -> signOut());
 
         if(GoogleSignIn.getLastSignedInAccount(this) == null){
             changePassBtn.setVisibility(View.VISIBLE);
@@ -74,12 +74,12 @@ public class ProfileActivity extends AppCompatActivity {
         super.onResume();
         String[] userInfoBox = userInfo.getText().toString().split("\n\n");
         String username = userInfoBox[0];
-        if(!username.equals(FirebaseAuth.getInstance().getCurrentUser().getDisplayName())){
+        if(!username.equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName())){
             recreate();
         }
     }
 
-    private void signOut(View v) {
+    private void signOut() {
         if(GoogleSignIn.getLastSignedInAccount(this) != null){
             mGoogleSignInClient.signOut();
             FirebaseAuth.getInstance().signOut();
@@ -94,6 +94,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void setAppTheme() {
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");
+        assert str != null;
         if(str.equals("AppTheme")) {
             setTheme(R.style.AppTheme);
         }else{
@@ -111,7 +112,7 @@ public class ProfileActivity extends AppCompatActivity {
         String email;
         String phoneNumber;
 
-        userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        userName = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName();
         email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         phoneNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
 
@@ -119,7 +120,7 @@ public class ProfileActivity extends AppCompatActivity {
             phoneNumber = "";
         }
 
-        userInfo.setText(userName + "\n\n" + email + "\n\n" + phoneNumber);
+        userInfo.setText(String.format("%s\n\n%s\n\n%s", userName, email, phoneNumber));
     }
     private void writePreference() {
         themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {

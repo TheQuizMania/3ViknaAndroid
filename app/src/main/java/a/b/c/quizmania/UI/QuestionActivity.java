@@ -9,6 +9,8 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 import a.b.c.quizmania.R;
 
 public class QuestionActivity extends AppCompatActivity {
@@ -23,11 +25,11 @@ public class QuestionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         getInfo();
         setAppTheme();
         setContentView(R.layout.activity_question);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
     }
 
     /*********************************
@@ -38,6 +40,7 @@ public class QuestionActivity extends AppCompatActivity {
     private void setAppTheme() {
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");
+        assert str != null;
         if(str.equals("AppTheme")) {
             setTheme(R.style.AppTheme);
         }else{

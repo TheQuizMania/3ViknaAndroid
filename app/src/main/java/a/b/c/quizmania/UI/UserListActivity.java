@@ -18,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.Entities.UserListItem;
@@ -35,19 +36,20 @@ public class UserListActivity extends AppCompatActivity implements UsersRVAdapte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_list);
-        getSupportActionBar().hide();
         setAppTheme();
-        
+        setContentView(R.layout.activity_user_list);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+
         userList = new ArrayList<>();
 
         fetchUserList();
     }
 
     private void setAppTheme() {
-        String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");
+        assert str != null;
         if(str.equals("AppTheme")) {
             setTheme(R.style.AppTheme);
         }else{
@@ -80,7 +82,8 @@ public class UserListActivity extends AppCompatActivity implements UsersRVAdapte
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for(DataSnapshot instance: dataSnapshot.getChildren()) {
                             UserListItem item = instance.getValue(UserListItem.class);
-                            if(!item.getEmail().matches(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
+                            assert item != null;
+                            if(!item.getEmail().matches(Objects.requireNonNull(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail()))) {
                                 userList.add(item);
                             } else {
                                 currUser = item;
