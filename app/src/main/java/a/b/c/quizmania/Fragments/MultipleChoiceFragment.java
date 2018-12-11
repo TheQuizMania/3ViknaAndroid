@@ -59,6 +59,13 @@ public class MultipleChoiceFragment extends Fragment {
         b3 = activity.findViewById(R.id.answer_3);
         b4 = activity.findViewById(R.id.answer_4);
 
+        //TODO: remove checkmark
+        b1.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        b2.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        b3.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        b4.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
+
         // Setting the answers
         b1.setText(answers.get(0));
         b2.setText(answers.get(1));
@@ -99,36 +106,40 @@ public class MultipleChoiceFragment extends Fragment {
                 guess = b1.getText().toString();
                 if(questionFragment.checkAnswer(b1.getText().toString())) {
                     b1.setBackgroundColor(Color.parseColor("#08ad08"));
-                    b1.append("\u2713");
+                    b1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.round_done_white_18dp, 0, 0);
                 } else {
                     b1.setBackgroundColor(Color.parseColor("#e51010"));
+                    b1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.round_clear_white_18dp, 0, 0);
                 }
                 break;
             case R.id.answer_2:
                 guess = b2.getText().toString();
                 if(questionFragment.checkAnswer(b2.getText().toString())) {
                     b2.setBackgroundColor(Color.parseColor("#08ad08"));
-                    b2.append("\u2713");
+                    b2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.round_done_white_18dp, 0, 0);
                 } else {
                     b2.setBackgroundColor(Color.parseColor("#e51010"));
+                    b2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.round_clear_white_18dp, 0, 0);
                 }
                 break;
             case R.id.answer_3:
                 guess = b3.getText().toString();
                 if(questionFragment.checkAnswer(b3.getText().toString())) {
                     b3.setBackgroundColor(Color.parseColor("#08ad08"));
-                    b3.append("\u2713");
+                    b3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.round_done_white_18dp, 0, 0);
                 } else {
                     b3.setBackgroundColor(Color.parseColor("#e51010"));
+                    b3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.round_clear_white_18dp, 0, 0);
                 }
                 break;
             case R.id.answer_4:
                 guess = b4.getText().toString();
                 if(questionFragment.checkAnswer(b4.getText().toString())) {
                     b4.setBackgroundColor(Color.parseColor("#08ad08"));
-                    b4.append("\u2731");
+                    b4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.round_done_white_18dp, 0, 0);
                 } else {
                     b4.setBackgroundColor(Color.parseColor("#e51010"));
+                    b4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.round_clear_white_18dp, 0, 0);
                 }
                 break;
             default:
@@ -154,16 +165,16 @@ public class MultipleChoiceFragment extends Fragment {
         // Prints the right button green
         if(correctAnswer.equals(b1.getText().toString())) {
             b1.setBackgroundColor(Color.parseColor("#08ad08"));
-            b4.append("\u2713");
+            b1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.round_done_white_18dp, 0, 0);
         } else if(correctAnswer.equals(b2.getText().toString())) {
             b2.setBackgroundColor(Color.parseColor("#08ad08"));
-            b2.append("\u2713");
+            b2.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.round_done_white_18dp, 0, 0);
         } else if(correctAnswer.equals(b3.getText().toString())) {
             b3.setBackgroundColor(Color.parseColor("#08ad08"));
-            b3.append("\u2713");
+            b3.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.round_done_white_18dp, 0, 0);
         } else if (correctAnswer.equals(b4.getText().toString())) {
             b4.setBackgroundColor(Color.parseColor("#08ad08"));
-            b4.append("\u2713");
+            b4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.round_done_white_18dp, 0, 0);
         }
     }
 
