@@ -1,6 +1,7 @@
 package a.b.c.quizmania.UI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -38,6 +39,7 @@ import a.b.c.quizmania.db.Utility;
 public class LoginActivity extends AppCompatActivity {
 
     final int RESULT_CODE = 9001;
+    SharedPreferences sp;
 
     // Firebase
     private FirebaseAuth mAuth;
@@ -52,6 +54,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Objects.requireNonNull(getSupportActionBar()).hide();
+
+        sp = getSharedPreferences("login",MODE_PRIVATE);
+
+        if(sp.getBoolean("logged",false)){
+            startMainMenu();
+        }
+
 
         initVariables();
     }
@@ -115,6 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                                             .getInstance().getCurrentUser()).getEmail(),
                                     FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                             startMainMenu();
+                            sp.edit().putBoolean("logged",true).apply();
                         } else {
                             // Sign in failed
                             Toast.makeText(LoginActivity.this,
@@ -178,6 +188,8 @@ public class LoginActivity extends AppCompatActivity {
                         //on sign in inserts new user into database if not exists
                         addUserIfNotInDb(user);
                         startMainMenu();
+                        sp.edit().putBoolean("logged",true).apply();
+
                     } else {
                         Toast.makeText(LoginActivity.this,
                                 R.string.google_signin_fail, Toast.LENGTH_SHORT).show();

@@ -55,6 +55,8 @@ public class QuestionDisplayFragment extends Fragment {
     // Hold the id at the current question
     private int questionId;
 
+    private boolean isRunning;
+
     // Array of AsyncTasks
     private BackgroundJob[] task;
 
@@ -100,6 +102,7 @@ public class QuestionDisplayFragment extends Fragment {
         fTransaction.replace(R.id.answer_fragment, displayFragment).commit();
 //        fManager.executePendingTransactions();
 
+        isRunning = true;
 
         // Initiate questionid as 0
         questionId = 0;
@@ -113,6 +116,15 @@ public class QuestionDisplayFragment extends Fragment {
                 // Creates the backgroundJobs and executes them with the right id ranging 0 - 9
                 task[i] = createBackgroundJob();
                 task[i].execute(i);
+            }
+        }
+    }
+
+    public void stopFragment() {
+        isRunning = false;
+        for(AsyncTask instance: task) {
+            if(instance.getStatus() == AsyncTask.Status.RUNNING) {
+                instance.cancel(true);
             }
         }
     }
@@ -194,13 +206,17 @@ public class QuestionDisplayFragment extends Fragment {
 
         if(mode.matches("CHALLENGER")) {
             initChallenge();
-            startActivity(new Intent(getActivity(), SinglePlayerResultsActivity.class));
+            Intent i = new Intent(getActivity(), SinglePlayerResultsActivity.class);
+            i.putExtra("MODE", "MULTI");
+            startActivity(i);
             getActivity().finish();
         } else if (mode.matches("CHALLENGEE")) {
             updateChallenge();
             startMPResults();
         } else {
-            startActivity(new Intent(getActivity(), SinglePlayerResultsActivity.class));
+            Intent i = new Intent(getActivity(), SinglePlayerResultsActivity.class);
+            i.putExtra("MODE", "SINGLE");
+            startActivity(i);
             getActivity().finish();
         }
     }
@@ -335,7 +351,7 @@ public class QuestionDisplayFragment extends Fragment {
                 isDisplayed = false;
                 questionId++;
                 questionsList.add(currQuest);
-                if(questionId == 10) {
+                if(questionId == 10 && isRunning) {
                     Log.d("QUIZ`_APP", "10 questions answered. Exiting");
                     showResults();
                 }
@@ -344,6 +360,9 @@ public class QuestionDisplayFragment extends Fragment {
             @Override
             public void onCancelled() {
                 Log.d("QUIZ_APP", "onCancelled() task[" + questionId + "]");
+                if(!isRunning) {
+                    return;
+                }
                 MultipleChoiceFragment fragment
                         = (MultipleChoiceFragment) fManager.findFragmentById(R.id.answer_fragment);
                 String pGuess = fragment.playerGuess();
@@ -356,9 +375,10 @@ public class QuestionDisplayFragment extends Fragment {
                 // Sleep for 1 sec to show the right answer and if all questions have been asked call showResult();
                 isDisplayed = false;
                 SystemClock.sleep(1000);
+
                 questionId++;
                 questionsList.add(currQuest);
-                if(questionId == 10) {
+                if(questionId == 10 && isRunning) {
                     Log.d("QUIZ_APP", "10 questions answered. Exiting");
                     showResults();
                 }

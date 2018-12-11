@@ -24,6 +24,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Switch themeSwitch;
     private String theme;
     private String uID;
+    SharedPreferences sp;
 
     
 
@@ -86,6 +87,9 @@ public class ProfileActivity extends AppCompatActivity {
         } else {
             FirebaseAuth.getInstance().signOut();
         }
+        sp = getSharedPreferences("login", MODE_PRIVATE);
+        sp.edit().putBoolean("logged",false).apply();
+
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
