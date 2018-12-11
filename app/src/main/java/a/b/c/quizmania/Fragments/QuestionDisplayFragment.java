@@ -179,7 +179,7 @@ public class QuestionDisplayFragment extends Fragment {
             retVal.set(i, StringEscapeUtils.unescapeHtml4(retVal.get(i)));
         }
 
-        Collections.sort(retVal);
+        Collections.shuffle(retVal);
         return retVal;
     }
 
@@ -240,7 +240,7 @@ public class QuestionDisplayFragment extends Fragment {
         if(category.equals("")){
             pendingChallenge.setCategory("Random");
         } else {
-            String[] ret = difficulty.split("=");
+            String[] ret = category.split("=");
             pendingChallenge.setCategory(ret[1]);
         }
         String[] ret = difficulty.split("=");
