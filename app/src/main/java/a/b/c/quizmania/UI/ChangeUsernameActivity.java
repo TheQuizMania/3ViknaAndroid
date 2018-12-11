@@ -1,5 +1,6 @@
 package a.b.c.quizmania.UI;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -26,10 +27,22 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_username);
         getSupportActionBar().hide();
+        setAppTheme();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         newUsername = findViewById(R.id.new_username);
         confirmNewUsername = findViewById(R.id.confirm_new_user);
+    }
+
+    private void setAppTheme() {
+        String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
+        String str = pref.getString("THEME_PREF", "AppTheme");
+        if(str.equals("AppTheme")) {
+            setTheme(R.style.AppTheme);
+        }else{
+            setTheme(R.style.DarkTheme);
+        }
     }
 
     public void submitUsernameChange(View view) {

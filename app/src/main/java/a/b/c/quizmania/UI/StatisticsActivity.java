@@ -1,5 +1,6 @@
 package a.b.c.quizmania.UI;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -60,8 +61,20 @@ public class StatisticsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
         getSupportActionBar().hide();
+        setAppTheme();
         initVariables();
         readData();
+    }
+
+    private void setAppTheme() {
+        String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
+        String str = pref.getString("THEME_PREF", "AppTheme");
+        if(str.equals("AppTheme")) {
+            setTheme(R.style.AppTheme);
+        }else{
+            setTheme(R.style.DarkTheme);
+        }
     }
 
     private void initVariables() {

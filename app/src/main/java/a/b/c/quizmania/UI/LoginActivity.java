@@ -81,7 +81,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
     /*
     Sign in
     Runs when sign in button is clicked,

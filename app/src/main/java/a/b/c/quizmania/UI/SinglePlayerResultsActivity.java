@@ -1,10 +1,13 @@
 package a.b.c.quizmania.UI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -30,9 +33,21 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
         getSupportActionBar().hide();
+        setAppTheme();
 
         initVariables();
         populateViews();
+    }
+
+    private void setAppTheme() {
+        String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
+        String str = pref.getString("THEME_PREF", "AppTheme");
+        if(str.equals("AppTheme")) {
+            setTheme(R.style.AppTheme);
+        }else{
+            setTheme(R.style.DarkTheme);
+        }
     }
 
     @Override

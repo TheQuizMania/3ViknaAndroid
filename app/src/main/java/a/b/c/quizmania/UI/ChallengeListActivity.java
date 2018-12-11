@@ -1,12 +1,15 @@
 package a.b.c.quizmania.UI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.db.ChallengeRVAdapter;
@@ -25,15 +28,20 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_liist);
         getSupportActionBar().hide();
-
+        setAppTheme();
         listAllMatches();
 
+    }
 
-//        RecyclerView rv = findViewById(R.id.rv_user_list);
-//        rv.setLayoutManager(new LinearLayoutManager(this));
-//        adapter = new UsersRVAdapter(this, userList);
-//        adapter.setClickListener(this);
-//        rv.setAdapter(adapter);
+    private void setAppTheme() {
+        String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
+        String str = pref.getString("THEME_PREF", "AppTheme");
+        if(str.equals("AppTheme")) {
+            setTheme(R.style.AppTheme);
+        }else{
+            setTheme(R.style.DarkTheme);
+        }
     }
 
     private void listAllMatches() {

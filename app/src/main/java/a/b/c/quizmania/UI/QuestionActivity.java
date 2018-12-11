@@ -24,8 +24,8 @@ public class QuestionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        setAppTheme();
         getInfo();
+        setAppTheme();
         setContentView(R.layout.activity_question);
         getSupportActionBar().hide();
     }
