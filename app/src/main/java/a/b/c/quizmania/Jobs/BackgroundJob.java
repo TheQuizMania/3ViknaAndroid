@@ -15,7 +15,7 @@ public class BackgroundJob extends AsyncTask<Integer, Integer, Integer> {
     @Override
     protected Integer doInBackground(Integer... integers) {
         long startTime = System.currentTimeMillis();
-        long endTime = startTime + 1000 * 20;
+        long endTime = (integers[0] == 0) ? startTime + 1000 * 20 : startTime + 1000 * 21;
         long currTime = 0;
         while(!this.isCancelled() && endTime > (currTime = System.currentTimeMillis())) {
             SystemClock.sleep(2);
