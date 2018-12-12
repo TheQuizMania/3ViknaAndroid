@@ -111,25 +111,25 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void populateViews() {
-        totalPlayed.setText(String.format(Locale.US, "Played: %d", getTotalGamesPlayed()));
-        totalRight.setText(String.format(Locale.US, "Right: %d", getTotalRightAnswers()));
-        totalWrong.setText(String.format(Locale.US, "Wrong: %d", getTotalWrongAnswers()));
+        totalPlayed.setText(String.format(Locale.US, "Games played: %d", getTotalGamesPlayed()));
+        totalRight.setText(String.format(Locale.US, "Answered right: %d", getTotalRightAnswers()));
+        totalWrong.setText(String.format(Locale.US, "Answered wrong: %d", getTotalWrongAnswers()));
         totalRatio.setText(String.format(Locale.US, "Ratio: %s", getTotalRatio()));
 
         mPWins.setText(String.format(Locale.US, "Wins: %d", getTotalMPWins()));
         mPLosses.setText(String.format(Locale.US, "Losses: %d", getTotalMPLosses()));
         winLossRatio.setText(String.format(Locale.US, "Ratio: %s", getWinLossRatio()));
 
-        easyRight.setText(String.format(Locale.US, "Right: %d", getRightAnswersByDifficulty("easy")));
-        easyWrong.setText(String.format(Locale.US, "Wrong: %d", getWrongAnswersByDifficulty("easy")));
+        easyRight.setText(String.format(Locale.US, "Answered right: %d", getRightAnswersByDifficulty("easy")));
+        easyWrong.setText(String.format(Locale.US, "Answered wrong: %d", getWrongAnswersByDifficulty("easy")));
         easyRatio.setText(String.format(Locale.US, "Ratio: %s", getRatioByDifficulty("easy")));
 
-        mediumRight.setText(String.format(Locale.US, "Right: %d", getRightAnswersByDifficulty("medium")));
-        mediumWrong.setText(String.format(Locale.US, "Wrong: %d", getWrongAnswersByDifficulty("medium")));
+        mediumRight.setText(String.format(Locale.US, "Answered right: %d", getRightAnswersByDifficulty("medium")));
+        mediumWrong.setText(String.format(Locale.US, "Answered wrong: %d", getWrongAnswersByDifficulty("medium")));
         mediumRatio.setText(String.format(Locale.US, "Ratio: %s", getRatioByDifficulty("medium")));
 
-        hardRight.setText(String.format(Locale.US, "Right: %d", getRightAnswersByDifficulty("hard")));
-        hardWrong.setText(String.format(Locale.US, "Wrong: %d", getWrongAnswersByDifficulty("hard")));
+        hardRight.setText(String.format(Locale.US, "Answered right: %d", getRightAnswersByDifficulty("hard")));
+        hardWrong.setText(String.format(Locale.US, "Answered wrong: %d", getWrongAnswersByDifficulty("hard")));
         hardRatio.setText(String.format(Locale.US, "Ratio: %s", getRatioByDifficulty("hard")));
 
         favoriteCategory.setText(getFavoriteCategory());

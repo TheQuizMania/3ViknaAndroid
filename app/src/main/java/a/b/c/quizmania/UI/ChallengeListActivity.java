@@ -44,7 +44,7 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
             intent.putExtra("CATEGORY", "");
         } else {
             intent.putExtra("CATEGORY", "&category=" + currChallenge.getCategory());
-        }
+        }//TODO: this thing
         intent.putExtra("DIFFICULTY", "&difficulty=" + currChallenge.getDifficulty());
         intent.putExtra("MODE", "CHALLENGEE");
         question = currChallenge.getQuestion();

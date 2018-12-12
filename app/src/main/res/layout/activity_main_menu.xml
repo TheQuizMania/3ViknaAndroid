@@ -16,7 +16,7 @@
         android:textStyle="bold"
         android:textSize="30sp"
         android:gravity="center"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="50dp"/>
     <Button
         android:id="@+id/quick_match_btn"
         android:layout_width="150dp"
@@ -25,27 +25,27 @@
         android:textAllCaps="false" />
     <Button
         android:id="@+id/single_player_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/single_player"
         android:textAllCaps="false" />
     <Button
         android:id="@+id/multi_player_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/multiplayer"
         android:textAllCaps="false" />
 
     <Button
         android:id="@+id/matches_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/matches"
         android:textAllCaps="false"  />
 
     <Button
         android:id="@+id/profile_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/profile"
         android:textAllCaps="false" />
