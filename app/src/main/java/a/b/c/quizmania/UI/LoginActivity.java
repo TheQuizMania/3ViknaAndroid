@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient googleClient;
     private GoogleSignInAccount account;
 
+    // EditTexts
     private EditText emailEdit;
     private EditText passwdEdit;
 

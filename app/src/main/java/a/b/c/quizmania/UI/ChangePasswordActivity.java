@@ -24,8 +24,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //sets the app theme
         setAppTheme();
         setContentView(R.layout.activity_change_password);
+        //hides the action bar on top
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         newPass = findViewById(R.id.new_pass);
@@ -37,7 +39,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     public void submitPassChange(View view) {
         if(!passwordIsValid()){
             newPass.requestFocus();
-            newPass.setError(getString(R.string.username_needed));
+            newPass.setError("Invalid password");
         } else if(!passwordsMatch()){
             confirmNewPass.requestFocus();
             confirmNewPass.setError(getString(R.string.no_usernames_match));
@@ -50,25 +52,34 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void changePassword() {
-        user.updatePassword(newPass.getText().toString())
-                .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        Toast.makeText(ChangePasswordActivity.this,
-                                "Successfully changed password", Toast.LENGTH_SHORT).show();
-                    }
-                });
-        finish();
+            user.updatePassword(newPass.getText().toString())
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            Toast.makeText(ChangePasswordActivity.this,
+                                    "Successfully changed password", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            finish();
     }
 
     private boolean passwordIsValid() {
-        return newPass.length() != 0;
+        //password can't be empty string or be whitespace only
+        if(newPass.getText().toString().trim().length() == 0){
+            return false;
+            //password needs to include lower and uppercase letters and a number, can't include whitespace
+        }else if(!newPass.getText().toString().trim().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,}$")){
+            return false;
+        }
+            return true;
     }
 
     private boolean passwordsMatch() {
+        //password has to match the confirm password editText
         return newPass.getText().toString().matches(confirmNewPass.getText().toString());
     }
 
     private boolean passwordIsSameAsOld() {
+        //new password can't match the existing one
         return Objects.equals(user.getDisplayName(), newPass.getText().toString());
     }
 

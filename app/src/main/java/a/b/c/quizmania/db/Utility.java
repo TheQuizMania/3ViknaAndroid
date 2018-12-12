@@ -25,7 +25,6 @@ public class Utility {
                 .child(FirebaseAuth.getInstance().getUid())
                 .setValue(newUser);
     }
-
     /**
      * Called when a new score is to be stored
      *
@@ -64,6 +63,5 @@ public class Utility {
 				.child(challenge.getId())
 				.setValue(challenge);
 	}
-
 
 }

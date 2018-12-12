@@ -43,8 +43,10 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        //hides the bar on top of the app.
         Objects.requireNonNull(getSupportActionBar()).hide();
-        Objects.requireNonNull(getSupportActionBar()).hide();
+        //Objects.requireNonNull(getSupportActionBar()).hide();
 
         // Firebase
         db = INSTANCE;
@@ -70,6 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void signUp() {
 
+        //Strings in the EditTexts
         String userName = unEdit.getText().toString();
         String email = emailEdit.getText().toString();
         String passW = passwdEdit.getText().toString();
@@ -91,14 +94,15 @@ public class RegisterActivity extends AppCompatActivity {
             passwdEdit.setError(getString(R.string.password_needed));
             //regex validates if password length is > 6 and at least one of each
             // of the following is used: alphabetical letter for each case and a number
-        } else if(passW.trim().matches("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})")){
+        } else if(!passW.trim().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,}$")){
             passwdEdit.requestFocus();
             passwdEdit.setError("Password invalid");
         } else if(!passWConfirm.equals(passW)) {
+            //Checks whether password and confirm password match
             passwdConfirmEdit.requestFocus();
             passwdConfirmEdit.setError(getString(R.string.password_mismatch));
         }
-        else {
+        else { //creates a user if task is successful
             mAuth.createUserWithEmailAndPassword(email, passW)
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()) {
@@ -122,7 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
                             assert gUser != null;
                             gUser.updateProfile(changeRequest);
                             finish();
-                        } else {
+                        } else { //if task was not successful, user is informed with a toast
                             Toast.makeText(RegisterActivity.this,
                                     getString(R.string.registration_failed),
                                     Toast.LENGTH_SHORT).show();
@@ -141,9 +145,10 @@ public class RegisterActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d("DATACHANGE", "onDataChange");
                 if(!dataSnapshot.exists()){
+                    //if use does not exists, add user to database
                     ref.setValue(user);
                     Toast.makeText(RegisterActivity.this, "Added User to database", Toast.LENGTH_SHORT).show();
-                } else {
+                } else { //else let user know an account already exists
                     Toast.makeText(RegisterActivity.this, "User already exists", Toast.LENGTH_SHORT).show();
                 }
             }

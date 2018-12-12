@@ -160,7 +160,7 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
                 changeText(resultsTV, "Winner: " + currChallenge.getChallenger()
                         .getDisplayName());
             } else {
-                changeText(resultsTV, "Tie");
+                changeText(resultsTV, "Draw");
             }
         }
     }
