@@ -57,10 +57,11 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     String cat;
     String selectedDifficulty;
 
-    private String uId;
     String mode = "";
 
     int challengeId;
+
+    private FirebaseAuth mAuth;
 
 
     @Override
@@ -75,14 +76,11 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
             runQuickPlay();
         }else {
             //else covers everything, so it doesn't run when you quickplay.
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            mAuth = FirebaseAuth.getInstance();
             //Check if mAuth is null, this is so the tests run
-            if(mAuth.getCurrentUser() == null){
-                uId = "";
-            }else{
-                uId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+            if(mAuth.getCurrentUser() != null){
+                setAppTheme();
             }
-            setAppTheme();
             setContentView(R.layout.activity_selection);
             Objects.requireNonNull(getSupportActionBar()).hide();
 
@@ -276,6 +274,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     public void onNothingSelected(AdapterView<?> parent) { }
 
     private void setAppTheme() {
+        String uId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         SharedPreferences pref = getSharedPreferences(uId, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");
         assert str != null;
