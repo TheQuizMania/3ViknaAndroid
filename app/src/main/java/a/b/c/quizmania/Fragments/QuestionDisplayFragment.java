@@ -16,16 +16,11 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
@@ -35,6 +30,7 @@ import a.b.c.quizmania.Jobs.UiCallback;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.UI.MultiPlayerResultsActivity;
 import a.b.c.quizmania.UI.SinglePlayerResultsActivity;
+import a.b.c.quizmania.db.Utility;
 
 import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
 import static a.b.c.quizmania.Entities.StaticVariables.pendingChallenge;
@@ -229,10 +225,7 @@ public class QuestionDisplayFragment extends Fragment {
         // Sets the score of the one that was challenged
         currChallenge.setChallengeeScore(score);
         // Writes the new data to the database
-        FirebaseDatabase.getInstance().getReference().child("root")
-                .child("challenges")
-                .child(String.valueOf(currChallenge.getId()))
-                .setValue(currChallenge);
+        Utility.updateChallenge(currChallenge);
     }
 
     private void initChallenge() {
@@ -250,17 +243,11 @@ public class QuestionDisplayFragment extends Fragment {
         pendingChallenge.setChallengerScore(score);
 
         // Writes down the challenge to the database
-        FirebaseDatabase.getInstance().getReference().child("root")
-                .child("challenges")
-                .push()
-                .setValue(pendingChallenge);
+        Utility.addChallenge(pendingChallenge);
     }
 
     private void writeScoreToDatabase() {
-        String uId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance()
-                .getReference("root").child("Users").child(uId).child("scores");
-        ref.push().setValue(score);
+        Utility.addScore(score);
     }
 
     private void initScore(){
