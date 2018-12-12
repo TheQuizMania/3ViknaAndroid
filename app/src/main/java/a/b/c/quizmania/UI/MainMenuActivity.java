@@ -35,10 +35,12 @@ public class MainMenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //gets the users Id to use for shared preferences
         uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        //Calls function to set the apps theme to what is stored in the shared preference
         setAppTheme();
         setContentView(R.layout.activity_main_menu);
+        //hides the action bar on top
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         // Firebase
@@ -48,8 +50,8 @@ public class MainMenuActivity extends AppCompatActivity {
         myChallenges = new ArrayList<>();
         fetchChallenges();
 
-        setContentView(R.layout.activity_main_menu);
-        Objects.requireNonNull(getSupportActionBar()).hide();
+        //setContentView(R.layout.activity_main_menu);
+        //Objects.requireNonNull(getSupportActionBar()).hide();
 
         // Finding views
         // Views
@@ -59,8 +61,6 @@ public class MainMenuActivity extends AppCompatActivity {
         Button profileBtn = findViewById(R.id.profile_btn);
         nameBox = findViewById(R.id.main_menu_title);
         Button matchesBtn = findViewById(R.id.matches_btn);
-
-        getPlayer();
 
         // Setting Click listeners
         singlePlayerBtn.setOnClickListener(v -> singlePlayer());
@@ -74,17 +74,21 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     private void quickMatch() {
+        //Starts the SelectionActivity with onClick an extra, extra makes sure to select
+        //a random difficulty and puts the users straight into a game (Singleplayer)
         Intent intent = new Intent(this, SelectionActivity.class);
         intent.putExtra("QUICK_MATCH", 1);
         startActivity(intent);
     }
 
     private void startMatchActivity() {
+        //Starts the ChallengerListActivity onClick
         Intent intent = new Intent(this, ChallengeListActivity.class);
         startActivity(intent);
     }
 
     private void getPlayer(){
+        //fetches the logged in user and displays his username in a TextView
         String user = Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName();
 
         nameBox.setText(String.format("Welcome\n%s", user));
@@ -97,6 +101,7 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     private void singlePlayer() {
+        //Takes the user to the SelectionActivity for a singleplayer game
         Intent intent = new Intent(this, SelectionActivity.class);
         intent.putExtra("MODE", "single");
         startActivity(intent);
@@ -109,12 +114,15 @@ public class MainMenuActivity extends AppCompatActivity {
         finish();
     }
     private void setAppTheme() {
+        //fetches shared preferences with uID key
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");
         assert str != null;
         if(str.equals("AppTheme")) {
+            //Sets activity to light mode
             setTheme(R.style.AppTheme);
         }else{
+            //Sets activity to dark mode
             setTheme(R.style.DarkTheme);
         }
         //

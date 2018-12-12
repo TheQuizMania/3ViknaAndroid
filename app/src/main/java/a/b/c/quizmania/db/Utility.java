@@ -22,5 +22,4 @@ public class Utility {
                 .child(FirebaseAuth.getInstance().getUid())
                 .setValue(newUser);
     }
-
 }

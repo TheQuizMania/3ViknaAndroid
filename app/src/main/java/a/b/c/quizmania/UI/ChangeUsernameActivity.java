@@ -37,13 +37,13 @@ public class ChangeUsernameActivity extends AppCompatActivity {
     }
 
     public void submitUsernameChange(View view) {
-        if(!usernameIsValid()){
+        if(!usernameIsValid()){ //username can't be empty or spaces
             newUsername.requestFocus();
             newUsername.setError(getString(R.string.username_needed));
-        } else if(!usernamesMatch()){
+        } else if(!usernamesMatch()){ //username and confirm username have to match
             confirmNewUsername.requestFocus();
             confirmNewUsername.setError(getString(R.string.no_usernames_match));
-        } else if(usernameIsSameAsOld()){
+        } else if(usernameIsSameAsOld()){ //new username can't be the same as the existing one
             newUsername.requestFocus();
             newUsername.setError(getString(R.string.username_same_as_old));
         } else {
@@ -62,25 +62,31 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        //if change was successful, inform the user and finish() the activity, returning the user
+        //to the next activity on the stack(profile)
         Toast.makeText(this, "Changed username successfully", Toast.LENGTH_SHORT).show();
         finish();
     }
 
     private void changeFirebaseName() {
+        //updates the firebasedatabase with the new username
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
                 .child("root").child("Users").child(user.getUid()).child("userName");
         ref.setValue(newUsername.getText().toString());
     }
 
     private boolean usernameIsValid() {
-        return newUsername.length() != 0;
+        //username can't be empty or spaces only
+        return newUsername.getText().toString().trim().length() != 0;
     }
 
     private boolean usernamesMatch() {
+        //username and confirm username have to match
         return newUsername.getText().toString().matches(confirmNewUsername.getText().toString());
     }
 
     private boolean usernameIsSameAsOld() {
+        //new username can't be the same as the existing one
         return Objects.equals(user.getDisplayName(), newUsername.getText().toString());
     }
 

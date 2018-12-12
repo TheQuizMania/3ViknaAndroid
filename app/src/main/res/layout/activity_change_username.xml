@@ -8,22 +8,24 @@
     tools:context=".UI.ChangeUsernameActivity"
     android:orientation="vertical"
     android:gravity="center">
+
     <EditText
         android:id="@+id/new_username"
         android:layout_width="match_parent"
-        android:inputType="text"
-        android:maxLines="1"
-        android:layout_marginHorizontal="30sp"
         android:layout_height="wrap_content"
-        android:hint="New username"/>
+        android:layout_marginHorizontal="30sp"
+        android:hint="New username"
+        android:inputType="textPersonName"
+        android:maxLines="1" />
+
     <EditText
         android:id="@+id/confirm_new_user"
         android:layout_width="match_parent"
-        android:inputType="text"
-        android:maxLines="1"
-        android:layout_marginHorizontal="30sp"
         android:layout_height="wrap_content"
-        android:hint="Confirm new username"/>
+        android:layout_marginHorizontal="30sp"
+        android:hint="Confirm new username"
+        android:inputType="text|textPersonName"
+        android:maxLines="1" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

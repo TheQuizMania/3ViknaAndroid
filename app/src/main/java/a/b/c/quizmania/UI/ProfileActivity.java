@@ -24,7 +24,8 @@ public class ProfileActivity extends AppCompatActivity {
     private Switch themeSwitch;
     private String theme;
     private String uID;
-    SharedPreferences sp;
+
+    //private SharedPreferences sp;
 
     
 
@@ -36,17 +37,21 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Gets uId to use for shared preferences and sets the app theme
         uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         setAppTheme();
         setContentView(R.layout.activity_profile);
         Objects.requireNonNull(getSupportActionBar()).hide();
+
+
         themeSwitch = findViewById(R.id.theme_switch);
         userInfo = findViewById(R.id.user_information);
+
         Button changePassBtn = findViewById(R.id.change_password);
+        //Sets the switch button to the correct position
         checkSwitch();
+
         writePreference();
-
-
 
         setUserInfo();
 
@@ -72,6 +77,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        //onResume recreates the activity if the user has changed his username to display the new one
         super.onResume();
         String[] userInfoBox = userInfo.getText().toString().split("\n\n");
         String username = userInfoBox[0];
@@ -87,7 +93,7 @@ public class ProfileActivity extends AppCompatActivity {
         } else {
             FirebaseAuth.getInstance().signOut();
         }
-        sp = getSharedPreferences("login", MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
         sp.edit().putBoolean("logged",false).apply();
 
         Intent intent = new Intent(this, LoginActivity.class);
@@ -96,14 +102,18 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setAppTheme() {
+        //fetches shared preferences with uId key
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");
         assert str != null;
         if(str.equals("AppTheme")) {
+            //sets app theme to light mode
             setTheme(R.style.AppTheme);
         }else{
+            //sets app theme to dark mode
             setTheme(R.style.DarkTheme);
         }
+        //sets the theme variable to use in checkSwitch()
         theme = str;
     }
 
@@ -112,6 +122,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setUserInfo() {
+        //gets the users info and sets the TextView to display them.
         String userName;
         String email;
         String phoneNumber;
@@ -127,10 +138,11 @@ public class ProfileActivity extends AppCompatActivity {
         userInfo.setText(String.format("%s\n\n%s\n\n%s", userName, email, phoneNumber));
     }
     private void writePreference() {
+        //if themeSwitch is clicked, changes the theme and recreates the activity to apply changes
+        //also writes into shared preferences to remember the users settings.
         themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked){
                 setTheme(R.style.DarkTheme);
-
                 SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("THEME_PREF", "DarkTheme");
@@ -149,6 +161,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        //Creates a new MainMenuActivity to change the light/dark mode
         super.onBackPressed();
         Intent intent = new Intent(this, MainMenuActivity.class);
         startActivity(intent);

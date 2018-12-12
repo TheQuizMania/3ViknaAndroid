@@ -32,11 +32,14 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Sets the app theme
         setAppTheme();
         setContentView(R.layout.activity_results);
+        //Hides the actionbar on top
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         Intent ret = getIntent();
+        //If user is playing multiplayer, hides the play_again button
         if(ret.getStringExtra("MODE").matches("MULTI")) {
             ((Button)findViewById(R.id.sp_result_play_again)).setVisibility(Button.GONE);
         }
@@ -63,7 +66,7 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
     }
 
     private void initVariables(){
-
+        //initializing variables
         resultScore = StaticVariables.getCurrScore();
         category = findViewById(R.id.results_category);
         difficulty = findViewById(R.id.results_difficulty);
@@ -73,6 +76,7 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
     }
 
     private void populateViews(){
+        //setting TextView texts
         category.setText(String.format("Category: %s", getCategoryName()));
         difficulty.setText(String.format("Difficulty: %s", resultScore.getDifficulty()));
         rightAnswers.setText(String.format(Locale.US, "%d %s", resultScore.getCorrectAnswers(), "out of 10 right"));
@@ -80,6 +84,7 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
     }
 
     private String calculateAverageTime() {
+        //Gets all the questions and sums up the time to answer, returns the avg time spent on a question
         List<QuestionStats> questionList = resultScore.getQuestionStats();
         double totalTimeToAnswer = 0;
         for(QuestionStats q : questionList) {
@@ -92,16 +97,19 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
     }
 
     public void goToMainMenu(View view){
+        //Button to go back to main menu
         startActivity(new Intent(this, MainMenuActivity.class));
         finish();
     }
 
     public void goToSelection(View view){
+        //button to go to SelectionActivity
         startActivity(new Intent(this, SelectionActivity.class));
         finish();
     }
 
     private String getCategoryName(){
+        //Fetched category name
         return resultScore.getCategory();
     }
 

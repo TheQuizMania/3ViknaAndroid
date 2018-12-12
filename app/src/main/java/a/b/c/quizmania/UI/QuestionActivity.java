@@ -64,6 +64,7 @@ public class QuestionActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        //when back button is pressed during a game, cancel and stops all fragment/background threads
         QuestionDisplayFragment fragment = (QuestionDisplayFragment)getSupportFragmentManager().findFragmentById(R.id.question_fragment);
         fragment.stopFragment();
 

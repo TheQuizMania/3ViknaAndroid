@@ -137,7 +137,7 @@ public class RegisterActivityTest {
         emailBox.perform(typeText("test@testdomain.tst"), closeSoftKeyboard());
         passWBox.perform(typeText(""), closeSoftKeyboard());
         passWBox.perform(clearText(), typeText(""), closeSoftKeyboard());
-//        passWBox.perform(typeText("Test123"), closeSoftKeyboard());
+//      passWBox.perform(typeText("Test123"), closeSoftKeyboard());
         registerBtn.perform(click());
     }
 

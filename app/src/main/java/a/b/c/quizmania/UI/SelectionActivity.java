@@ -61,8 +61,10 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     String selectedCategory;
     String cat;
     String selectedDifficulty;
+
     private String uId;
     String mode = "";
+
     int challengeId;
 
 
@@ -70,6 +72,8 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Checks whether the extra is equal to 1, if so the user clicked quick play and will be automatically put
+        //into a single player game with a random difficulty
         int quickPlayCheck = getIntent().getIntExtra("QUICK_MATCH", -1);
         if(quickPlayCheck == 1){
             setMode();
@@ -128,9 +132,11 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
 
     private void runQuickPlay() {
 
+        //gets random difficulty
         String difficultyString = getRandomDifficulty();
 
 
+        //Fetches questions from the api from all categories(random) and a random difficulty
         Ion.with(this)
                 .load(url + difficultyString + "&type=multiple")
                 .asString()
@@ -139,9 +145,14 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                     Gson gson = new Gson();
                     question = gson.fromJson(result, Question.class);
 
+                    //if the response code in not 0 the api fetch was not successful
+                    //recreates the activity to try again
+                    //this can happen when there is not enough question in a particular category/difficulty combination
+                    //or if the api fetch is too slow
                     if(question.getResponseCode() != 0){
                         recreate();
-                    }else{
+                    }else{ //if the response code is 0 , it starts the QuestionActivity with the
+                            //correct extras.
                         Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
                         setExtrasIntent(intent, "", difficultyString, "");
                         startActivity(intent);
@@ -151,6 +162,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                 });
     }
     private String getRandomDifficulty() {
+        //random a number from 1-3 and chooses a difficulty accordingly
         Random rand = new Random();
         int i = rand.nextInt(3) + 1;
         switch (i) {
@@ -232,12 +244,16 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                   Gson gson = new Gson();
                   question = gson.fromJson(result, Question.class);
 
+                  //If the response code is not 0, something went wrong fetching from the api
+                  //Some category/difficulty combinations fail due to lack of questions
+                  //this lets the user know and recreates the activity
                   if(question.getResponseCode() != 0){
                       Toast.makeText(this, "Error fetching data", Toast.LENGTH_SHORT).show();
                       recreate();
-                  }else{
+                  }else{ //if fetching from the api was successful, start the QuestionActivity
                       Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
                       setExtrasIntent(intent, cat, selectedDifficulty, mode);
+                      //make the button clickable again so when the user returns it isn't disabled
                       playBtn.setClickable(true);
                       playBtn.setText(getString(R.string.quiz_avaliable));
                       startActivity(intent);
