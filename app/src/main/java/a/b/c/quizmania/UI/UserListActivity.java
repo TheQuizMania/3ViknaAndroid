@@ -32,6 +32,10 @@ public class UserListActivity extends AppCompatActivity implements UsersRVAdapte
     private List<UserListItem> userList;
     private UserListItem currUser;
     UsersRVAdapter adapter;
+
+    public void setUserList(List<UserListItem> users) {
+        this.userList = users;
+    }
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,7 @@ public class UserListActivity extends AppCompatActivity implements UsersRVAdapte
         setContentView(R.layout.activity_user_list);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        userList = new ArrayList<>();
+        if( userList == null ) { userList = new ArrayList<>(); }
 
         fetchUserList();
     }
