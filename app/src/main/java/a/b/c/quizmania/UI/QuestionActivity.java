@@ -26,7 +26,12 @@ public class QuestionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        //So tests run, else it gets a null pointer exception
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+            uID = "";
+        }else{
+            uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        }
         getInfo();
         setAppTheme();
         setContentView(R.layout.activity_question);
