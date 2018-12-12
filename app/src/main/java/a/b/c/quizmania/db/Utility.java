@@ -11,14 +11,13 @@ import a.b.c.quizmania.Entities.UserListItem;
 
 public class Utility {
 
-    /*********************************************************************
-     *                                                                   *
-     *  Class for storing the users to the user list,                    *
-     *  It holds all the users that have logged in and can be challenged *
-     *                                                                   *
-     * @param email                                                      *
-     * @param displayName                                                *
-     *********************************************************************/
+    /**
+     * Class for storing the users to the user list,
+     * It holds all the users that have logged in and can be challenged
+     *
+     * @param email
+     * @param displayName
+     */
     public static void addToUserList(String email, String displayName) {
         UserListItem newUser = new UserListItem(email, displayName);
         FirebaseDatabase.getInstance().getReference().child("root")
@@ -26,6 +25,12 @@ public class Utility {
                 .child(FirebaseAuth.getInstance().getUid())
                 .setValue(newUser);
     }
+
+    /**
+     * Called when a new score is to be stored
+     *
+     * @param score
+     */
 	public static void addScore(Score score) {
 		String uId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 		FirebaseDatabase.getInstance().getReference().child("root")
@@ -36,6 +41,11 @@ public class Utility {
 				.setValue(score);
 	}
 
+    /**
+     * Called when a new challenge is to be initialized
+     *
+     * @param challenge
+     */
 	public static void addChallenge(Challenge challenge) {
 		FirebaseDatabase.getInstance().getReference().child("root")
 				.child("challenges")
@@ -43,6 +53,11 @@ public class Utility {
 				.setValue(challenge);
 	}
 
+    /**
+     * Called when the challenge has been finished
+     *
+     * @param challenge
+     */
 	public static void updateChallenge(Challenge challenge) {
 		FirebaseDatabase.getInstance().getReference().child("root")
 				.child("challenges")
