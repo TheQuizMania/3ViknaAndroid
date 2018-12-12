@@ -31,6 +31,7 @@ public class StatisticsActivity extends AppCompatActivity {
     private List<Score> scores;
 
     //Views
+    private TextView totalPlayed;
     private TextView totalRight;
     private TextView totalWrong;
     private TextView totalRatio;
@@ -82,6 +83,7 @@ public class StatisticsActivity extends AppCompatActivity {
     private void initVariables() {
         scores = new ArrayList<>();
 
+        totalPlayed = findViewById(R.id.total_played);
         totalRight = findViewById(R.id.total_right);
         totalWrong = findViewById(R.id.total_wrong);
         totalRatio = findViewById(R.id.total_ratio);
@@ -109,6 +111,7 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void populateViews() {
+        totalPlayed.setText(String.format(Locale.US, "Played: %d", getTotalGamesPlayed()));
         totalRight.setText(String.format(Locale.US, "Right: %d", getTotalRightAnswers()));
         totalWrong.setText(String.format(Locale.US, "Wrong: %d", getTotalWrongAnswers()));
         totalRatio.setText(String.format(Locale.US, "Ratio: %s", getTotalRatio()));
@@ -130,6 +133,10 @@ public class StatisticsActivity extends AppCompatActivity {
         hardRatio.setText(String.format(Locale.US, "Ratio: %s", getRatioByDifficulty("hard")));
 
         favoriteCategory.setText(getFavoriteCategory());
+    }
+
+    private int getTotalGamesPlayed(){
+        return scores.size();
     }
 
     private int getTotalRightAnswers(){

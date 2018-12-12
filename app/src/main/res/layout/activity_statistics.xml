@@ -15,6 +15,11 @@
         android:layout_marginStart="30dp"
         android:text="@string/totals"/>
     <TextView
+        android:id="@+id/total_played"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Played:"/>
+    <TextView
         android:id="@+id/total_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

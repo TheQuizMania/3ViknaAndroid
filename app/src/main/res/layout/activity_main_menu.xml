@@ -10,7 +10,8 @@
 
     <TextView
         android:id="@+id/main_menu_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="20dp"
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="30sp"
@@ -18,7 +19,7 @@
         android:layout_marginBottom="20dp"/>
     <Button
         android:id="@+id/quick_match_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/quick_match"
         android:textAllCaps="false" />
