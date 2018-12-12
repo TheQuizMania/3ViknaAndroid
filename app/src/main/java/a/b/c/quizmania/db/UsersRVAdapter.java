@@ -19,9 +19,19 @@ public class UsersRVAdapter extends RecyclerView.Adapter<UsersRVAdapter.ViewHold
     private LayoutInflater mInflater;
     private ItemClickListener mListener;
 
+    public UsersRVAdapter() {}
+
     public UsersRVAdapter(Context context, List<UserListItem> users) {
         this.mUsers = users;
         this.mInflater = LayoutInflater.from(context);
+    }
+
+    public void setmUsers(List<UserListItem> users) {
+        mUsers = users;
+    }
+
+    public void setmInflater(LayoutInflater inflater) {
+        mInflater = inflater;
     }
 
     @Override
