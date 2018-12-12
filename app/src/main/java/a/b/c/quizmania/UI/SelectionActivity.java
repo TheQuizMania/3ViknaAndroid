@@ -31,11 +31,6 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     // Url for the api that will be appended strings
     public String url = "https://opentdb.com/api.php?amount=10";
 
-    private static FirebaseDatabase INSTANCE = null;
-//    public static void setInstance(FirebaseDatabase instance){
-//        INSTANCE = instance;
-//    }
-
     private Button playBtn;
 
     // Strings for dropdown
@@ -80,9 +75,13 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
             runQuickPlay();
         }else {
             //else covers everything, so it doesn't run when you quickplay.
-            FirebaseDatabase db = INSTANCE;
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            uId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+            //Check if mAuth is null, this is so the tests run
+            if(mAuth.getCurrentUser() == null){
+                uId = "";
+            }else{
+                uId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+            }
             setAppTheme();
             setContentView(R.layout.activity_selection);
             Objects.requireNonNull(getSupportActionBar()).hide();
