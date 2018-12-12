@@ -1,6 +1,5 @@
 package a.b.c.quizmania.UI;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -72,6 +71,8 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
         // Setting listeners
         mainMenuBtn.setOnClickListener(v -> startMainMenu());
     }
+
+
 
     private void setAppTheme() {
         String uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
@@ -181,8 +182,6 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
      *                                          *
      ********************************************/
     private void startMainMenu() {
-        Intent intent = new Intent(this, MainMenuActivity.class);
-        startActivity(intent);
         finish();
     }
 

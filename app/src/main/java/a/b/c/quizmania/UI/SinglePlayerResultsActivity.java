@@ -62,7 +62,8 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(this, MainMenuActivity.class));
+        finish();
+//        startActivity(new Intent(this, MainMenuActivity.class));
     }
 
     private void initVariables(){
@@ -98,7 +99,6 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
 
     public void goToMainMenu(View view){
         //Button to go back to main menu
-        startActivity(new Intent(this, MainMenuActivity.class));
         finish();
     }
 
