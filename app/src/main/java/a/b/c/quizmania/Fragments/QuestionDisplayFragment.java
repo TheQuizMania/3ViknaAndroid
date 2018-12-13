@@ -26,6 +26,7 @@ import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.Entities.StaticVariables;
 import a.b.c.quizmania.Jobs.BackgroundJob;
+import a.b.c.quizmania.Jobs.MessageSender;
 import a.b.c.quizmania.Jobs.UiCallback;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.UI.MultiPlayerResultsActivity;
@@ -63,6 +64,8 @@ public class QuestionDisplayFragment extends Fragment {
     private TextView questionTxt;
     private TextView questionCountTxt;
     private ProgressBar progressBar;
+
+    MessageSender msgSender;
 
 
     public QuestionDisplayFragment() {
@@ -198,6 +201,8 @@ public class QuestionDisplayFragment extends Fragment {
 
         if(mode.matches("CHALLENGER")) {
             initChallenge();
+            msgSender = new MessageSender();
+            msgSender.sendChallenge(pendingChallenge.getChallengee().getPushToken());
             Intent i = new Intent(getActivity(), SinglePlayerResultsActivity.class);
             i.putExtra("MODE", "MULTI");
             startActivity(i);

@@ -13,13 +13,12 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
-import a.b.c.quizmania.Jobs.MessageSender;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.utilities.ChallengeRVAdapter;
 
 import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
-import static a.b.c.quizmania.UI.MainMenuActivity.myChallenges;
 import static a.b.c.quizmania.Entities.StaticVariables.question;
+import static a.b.c.quizmania.UI.MainMenuActivity.myChallenges;
 
 
 public class ChallengeListActivity extends AppCompatActivity implements ChallengeRVAdapter.ItemClickListener{
@@ -55,7 +54,7 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
         question = currChallenge.getQuestion();
 
         startActivity(intent);
-        finish();
+        finishAffinity();
     }
 
     private void listAllMatches() {

@@ -14,11 +14,12 @@ import okhttp3.Response;
 
 public class MessageSender {
 
+    String challengeID = null;
+
     public void MessageSender(){}
 
-    public void sendMessage(String id){
-        String to = id;
-        String url = "https://us-central1-vikna-20adf.cloudfunctions.net/sendNotification2";
+    public void sendChallenge(String id){
+        String url = "https://us-central1-vikna-20adf.cloudfunctions.net/sendNotification";
         OkHttpClient client = new OkHttpClient();
 
         String me = FirebaseInstanceId.getInstance().getToken();
@@ -28,13 +29,14 @@ public class MessageSender {
 
         Request request = new Request.Builder()
                 .url(String
-                        .format("%s/sendNotification?to=%s&fromPushId=%s&fromId=%s&fromName=%s&type=%s",
+                        .format("%s/sendNotification?id=%s&fromPushId=%s&fromId=%s&fromName=%s&challengeID=%s&type=%s",
                                 url,
-                                to,
+                                id,
                                 me,
                                 myID,
                                 myName,
-                                "invite"))
+                                challengeID,
+                                "challenge"))
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -50,6 +52,44 @@ public class MessageSender {
         });
 
     }
+
+    public void sendResults(String id, String challID){
+
+        String url = "https://us-central1-vikna-20adf.cloudfunctions.net/sendNotification";
+        OkHttpClient client = new OkHttpClient();
+
+        String me = FirebaseInstanceId.getInstance().getToken();
+        String myID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String myName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        challengeID = challID;
+
+
+        Request request = new Request.Builder()
+                .url(String
+                        .format("%s/sendNotification?id=%s&fromPushId=%s&fromId=%s&fromName=%s&challengeID=%s&type=%s",
+                                url,
+                                id,
+                                me,
+                                myID,
+                                myName,
+                                challengeID,
+                                "result"))
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+            }
+        });
+
+    }
+
 
     public void onNewToken() {
 

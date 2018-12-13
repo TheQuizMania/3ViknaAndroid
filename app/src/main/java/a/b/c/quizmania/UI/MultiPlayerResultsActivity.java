@@ -2,6 +2,7 @@ package a.b.c.quizmania.UI;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -9,16 +10,24 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 import java.util.Objects;
 
+import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
+import a.b.c.quizmania.Jobs.MessageSender;
+import a.b.c.quizmania.MyFirebaseMessagingService;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.utilities.Utility;
 
 import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
+import static a.b.c.quizmania.Entities.StaticVariables.pendingChallenge;
 
 public class MultiPlayerResultsActivity extends AppCompatActivity {
 
@@ -37,6 +46,10 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
     TextView resultsTV;
 
     Button mainMenuBtn;
+
+    MessageSender msgSender;
+    Challenge newChallenge;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,17 +74,60 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
 
         mainMenuBtn = findViewById(R.id.mp_main_menu_btn);
 
-        // Displays the information
-        displayInfo();
-        // Displays the results of the challenger
-        displayChallenger();
-        // Displays the results of the challengee
-        displayChallengee();
-        // Displays which one is the winner
-        displayWinner();
+        if(currChallenge != null && FirebaseAuth.getInstance().getCurrentUser().getEmail().equals(currChallenge.getChallengee().getEmail())){
+            msgSender = new MessageSender();
+            msgSender.sendResults(currChallenge.getChallenger().getPushToken(), currChallenge.getId());
+        }
+        else{
+            currChallenge = null;
+            String cID = getIntent().getStringExtra("challengeID");
 
+            FirebaseDatabase.getInstance().getReference().child("root")
+                .child("challenges")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot instance: dataSnapshot.getChildren()) {
+                            Challenge ch = instance.getValue(Challenge.class);
+                            if(ch.getId().matches(cID)) {
+                                currChallenge = ch;
+                                // Displays the information
+                                displayInfo();
+                                // Displays the results of the challenger
+                                displayChallenger();
+                                // Displays the results of the challengee
+                                displayChallengee();
+                                // Displays which one is the winner
+                                displayWinner();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+        }
+
+
+
+        if(currChallenge != null){
+
+            // Displays the information
+            displayInfo();
+            // Displays the results of the challenger
+            displayChallenger();
+            // Displays the results of the challengee
+            displayChallengee();
+            // Displays which one is the winner
+            displayWinner();
+
+        }
         // Setting listeners
         mainMenuBtn.setOnClickListener(v -> startMainMenu());
+
+
     }
 
 
@@ -161,7 +217,7 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
                     = getAvg(currChallenge
                         .getChallengeeScore()
                         .getQuestionStats());
-            if(challengerAvgTime < challengeeAvgTime) {
+            if(challengerAvgTime > challengeeAvgTime) {
                 changeText(resultsTV, "Winner: " + currChallenge.getChallengee()
                         .getDisplayName());
                 assert currUser != null;

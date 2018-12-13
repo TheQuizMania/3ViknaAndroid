@@ -82,9 +82,10 @@ public class Utility {
      * @param challenge
      */
 	public static void addChallenge(Challenge challenge) {
+		challenge.setId(FirebaseDatabase.getInstance().getReference().push().getKey());
 		FirebaseDatabase.getInstance().getReference().child("root")
 				.child("challenges")
-				.push()
+				.child(challenge.getId())
 				.setValue(challenge);
 	}
 
