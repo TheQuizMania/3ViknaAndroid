@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".UI.RegisterActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_photo" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="50sp"
+            android:text="@string/quiz_mania"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:layout_marginVertical="40sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:backgroundTint="#ffffff"
+            android:textColor="#ffffff"
+            android:textColorHint="#808080"
+            android:text="@string/sign_up"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/username_signUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20sp"
+            android:backgroundTint="#ffffff"
+            android:textColor="#ffffff"
+            android:textColorHint="#808080"
+            android:hint="@string/username"
+            android:inputType="text"
+            android:importantForAutofill="no"
+            android:maxLines="1" />
+        <EditText
+            android:id="@+id/email_signUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20sp"
+            android:backgroundTint="#ffffff"
+            android:textColor="#ffffff"
+            android:textColorHint="#808080"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:importantForAutofill="no" />
+        <EditText
+            android:id="@+id/passwd_signUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20sp"
+            android:backgroundTint="#ffffff"
+            android:textColor="#ffffff"
+            android:textColorHint="#808080"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:importantForAutofill="no" />
+        <EditText
+            android:id="@+id/passwd_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20sp"
+            android:backgroundTint="#ffffff"
+            android:textColor="#ffffff"
+            android:textColorHint="#808080"
+            android:hint="@string/confirm_password"
+            android:inputType="textPassword"
+            android:importantForAutofill="no" />
+        <Button
+            android:id="@+id/sign_Up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#ffffff"
+            android:fontFamily="@fonts/Roboto_2"
+            android:textAllCaps="false"
+            android:textColor="#6f6f6f"
+            android:textStyle="bold"
+            android:text="@string/sign_up" />
+    </LinearLayout>
+</FrameLayout>

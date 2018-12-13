@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".Fragments.QuestionDisplayFragment">
+
+    <ProgressBar
+        android:id="@+id/progress_bar_question_fragment"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:theme="@style/RedAccent"
+        android:max="20000"
+        android:visibility="invisible"/>
+    <TextView
+        android:id="@+id/question_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:paddingRight="10dp"
+        android:text="1 out of 10"
+        />
+
+    <TextView
+        android:id="@+id/question"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="80"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_marginHorizontal="8dp"
+        android:text="Question"
+        />
+
+</LinearLayout>

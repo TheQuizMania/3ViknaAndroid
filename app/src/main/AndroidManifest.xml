@@ -1,11 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="c.b.a.quizmania">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="a.b.c.quizmania">
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/web_hi_res_512"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/web_hi_res_512"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" />
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".UI.LoginActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".UI.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.MainMenuActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.SelectionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.ProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.QuestionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.StatisticsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.SinglePlayerResultsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.UserListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.ChallengeListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.MultiPlayerResultsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.ChangeUsernameActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.ChangePasswordActivity"
+            android:screenOrientation="portrait" />
+        <service android:name=".utilities.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+    </application>
+
 </manifest>
