@@ -76,37 +76,37 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
             msgSender = new MessageSender();
             msgSender.sendResults(currChallenge.getChallenger().getPushToken(), currChallenge.getId());
         }
-        else{
-            currChallenge = null;
-            String cID = getIntent().getStringExtra("challengeID");
 
-            FirebaseDatabase.getInstance().getReference().child("root")
-                .child("challenges")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot instance: dataSnapshot.getChildren()) {
-                            Challenge ch = instance.getValue(Challenge.class);
-                            if(ch.getId().matches(cID)) {
-                                currChallenge = ch;
-                                // Displays the information
-                                displayInfo();
-                                // Displays the results of the challenger
-                                displayChallenger();
-                                // Displays the results of the challengee
-                                displayChallengee();
-                                // Displays which one is the winner
-                                displayWinner();
-                            }
+        currChallenge = null;
+        String cID = getIntent().getStringExtra("challengeID");
+
+        FirebaseDatabase.getInstance().getReference().child("root")
+            .child("challenges")
+            .addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for(DataSnapshot instance: dataSnapshot.getChildren()) {
+                        Challenge ch = instance.getValue(Challenge.class);
+                        if(ch.getId().matches(cID)) {
+                            currChallenge = ch;
+                            // Displays the information
+                            displayInfo();
+                            // Displays the results of the challenger
+                            displayChallenger();
+                            // Displays the results of the challengee
+                            displayChallengee();
+                            // Displays which one is the winner
+                            displayWinner();
                         }
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
-        }
+                }
+            });
+
 
 
 
