@@ -22,12 +22,10 @@ import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.Jobs.MessageSender;
-import a.b.c.quizmania.MyFirebaseMessagingService;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.utilities.Utility;
 
 import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
-import static a.b.c.quizmania.Entities.StaticVariables.pendingChallenge;
 
 public class MultiPlayerResultsActivity extends AppCompatActivity {
 
@@ -252,7 +250,7 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
             if(player.getCorrectAnswers() > opponent.getCorrectAnswers()){
                 return true;
             } else if(player.getCorrectAnswers() == opponent.getCorrectAnswers()){
-                return getAvg(player.getQuestionStats()) > getAvg(opponent.getQuestionStats());
+                return getAvg(player.getQuestionStats()) < getAvg(opponent.getQuestionStats());
             } else {
                 return false;
             }

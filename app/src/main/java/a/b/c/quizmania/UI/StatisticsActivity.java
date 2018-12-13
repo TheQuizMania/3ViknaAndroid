@@ -21,7 +21,6 @@ import java.util.Objects;
 
 import a.b.c.quizmania.Entities.Categories;
 import a.b.c.quizmania.Entities.Score;
-import a.b.c.quizmania.Entities.User;
 import a.b.c.quizmania.R;
 
 public class StatisticsActivity extends AppCompatActivity {
@@ -116,9 +115,8 @@ public class StatisticsActivity extends AppCompatActivity {
         totalWrong.setText(String.format(Locale.US, "Answered wrong: %d", getTotalWrongAnswers()));
         totalRatio.setText(String.format(Locale.US, "Ratio: %s", getTotalRatio()));
 
-        mPWins.setText(String.format(Locale.US, "Wins: %d", getTotalMPWins()));
-        mPLosses.setText(String.format(Locale.US, "Losses: %d", getTotalMPLosses()));
-        winLossRatio.setText(String.format(Locale.US, "Ratio: %s", getWinLossRatio()));
+        getTotalMPWins();
+        getTotalMPLosses();
 
         easyRight.setText(String.format(Locale.US, "Answered right: %d", getRightAnswersByDifficulty("easy")));
         easyWrong.setText(String.format(Locale.US, "Answered wrong: %d", getWrongAnswersByDifficulty("easy")));
@@ -164,17 +162,17 @@ public class StatisticsActivity extends AppCompatActivity {
         return ratio.toString();
     }
 
-    private int getTotalMPWins(){
+    private void getTotalMPWins(){
         String user = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref = ref.child("root").child("Users").child(user);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.exists()){
-                    User user = dataSnapshot.getValue(User.class);
-                    assert user != null;
-                    winCount = user.getWins();
+                if(dataSnapshot.exists()){
+                    int wins = dataSnapshot.child("wins").getValue(Integer.class);
+                    winCount = wins;
+                    mPWins.setText(String.format(Locale.US, "Wins: %d", winCount));
                 }
             }
 
@@ -183,20 +181,20 @@ public class StatisticsActivity extends AppCompatActivity {
 
             }
         });
-        return winCount;
     }
 
-    private int getTotalMPLosses(){
+    private void getTotalMPLosses(){
         String user = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref = ref.child("root").child("Users").child(user);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.exists()){
-                    User user = dataSnapshot.getValue(User.class);
-                    assert user != null;
-                    lossCount = user.getLosses();
+                if(dataSnapshot.exists()){
+                    int losses = dataSnapshot.child("losses").getValue(Integer.class);
+                    lossCount = losses;
+                    mPLosses.setText(String.format(Locale.US, "Losses: %d", lossCount));
+                    winLossRatio.setText(String.format(Locale.US, "Ratio: %s", getWinLossRatio()));
                 }
             }
 
@@ -205,14 +203,13 @@ public class StatisticsActivity extends AppCompatActivity {
 
             }
         });
-        return lossCount;
     }
 
     private String getWinLossRatio(){
-        if(getTotalMPLosses() == 0){
+        if(lossCount == 0){
             return "inf";
         }
-        Double ratio = (double) getTotalMPWins() / (double) getTotalMPLosses();
+        Double ratio = (double) winCount / (double) lossCount;
         ratio = Math.round(ratio * 100.0) / 100.0;
         return ratio.toString();
     }

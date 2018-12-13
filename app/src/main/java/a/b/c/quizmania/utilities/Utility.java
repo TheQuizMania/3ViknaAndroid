@@ -24,7 +24,7 @@ public class Utility {
 	public static void setWinsAndLosses(FirebaseUser user, boolean isWinner){
 		ref = FirebaseDatabase.getInstance().getReference()
 				.child("root")
-				.child("User")
+				.child("Users")
 				.child(user.getUid());
 		if(isWinner){
 			ref = ref.child("wins");
