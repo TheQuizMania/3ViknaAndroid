@@ -21,11 +21,9 @@ import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.Jobs.MessageSender;
-import a.b.c.quizmania.MyFirebaseMessagingService;
 import a.b.c.quizmania.R;
 
 import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
-import static a.b.c.quizmania.Entities.StaticVariables.pendingChallenge;
 
 public class MultiPlayerResultsActivity extends AppCompatActivity {
 
@@ -76,59 +74,63 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
             msgSender = new MessageSender();
             msgSender.sendResults(currChallenge.getChallenger().getPushToken(), currChallenge.getId());
         }
-        else{
-            currChallenge = null;
-            String cID = getIntent().getStringExtra("challengeID");
+        currChallenge = null;
+        String cID = getIntent().getStringExtra("challengeID");
 
-            FirebaseDatabase.getInstance().getReference().child("root")
-                .child("challenges")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot instance: dataSnapshot.getChildren()) {
-                            Challenge ch = instance.getValue(Challenge.class);
-                            if(ch.getId().matches(cID)) {
-                                currChallenge = ch;
-                                // Displays the information
-                                displayInfo();
-                                // Displays the results of the challenger
-                                displayChallenger();
-                                // Displays the results of the challengee
-                                displayChallengee();
-                                // Displays which one is the winner
-                                displayWinner();
-                            }
+        FirebaseDatabase.getInstance().getReference().child("root")
+            .child("challenges")
+            .addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for(DataSnapshot instance: dataSnapshot.getChildren()) {
+                        Challenge ch = instance.getValue(Challenge.class);
+                        if(ch.getId().matches(cID)) {
+                            currChallenge = ch;
+                            // Displays the information
+                            displayInfo();
+                            // Displays the results of the challenger
+                            displayChallenger();
+                            // Displays the results of the challengee
+                            displayChallengee();
+                            // Displays which one is the winner
+                            displayWinner();
                         }
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
-        }
-
+                }
+            });
 
 
-        if(currChallenge != null){
 
-            // Displays the information
-            displayInfo();
-            // Displays the results of the challenger
-            displayChallenger();
-            // Displays the results of the challengee
-            displayChallengee();
-            // Displays which one is the winner
-            displayWinner();
 
-        }
+//        if(currChallenge != null){
+//
+//            // Displays the information
+//            displayInfo();
+//            // Displays the results of the challenger
+//            displayChallenger();
+//            // Displays the results of the challengee
+//            displayChallengee();
+//            // Displays which one is the winner
+//            displayWinner();
+//
+//        }
         // Setting listeners
         mainMenuBtn.setOnClickListener(v -> startMainMenu());
 
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        currChallenge = null;
+        finish();
+    }
 
     private void setAppTheme() {
         String uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
@@ -238,6 +240,7 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
      *                                          *
      ********************************************/
     private void startMainMenu() {
+        currChallenge = null;
         finish();
     }
 
