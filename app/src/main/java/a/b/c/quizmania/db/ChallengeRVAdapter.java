@@ -19,6 +19,7 @@ public class ChallengeRVAdapter extends RecyclerView.Adapter<ChallengeRVAdapter.
     private LayoutInflater mInflater;
     private ChallengeRVAdapter.ItemClickListener mListener;
 
+
     public ChallengeRVAdapter(Context context, List<Challenge> Challenges) {
         mChallenges = Challenges;
         this.mInflater = LayoutInflater.from(context);

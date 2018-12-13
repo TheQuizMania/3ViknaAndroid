@@ -37,6 +37,7 @@
             android:onClick="cancelUsernameChange"
             android:text="cancel"/>
         <Button
+            android:id="@+id/submitBtnChangeUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="submitUsernameChange"

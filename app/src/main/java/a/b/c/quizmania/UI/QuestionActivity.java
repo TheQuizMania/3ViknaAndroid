@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -70,6 +69,15 @@ public class QuestionActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //when back button is pressed during a game, cancel and stops all fragment/background threads
+        QuestionDisplayFragment fragment = (QuestionDisplayFragment)getSupportFragmentManager().findFragmentById(R.id.question_fragment);
+        fragment.stopFragment();
+
+        finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
         QuestionDisplayFragment fragment = (QuestionDisplayFragment)getSupportFragmentManager().findFragmentById(R.id.question_fragment);
         fragment.stopFragment();
 

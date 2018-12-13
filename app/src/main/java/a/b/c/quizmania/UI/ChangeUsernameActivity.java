@@ -24,10 +24,13 @@ public class ChangeUsernameActivity extends AppCompatActivity {
 
     private FirebaseUser user;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setAppTheme();
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            setAppTheme();
+        }
         setContentView(R.layout.activity_change_username);
         Objects.requireNonNull(getSupportActionBar()).hide();
         user = FirebaseAuth.getInstance().getCurrentUser();

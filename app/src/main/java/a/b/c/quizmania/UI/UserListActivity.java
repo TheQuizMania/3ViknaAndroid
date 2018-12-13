@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -31,21 +32,34 @@ import static a.b.c.quizmania.Entities.StaticVariables.pendingChallenge;
 
 public class UserListActivity extends AppCompatActivity implements UsersRVAdapter.ItemClickListener {
 
+
     private MessageSender msgSender;
     private List<UserListItem> userList;
     private UserListItem currUser;
-    UsersRVAdapter adapter;
+    private static UsersRVAdapter adapter;
+    public RecyclerView rv;
+
+    public static void setUserList(List<UserListItem> instance) {
+        userList = instance;
+    }
+    public static void setAdapter(UsersRVAdapter instance) {
+        adapter = instance;
+    }
+    public List<UserListItem> getUsers() {
+        return userList;
+    }
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setAppTheme();
+        if( userList == null ) { setAppTheme(); }
         setContentView(R.layout.activity_user_list);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        userList = new ArrayList<>();
-
-        fetchUserList();
+        if( userList == null ) {
+            userList = new ArrayList<>();
+            fetchUserList();
+        }
     }
 
     private void setAppTheme() {
@@ -60,24 +74,34 @@ public class UserListActivity extends AppCompatActivity implements UsersRVAdapte
         }
     }
 
-    private void updateList() {
-        RecyclerView rv = findViewById(R.id.rv_user_list);
+    public void updateList() {
+        rv = findViewById(R.id.rv_user_list);
         rv.setLayoutManager(new LinearLayoutManager(this));
         adapter = new UsersRVAdapter(this, userList);
+        userList = null;
         adapter.setClickListener(this);
         rv.setAdapter(adapter);
     }
 
     @Override
     public void onItemClick(View view, int position) {
-
+        Log.d("RVID_CLICKED", "rv id: " + view.getId());
+        pendingChallenge = initChallenge(currUser, adapter.getUser(position));
+        msgSender = new MessageSender();  
+        msgSender.sendMessage(pendingChallenge.getChallengee().getPushToken());
         Toast.makeText(this, "You challenged " + adapter.getDisplayName(position), Toast.LENGTH_SHORT).show();
-        msgSender = new MessageSender();
-        pendingChallenge = new Challenge(currUser, adapter.getUser(position), true);
+        startChallenge();
+    }
+      
+    public Challenge initChallenge(UserListItem challenger, UserListItem challengee) {
+        return new Challenge(challenger, challengee, true);
+    }
+  
+    private void startChallenge() {
         Intent intent = new Intent(this, SelectionActivity.class);
         intent.putExtra("MODE", "CHALLENGER");
-        msgSender.sendMessage(pendingChallenge.getChallengee().getPushToken());
         startActivity(intent);
+        finish();
     }
 
     private void fetchUserList() {
