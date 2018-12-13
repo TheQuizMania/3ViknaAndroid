@@ -20,7 +20,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     final String CHALLENGE = "challenge";
     final String RESULT = "result";
-    Intent challengeReceived;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -42,6 +41,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     .setVibrate(new long[3000])
                     .setChannelId(CHALLENGE)
                     .setContentIntent(pendingIntentChallenge)
+                    .setAutoCancel(true)
                     .build();
 
             NotificationManager notificationManager =
@@ -63,9 +63,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Intent sendResults = new Intent(getApplicationContext(), MultiPlayerResultsActivity.class);
             sendResults.putExtra("challengeID", challengeID);
             PendingIntent pendingIntentChallenge = PendingIntent.getActivity(this, 1, sendResults, PendingIntent.FLAG_UPDATE_CURRENT);
-            Intent challengeReceived = new Intent(getApplicationContext(), MultiPlayerResultsActivity.class);
-            challengeReceived.putExtra("challengeID", challengeID);
-            PendingIntent pendingIntentChallenge = PendingIntent.getActivity(this, 1, challengeReceived, PendingIntent.FLAG_UPDATE_CURRENT);
 
             android.app.Notification build = new NotificationCompat.Builder(this, RESULT)
                     .setSmallIcon(R.drawable.web_hi_res_512)
