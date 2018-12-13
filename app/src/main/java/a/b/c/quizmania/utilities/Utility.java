@@ -17,10 +17,21 @@ import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.Entities.UserListItem;
 
+/**
+ * Utility is used for the communication to Firebase Database
+ *
+ */
 public class Utility {
 
 	private static DatabaseReference ref;
 
+    /**
+     * setWinsAndLosses()
+     * Takes in the user and a boolean variable that either increments the wins or losses
+     *
+     * @param user FirebaseUser
+     * @param isWinner Boolean
+     */
 	public static void setWinsAndLosses(FirebaseUser user, boolean isWinner){
 		ref = FirebaseDatabase.getInstance().getReference()
 				.child("root")
@@ -51,8 +62,8 @@ public class Utility {
      * Class for storing the users to the user list,
      * It holds all the users that have logged in and can be challenged
      *
-     * @param email
-     * @param displayName
+     * @param email String
+     * @param displayName String
      */
     public static void addToUserList(String email, String displayName) {
         UserListItem newUser = new UserListItem(email, displayName);
@@ -64,7 +75,7 @@ public class Utility {
     /**
      * Called when a new score is to be stored
      *
-     * @param score
+     * @param score Score
      */
 	public static void addScore(Score score) {
 		String uId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
@@ -79,7 +90,7 @@ public class Utility {
     /**
      * Called when a new challenge is to be initialized
      *
-     * @param challenge
+     * @param challenge Challenge
      */
 	public static void addChallenge(Challenge challenge) {
 		challenge.setId(FirebaseDatabase.getInstance().getReference().push().getKey());
@@ -92,7 +103,7 @@ public class Utility {
     /**
      * Called when the challenge has been finished
      *
-     * @param challenge
+     * @param challenge Challenge
      */
 	public static void updateChallenge(Challenge challenge) {
 		FirebaseDatabase.getInstance().getReference().child("root")
@@ -101,6 +112,12 @@ public class Utility {
 				.setValue(challenge);
 	}
 
+    /**
+     * Takes in a user with its token and updates the push token of the user
+     *
+     * @param uID String
+     * @param newToken String
+     */
 	public static void updatePushToken(String uID, String newToken) {
 		FirebaseDatabase.getInstance().getReference().child("root")
 				.child("UserList")
