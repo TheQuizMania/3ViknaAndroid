@@ -1,4 +1,4 @@
-package a.b.c.quizmania;
+package a.b.c.quizmania.utilities;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,11 +11,15 @@ import android.support.v4.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import a.b.c.quizmania.R;
 import a.b.c.quizmania.UI.ChallengeListActivity;
 import a.b.c.quizmania.UI.MultiPlayerResultsActivity;
 
 import static android.support.v4.app.NotificationCompat.PRIORITY_MAX;
 
+/**
+ * a Messaging service that takes care of how notifications behave
+ */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     final String CHALLENGE = "challenge";

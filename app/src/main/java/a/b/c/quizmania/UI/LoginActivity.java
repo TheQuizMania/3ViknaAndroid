@@ -29,17 +29,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Objects;
 
 import a.b.c.quizmania.Entities.User;
-import a.b.c.quizmania.Jobs.MessageSender;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.utilities.Utility;
 
+/**
+ * An activity for logging users in
+ */
 public class LoginActivity extends AppCompatActivity {
-
+    //instance for testing
     private static SharedPreferences INSTANCE = null;
     public static void setSharedPreferencesInstance(SharedPreferences pref){
         INSTANCE = pref;
@@ -63,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-
+        //for tests
         if(INSTANCE == null){
             sp = getSharedPreferences("login",MODE_PRIVATE);
 
@@ -76,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-
+        //initializes variables
         initVariables();
     }
 

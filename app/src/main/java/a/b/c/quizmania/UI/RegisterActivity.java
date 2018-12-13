@@ -22,6 +22,9 @@ import java.util.Objects;
 import a.b.c.quizmania.Entities.User;
 import a.b.c.quizmania.R;
 
+/**
+ * An activity that lets users create accounts
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private static FirebaseDatabase INSTANCE = null;

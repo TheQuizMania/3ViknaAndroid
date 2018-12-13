@@ -13,6 +13,9 @@ import java.util.Objects;
 import a.b.c.quizmania.Fragments.QuestionDisplayFragment;
 import a.b.c.quizmania.R;
 
+/**
+ * An activity that takes care of the fragments
+ */
 public class QuestionActivity extends AppCompatActivity {
 
     public static String category;

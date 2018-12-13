@@ -25,6 +25,9 @@ import a.b.c.quizmania.R;
 import static a.b.c.quizmania.Entities.StaticVariables.pendingChallenge;
 import static a.b.c.quizmania.Entities.StaticVariables.question;
 
+/**
+ * An activity for selecting game settings
+ */
 public class SelectionActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     // Question variable that is used in QuestionDisplayFragment

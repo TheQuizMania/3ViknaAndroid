@@ -12,6 +12,10 @@ import java.util.List;
 import a.b.c.quizmania.Entities.UserListItem;
 import a.b.c.quizmania.R;
 
+/**
+ * Class that holds the event listener and displays on the Recycle view
+ * Used by UserListActivity
+ */
 public class UsersRVAdapter extends RecyclerView.Adapter<UsersRVAdapter.ViewHolder> {
 
     // Variables
@@ -21,27 +25,23 @@ public class UsersRVAdapter extends RecyclerView.Adapter<UsersRVAdapter.ViewHold
 
     public UsersRVAdapter() {}
 
+
     public UsersRVAdapter(Context context, List<UserListItem> users) {
+        // sets the user list and inflater with the context from the activity
         this.mUsers = users;
         this.mInflater = LayoutInflater.from(context);
     }
 
-    public void setmUsers(List<UserListItem> users) {
-        mUsers = users;
-    }
-
-    public void setmInflater(LayoutInflater inflater) {
-        mInflater = inflater;
-    }
-
     @Override
     public UsersRVAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        // Sets the inflater view and returns it to the holder
         View view = mInflater.inflate(R.layout.user_list_layout, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(UsersRVAdapter.ViewHolder holder, int position) {
+        // Sets the user in the view that will be displayed in the recycle view
         String challenged = mUsers.get(position).getDisplayName();
         holder.displayNameTxtView.setText(challenged);
     }
@@ -69,7 +69,7 @@ public class UsersRVAdapter extends RecyclerView.Adapter<UsersRVAdapter.ViewHold
 
         ViewHolder(View itemView) {
             super(itemView);
-            // Finding views
+            // Finding views and setting listeners
             displayNameTxtView = itemView.findViewById(R.id.username_user_list_rv);
             itemView.setOnClickListener(this);
         }
@@ -84,6 +84,7 @@ public class UsersRVAdapter extends RecyclerView.Adapter<UsersRVAdapter.ViewHold
     }
 
     public void setClickListener(ItemClickListener itemClickListener) {
+        // Sets the listener from the holder
         this.mListener = itemClickListener;
     }
 

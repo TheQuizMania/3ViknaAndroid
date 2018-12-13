@@ -2,6 +2,9 @@ package a.b.c.quizmania.Entities;
 
 import java.util.List;
 
+/**
+ * Entity that keeps track of questions for statistics and multiplayer
+ */
 public class QuestionStats {
 
     private int timeToAnswer;

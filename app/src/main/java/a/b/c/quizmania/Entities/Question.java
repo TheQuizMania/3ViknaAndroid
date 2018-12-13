@@ -2,6 +2,9 @@ package a.b.c.quizmania.Entities;
 
 import java.util.List;
 
+/**
+ * Entity used for data from the API
+ */
 public class Question {
     private int response_code;
     private List<Results> results;

@@ -3,13 +3,15 @@ package a.b.c.quizmania.Entities;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Entity that keeps track of available categories
+ */
 public class Categories {
     private static List<String> categories;
-    private static List<String> catNumbers;
 
     public Categories() {
+        List<String> catNumbers = new ArrayList<>();
         categories = new ArrayList<>();
-        catNumbers = new ArrayList<>();
         categories.add("Random");
         catNumbers.add("");
         categories.add("Film");
@@ -36,12 +38,5 @@ public class Categories {
 
     public  List<String> getCategories() {
         return categories;
-    }
-    public  List<String> getCatNumbers(){
-        return catNumbers;
-    }
-
-    public static String getCatNameByNumber(String number){
-        return categories.get(catNumbers.indexOf(number));
     }
 }

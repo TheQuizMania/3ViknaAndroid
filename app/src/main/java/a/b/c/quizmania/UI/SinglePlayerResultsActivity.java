@@ -20,6 +20,9 @@ import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.Entities.StaticVariables;
 import a.b.c.quizmania.R;
 
+/**
+ * An activity that show the results of a single player game
+ */
 public class SinglePlayerResultsActivity extends AppCompatActivity {
 
     private TextView category;
