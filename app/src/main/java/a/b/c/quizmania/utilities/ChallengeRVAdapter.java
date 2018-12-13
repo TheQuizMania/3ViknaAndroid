@@ -1,4 +1,4 @@
-package a.b.c.quizmania.db;
+package a.b.c.quizmania.utilities;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -35,7 +35,7 @@ public class ChallengeRVAdapter extends RecyclerView.Adapter<ChallengeRVAdapter.
         // Writes the information to the layout
         String challenger = mChallenges.get(position).getChallenger().getDisplayName();
         String challengeInfo = "Category: " + mChallenges.get(position).getCategory() +
-                " and Difficulty: " + mChallenges.get(position).getDifficulty();
+                "\nDifficulty: " + mChallenges.get(position).getDifficulty();
 
         holder.Challenger.setText(challenger);
         holder.ChallengeInfo.setText(challengeInfo);

@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Objects;
 
 import a.b.c.quizmania.R;
-import a.b.c.quizmania.db.ChallengeRVAdapter;
+import a.b.c.quizmania.utilities.ChallengeRVAdapter;
 
 import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
 import static a.b.c.quizmania.UI.MainMenuActivity.myChallenges;
@@ -29,7 +29,7 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setAppTheme();
-        setContentView(R.layout.activity_match_liist);
+        setContentView(R.layout.activity_challenge_list);
         Objects.requireNonNull(getSupportActionBar()).hide();
         listAllMatches();
 
@@ -43,9 +43,9 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
         if(currChallenge.getCategory().matches("Random")) {
             intent.putExtra("CATEGORY", "");
         } else {
-            intent.putExtra("CATEGORY", "&category=" + currChallenge.getCategory());
-        }//TODO: this thing
-        intent.putExtra("DIFFICULTY", "&difficulty=" + currChallenge.getDifficulty());
+            intent.putExtra("CATEGORY", currChallenge.getCategory());
+        }
+        intent.putExtra("DIFFICULTY", currChallenge.getDifficulty());
         intent.putExtra("MODE", "CHALLENGEE");
         question = currChallenge.getQuestion();
         startActivity(intent);

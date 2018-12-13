@@ -34,7 +34,7 @@ import java.util.Objects;
 
 import a.b.c.quizmania.Entities.User;
 import a.b.c.quizmania.R;
-import a.b.c.quizmania.db.Utility;
+import a.b.c.quizmania.utilities.Utility;
 
 public class LoginActivity extends AppCompatActivity {
 

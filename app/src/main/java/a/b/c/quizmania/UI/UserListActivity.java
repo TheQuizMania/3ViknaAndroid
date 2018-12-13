@@ -23,7 +23,7 @@ import java.util.Objects;
 import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.Entities.UserListItem;
 import a.b.c.quizmania.R;
-import a.b.c.quizmania.db.UsersRVAdapter;
+import a.b.c.quizmania.utilities.UsersRVAdapter;
 
 import static a.b.c.quizmania.Entities.StaticVariables.pendingChallenge;
 
