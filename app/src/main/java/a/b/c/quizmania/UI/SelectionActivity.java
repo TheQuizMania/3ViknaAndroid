@@ -67,7 +67,13 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //else covers everything, so it doesn't run when you quickplay.
+        mAuth = FirebaseAuth.getInstance();
+        //Check if mAuth is null, this is so the tests run
+        if(mAuth.getCurrentUser() != null){
+            setAppTheme();
+        }
+        Objects.requireNonNull(getSupportActionBar()).hide();
         //Checks whether the extra is equal to 1, if so the user clicked quick play and will be automatically put
         //into a single player game with a random difficulty
         int quickPlayCheck = getIntent().getIntExtra("QUICK_MATCH", -1);
@@ -75,15 +81,8 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
             setMode();
             runQuickPlay();
         }else {
-            //else covers everything, so it doesn't run when you quickplay.
-            mAuth = FirebaseAuth.getInstance();
-            //Check if mAuth is null, this is so the tests run
-            if(mAuth.getCurrentUser() != null){
-                setAppTheme();
-            }
-            setContentView(R.layout.activity_selection);
-            Objects.requireNonNull(getSupportActionBar()).hide();
 
+            setContentView(R.layout.activity_selection);
 
             setMode();
 
