@@ -49,7 +49,7 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
         intent.putExtra("MODE", "CHALLENGEE");
         question = currChallenge.getQuestion();
         startActivity(intent);
-        finish();
+        finishAffinity();
     }
 
     private void listAllMatches() {
