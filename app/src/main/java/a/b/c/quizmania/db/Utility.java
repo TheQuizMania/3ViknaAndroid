@@ -64,4 +64,12 @@ public class Utility {
 				.setValue(challenge);
 	}
 
+	public static void updatePushToken(String uID, String newToken) {
+		FirebaseDatabase.getInstance().getReference().child("root")
+				.child("UserList")
+				.child(uID)
+				.child("pushToken")
+				.setValue(newToken);
+	}
+
 }

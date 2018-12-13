@@ -23,14 +23,18 @@ import java.util.Objects;
 
 import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.Entities.UserListItem;
+import a.b.c.quizmania.Jobs.MessageSender;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.db.UsersRVAdapter;
 
+import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
 import static a.b.c.quizmania.Entities.StaticVariables.pendingChallenge;
 
 public class UserListActivity extends AppCompatActivity implements UsersRVAdapter.ItemClickListener {
 
-    public static List<UserListItem> userList;
+
+    private MessageSender msgSender;
+    private static List<UserListItem> userList;
     private UserListItem currUser;
     private static UsersRVAdapter adapter;
     public RecyclerView rv;
@@ -82,15 +86,17 @@ public class UserListActivity extends AppCompatActivity implements UsersRVAdapte
     @Override
     public void onItemClick(View view, int position) {
         Log.d("RVID_CLICKED", "rv id: " + view.getId());
-        Toast.makeText(this, "You challenged " + adapter.getDisplayName(position), Toast.LENGTH_SHORT).show();
         pendingChallenge = initChallenge(currUser, adapter.getUser(position));
+        msgSender = new MessageSender();  
+        msgSender.sendMessage(pendingChallenge.getChallengee().getPushToken());
+        Toast.makeText(this, "You challenged " + adapter.getDisplayName(position), Toast.LENGTH_SHORT).show();
         startChallenge();
     }
-
+      
     public Challenge initChallenge(UserListItem challenger, UserListItem challengee) {
         return new Challenge(challenger, challengee, true);
     }
-
+  
     private void startChallenge() {
         Intent intent = new Intent(this, SelectionActivity.class);
         intent.putExtra("MODE", "CHALLENGER");

@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
+import a.b.c.quizmania.Jobs.MessageSender;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.db.ChallengeRVAdapter;
 
@@ -24,6 +25,8 @@ import static a.b.c.quizmania.Entities.StaticVariables.question;
 public class ChallengeListActivity extends AppCompatActivity implements ChallengeRVAdapter.ItemClickListener{
 
     private ChallengeRVAdapter adapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,8 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
 
     @Override
     public void onItemClick(View view, int position) {
+
+
         Toast.makeText(this, "Clicked " + position, Toast.LENGTH_SHORT).show();
         currChallenge = adapter.getChallenge(position);
         Intent intent = new Intent(this, QuestionActivity.class);
@@ -48,6 +53,7 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
         intent.putExtra("DIFFICULTY", "&difficulty=" + currChallenge.getDifficulty());
         intent.putExtra("MODE", "CHALLENGEE");
         question = currChallenge.getQuestion();
+
         startActivity(intent);
         finishAffinity();
     }
