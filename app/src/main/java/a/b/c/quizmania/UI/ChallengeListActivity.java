@@ -27,8 +27,6 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
 
     private ChallengeRVAdapter adapter;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +39,7 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
 
     @Override
     public void onItemClick(View view, int position) {
-
-
+        //When you click a challenge in the list it starts it
         Toast.makeText(this, "Clicked " + position, Toast.LENGTH_SHORT).show();
         currChallenge = adapter.getChallenge(position);
         Intent intent = new Intent(this, QuestionActivity.class);
@@ -60,6 +57,7 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
     }
 
     private void listAllMatches() {
+        //lists all challenges in the recycler view
         RecyclerView rv = findViewById(R.id.rv_matches);
         rv.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ChallengeRVAdapter(this, myChallenges);
@@ -68,6 +66,7 @@ public class ChallengeListActivity extends AppCompatActivity implements Challeng
     }
 
     private void setAppTheme() {
+        //reads your theme from the shared preferences
         String uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");
