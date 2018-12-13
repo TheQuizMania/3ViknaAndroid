@@ -30,7 +30,7 @@ import a.b.c.quizmania.Jobs.UiCallback;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.UI.MultiPlayerResultsActivity;
 import a.b.c.quizmania.UI.SinglePlayerResultsActivity;
-import a.b.c.quizmania.db.Utility;
+import a.b.c.quizmania.utilities.Utility;
 
 import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
 import static a.b.c.quizmania.Entities.StaticVariables.pendingChallenge;

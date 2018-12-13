@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,6 +16,7 @@ import java.util.Objects;
 import a.b.c.quizmania.Entities.QuestionStats;
 import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.R;
+import a.b.c.quizmania.utilities.Utility;
 
 import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
 
@@ -135,6 +137,7 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
      *                                  *
      ************************************/
     private void displayWinner() {
+        FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
         Score challengerScore, challengeeScore;
         challengerScore = currChallenge.getChallengerScore();
         challengeeScore = currChallenge.getChallengeeScore();
@@ -144,9 +147,13 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
         if(challengerRA < challengeeRA) {
             changeText(resultsTV, "Winner:\n" + currChallenge.getChallengee()
                     .getDisplayName());
+            assert currUser != null;
+            Utility.setWinsAndLosses(currUser, isWinner(currUser));
         } else if (challengerRA > challengeeRA) {
             changeText(resultsTV, "Winner:\n" + currChallenge.getChallenger()
                     .getDisplayName());
+            assert currUser != null;
+            Utility.setWinsAndLosses(currUser, isWinner(currUser));
         } else {
             double challengerAvgTime = getAvg(currChallenge.getChallengerScore()
                     .getQuestionStats());
@@ -157,13 +164,44 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
             if(challengerAvgTime < challengeeAvgTime) {
                 changeText(resultsTV, "Winner: " + currChallenge.getChallengee()
                         .getDisplayName());
+                assert currUser != null;
+                Utility.setWinsAndLosses(currUser, isWinner(currUser));
             } else if (challengerAvgTime > challengeeAvgTime) {
                 changeText(resultsTV, "Winner: " + currChallenge.getChallenger()
                         .getDisplayName());
+                assert currUser != null;
+                Utility.setWinsAndLosses(currUser, isWinner(currUser));
             } else {
                 changeText(resultsTV, "Draw");
             }
         }
+    }
+
+    private boolean isWinner(FirebaseUser user){
+        Score player;
+        Score opponent;
+        if(Objects.equals(user.getEmail(), currChallenge.getChallenger().getEmail())){
+            player = currChallenge.getChallengerScore();
+            opponent = currChallenge.getChallengeeScore();
+            if(player.getCorrectAnswers() > opponent.getCorrectAnswers()){
+                return true;
+            } else if(player.getCorrectAnswers() == opponent.getCorrectAnswers()){
+                return getAvg(player.getQuestionStats()) > getAvg(opponent.getQuestionStats());
+            } else {
+                return false;
+            }
+        } else if(Objects.equals(user.getEmail(), currChallenge.getChallengee().getEmail())){
+            player = currChallenge.getChallengeeScore();
+            opponent = currChallenge.getChallengerScore();
+            if(player.getCorrectAnswers() > opponent.getCorrectAnswers()){
+                return true;
+            } else if(player.getCorrectAnswers() == opponent.getCorrectAnswers()){
+                return getAvg(player.getQuestionStats()) > getAvg(opponent.getQuestionStats());
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 
     /***************************************************
