@@ -154,10 +154,10 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
                     = getAvg(currChallenge
                         .getChallengeeScore()
                         .getQuestionStats());
-            if(challengerAvgTime < challengeeAvgTime) {
+            if(challengerAvgTime > challengeeAvgTime) {
                 changeText(resultsTV, "Winner: " + currChallenge.getChallengee()
                         .getDisplayName());
-            } else if (challengerAvgTime > challengeeAvgTime) {
+            } else if (challengerAvgTime < challengeeAvgTime) {
                 changeText(resultsTV, "Winner: " + currChallenge.getChallenger()
                         .getDisplayName());
             } else {
