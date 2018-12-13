@@ -48,7 +48,12 @@
             android:name=".UI.ChallengeListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".UI.MultiPlayerResultsActivity"
+            android:name="a.b.c.quizmania.UI.MultiPlayerResultsActivity"
+            android:label="MultiPlayerResultsActivity"
+            <intent-filter>
+                <action android:name="a.b.c.quizmania.UI.MultiPlayerResultsActivity"
+            </intent-filter>
+            android:excludeFromRecents="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".UI.ChangeUsernameActivity"
