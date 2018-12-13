@@ -33,7 +33,6 @@ import static a.b.c.quizmania.Entities.StaticVariables.pendingChallenge;
 public class UserListActivity extends AppCompatActivity implements UsersRVAdapter.ItemClickListener {
 
 
-    private MessageSender msgSender;
     private static List<UserListItem> userList;
     private UserListItem currUser;
     private static UsersRVAdapter adapter;
@@ -87,8 +86,6 @@ public class UserListActivity extends AppCompatActivity implements UsersRVAdapte
     public void onItemClick(View view, int position) {
         Log.d("RVID_CLICKED", "rv id: " + view.getId());
         pendingChallenge = initChallenge(currUser, adapter.getUser(position));
-        msgSender = new MessageSender();  
-        msgSender.sendMessage(pendingChallenge.getChallengee().getPushToken());
         Toast.makeText(this, "You challenged " + adapter.getDisplayName(position), Toast.LENGTH_SHORT).show();
         startChallenge();
     }
