@@ -61,9 +61,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         else if(type.equals(RESULT)){
             Intent sendResults = new Intent(getApplicationContext(), MultiPlayerResultsActivity.class);
             sendResults.putExtra("challengeID", challengeID);
-            sendResults .setAction(Intent.ACTION_MAIN);
-            sendResults .addCategory(Intent.CATEGORY_LAUNCHER);
-            PendingIntent pendingIntentChallenge = PendingIntent.getActivity(this, 0, sendResults, PendingIntent.FLAG_ONE_SHOT);
+            PendingIntent pendingIntentChallenge = PendingIntent.getActivity(this, 0, sendResults, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
             android.app.Notification build = new NotificationCompat.Builder(this, RESULT)
@@ -84,7 +82,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 int importance = NotificationManager.IMPORTANCE_HIGH;
-                NotificationChannel mChannel = new NotificationChannel(RESULT, RESULT, importance);
+                NotificationChannel mChannel = new NotificationChannel(RESULT, RESULT, NotificationManager.IMPORTANCE_HIGH);
                 notificationManager.createNotificationChannel(mChannel);
             }
 

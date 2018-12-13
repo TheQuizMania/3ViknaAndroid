@@ -171,8 +171,8 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
         // Displays the name, number of questions answered right and average time
         changeText(challengerNameTV, "Player name:\n" + currChallenge.getChallenger().getDisplayName() + "\n");
         changeText(challengerRightAnswersTV,
-                (String.format(Locale.US, "%s%d", getString(R.string.answerdCorrect), currChallenge.getChallengerScore().getCorrectAnswers())));
-        changeText(challengerAvgTimeTV, String.format("%s%s", getString(R.string.avgTimeToAnswer), avgTime));
+                (String.format(Locale.US, "%s\n%d/10", getString(R.string.answerdCorrect), currChallenge.getChallengerScore().getCorrectAnswers())));
+        changeText(challengerAvgTimeTV, String.format("%s\n%s", getString(R.string.avgTimeToAnswer), avgTime));
     }
 
     /***************************************************
@@ -186,8 +186,8 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
         // Displays the name, number of questions answered right and average time
         changeText(challengeeNameTV, "Player name:\n" + currChallenge.getChallengee().getDisplayName() + "\n");
         changeText(challengeeRightAnswersTV,
-                (String.format(Locale.US, "%s%d", getString(R.string.answerdCorrect), currChallenge.getChallengeeScore().getCorrectAnswers())));
-        changeText(challengeeAvgTimeTV, String.format("%s%s", getString(R.string.avgTimeToAnswer), avgTime));
+                (String.format(Locale.US, "%s\n%d/10", getString(R.string.answerdCorrect), currChallenge.getChallengeeScore().getCorrectAnswers())));
+        changeText(challengeeAvgTimeTV, String.format("%s\n%s", getString(R.string.avgTimeToAnswer), avgTime));
     }
 
     /************************************
