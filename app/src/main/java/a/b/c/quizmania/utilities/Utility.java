@@ -1,7 +1,15 @@
 package a.b.c.quizmania.utilities;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
@@ -11,7 +19,35 @@ import a.b.c.quizmania.Entities.UserListItem;
 
 public class Utility {
 
-    /**
+	private static DatabaseReference ref;
+
+	public static void setWinsAndLosses(FirebaseUser user, boolean isWinner){
+		ref = FirebaseDatabase.getInstance().getReference()
+				.child("root")
+				.child("Users")
+				.child(user.getUid());
+		if(isWinner){
+			ref = ref.child("wins");
+		} else {
+			ref = ref.child("losses");
+		}
+		ref.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+				if(dataSnapshot.exists()){
+					int retVal = dataSnapshot.getValue(Integer.class);
+					ref.setValue(retVal + 1);
+				}
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError) {
+				Log.d("ON_CANCELED", "onCanceled called with error " + databaseError.getMessage());
+			}
+		});
+	}
+
+	/**
      * Class for storing the users to the user list,
      * It holds all the users that have logged in and can be challenged
      *

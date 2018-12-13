@@ -1,7 +1,6 @@
 package a.b.c.quizmania.Jobs;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.IOException;
