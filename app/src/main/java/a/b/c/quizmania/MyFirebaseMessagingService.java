@@ -20,7 +20,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     final String CHALLENGE = "challenge";
     final String RESULT = "result";
-    Intent challengeReceived;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -31,9 +30,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String challengeID = remoteMessage.getData().get("challengeID");
 
         if(type.equals(CHALLENGE)) {
-            challengeReceived = new Intent(getApplicationContext(), ChallengeListActivity.class);
+            Intent challengeReceived = new Intent(getApplicationContext(), ChallengeListActivity.class);
 
-            PendingIntent pendingIntentChallenge = PendingIntent.getActivity(this, 0, challengeReceived, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntentChallenge = PendingIntent.getActivity(this, 1, challengeReceived, PendingIntent.FLAG_UPDATE_CURRENT);
 
             android.app.Notification build = new NotificationCompat.Builder(this, CHALLENGE)
                     .setSmallIcon(R.drawable.web_hi_res_512)
@@ -42,6 +41,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     .setVibrate(new long[3000])
                     .setChannelId(CHALLENGE)
                     .setContentIntent(pendingIntentChallenge)
+                    .setAutoCancel(true)
                     .build();
 
             NotificationManager notificationManager =
@@ -60,9 +60,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         else if(type.equals(RESULT)){
-            Intent challengeReceived = new Intent(getApplicationContext(), MultiPlayerResultsActivity.class);
-            challengeReceived.putExtra("challengeID", challengeID);
-            PendingIntent pendingIntentChallenge = PendingIntent.getActivity(this, 0, challengeReceived, PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent sendResults = new Intent(getApplicationContext(), MultiPlayerResultsActivity.class);
+            sendResults.putExtra("challengeID", challengeID);
+            PendingIntent pendingIntentChallenge = PendingIntent.getActivity(this, 1, sendResults, PendingIntent.FLAG_UPDATE_CURRENT);
 
             android.app.Notification build = new NotificationCompat.Builder(this, RESULT)
                     .setSmallIcon(R.drawable.web_hi_res_512)
@@ -71,6 +71,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     .setVibrate(new long[3000])
                     .setChannelId(RESULT)
                     .setContentIntent(pendingIntentChallenge)
+                    .setAutoCancel(true)
                     .build();
 
             NotificationManager notificationManager =

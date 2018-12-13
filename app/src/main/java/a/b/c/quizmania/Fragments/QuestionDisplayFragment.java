@@ -220,6 +220,7 @@ public class QuestionDisplayFragment extends Fragment {
 
     private void startMPResults() {
         Intent intent = new Intent(getActivity(), MultiPlayerResultsActivity.class);
+        intent.putExtra("challengeID", currChallenge.getId());
         startActivity(intent);
         getActivity().finish();
     }
