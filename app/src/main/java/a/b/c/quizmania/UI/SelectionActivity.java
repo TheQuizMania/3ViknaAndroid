@@ -13,7 +13,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.koushikdutta.ion.Ion;
 
@@ -152,7 +151,8 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                     }else{ //if the response code is 0 , it starts the QuestionActivity with the
                             //correct extras.
                         Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
-                        setExtrasIntent(intent, cat, difficultyString, "");
+                        // Sets the intent Extras
+                        setExtrasIntent(intent, "", difficultyString, "");
                         startActivity(intent);
                         finish();
                     }
