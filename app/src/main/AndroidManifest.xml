@@ -48,7 +48,7 @@
             android:name=".UI.ChallengeListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="UI.MultiPlayerResultsActivity"
+            android:name=".UI.MultiPlayerResultsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".UI.ChangeUsernameActivity"
