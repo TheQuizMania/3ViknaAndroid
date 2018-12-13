@@ -13,7 +13,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.koushikdutta.ion.Ion;
 
@@ -26,6 +25,9 @@ import a.b.c.quizmania.R;
 import static a.b.c.quizmania.Entities.StaticVariables.pendingChallenge;
 import static a.b.c.quizmania.Entities.StaticVariables.question;
 
+/**
+ * An activity for selecting game settings
+ */
 public class SelectionActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     // Question variable that is used in QuestionDisplayFragment

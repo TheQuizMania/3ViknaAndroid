@@ -12,6 +12,9 @@ import java.util.List;
 import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.R;
 
+/**
+ * An adapter for the recycle viewer to display the users in UserListActivity
+ */
 public class ChallengeRVAdapter extends RecyclerView.Adapter<ChallengeRVAdapter.ViewHolder> {
 
     // Variables

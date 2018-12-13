@@ -1,5 +1,9 @@
 package a.b.c.quizmania.Entities;
 
+
+/**
+ * Class for storing commonly used static variables
+ */
 public class StaticVariables {
     private static Score currScore;
     public static Challenge pendingChallenge;

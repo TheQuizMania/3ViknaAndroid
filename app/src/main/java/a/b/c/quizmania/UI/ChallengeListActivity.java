@@ -20,7 +20,9 @@ import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
 import static a.b.c.quizmania.Entities.StaticVariables.question;
 import static a.b.c.quizmania.UI.MainMenuActivity.myChallenges;
 
-
+/**
+ * An activity that shows all challenges for the current user
+ */
 public class ChallengeListActivity extends AppCompatActivity implements ChallengeRVAdapter.ItemClickListener{
 
     private ChallengeRVAdapter adapter;

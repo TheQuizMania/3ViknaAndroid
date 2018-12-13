@@ -17,6 +17,9 @@ import java.util.Objects;
 
 import a.b.c.quizmania.R;
 
+/**
+ * An activity for changing the in game display name
+ */
 public class ChangeUsernameActivity extends AppCompatActivity {
 
     private EditText newUsername;

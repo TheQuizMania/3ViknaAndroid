@@ -1,5 +1,8 @@
 package a.b.c.quizmania.Entities;
 
+/**
+ * Entity that keeps track of multiplayer games
+ */
 public class Challenge {
     private UserListItem challenger;
     private UserListItem challengee;
@@ -9,9 +12,7 @@ public class Challenge {
     private String category;
     private String difficulty;
     private boolean isActive;
-
-
-    Question question;
+    private Question question;
 
     public Challenge() {}
 

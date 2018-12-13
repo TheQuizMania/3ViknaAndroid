@@ -17,6 +17,9 @@ import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.Entities.UserListItem;
 
+/**
+ * A utility that takes care of talking to Firebase
+ */
 public class Utility {
 
 	private static DatabaseReference ref;

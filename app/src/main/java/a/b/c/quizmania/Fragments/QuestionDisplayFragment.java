@@ -40,7 +40,7 @@ import static a.b.c.quizmania.UI.QuestionActivity.category;
 import static a.b.c.quizmania.UI.QuestionActivity.difficulty;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment that shows the questions as well as the progress bar and question counter.
  */
 public class QuestionDisplayFragment extends Fragment {
 

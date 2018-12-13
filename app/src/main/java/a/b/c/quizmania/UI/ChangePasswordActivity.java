@@ -14,6 +14,9 @@ import java.util.Objects;
 
 import a.b.c.quizmania.R;
 
+/**
+ * An activity for non-google users to change their password
+ */
 public class ChangePasswordActivity extends AppCompatActivity {
 
     private EditText newPass;
@@ -67,10 +70,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
         if(newPass.getText().toString().trim().length() == 0){
             return false;
             //password needs to include lower and uppercase letters and a number, can't include whitespace
-        }else if(!newPass.getText().toString().trim().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,}$")){
-            return false;
-        }
-            return true;
+        }else
+            return newPass.getText().toString().trim().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,}$");
     }
 
     private boolean passwordsMatch() {

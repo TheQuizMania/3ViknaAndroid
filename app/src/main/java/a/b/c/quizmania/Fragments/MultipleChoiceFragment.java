@@ -1,6 +1,5 @@
 package a.b.c.quizmania.Fragments;
 
-
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,9 +14,8 @@ import java.util.List;
 
 import a.b.c.quizmania.R;
 
-
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment that shows the buttons for the answers
  */
 public class MultipleChoiceFragment extends Fragment {
 

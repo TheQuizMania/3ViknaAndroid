@@ -28,6 +28,9 @@ import a.b.c.quizmania.utilities.Utility;
 
 import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
 
+/**
+ * An activity that displays the results of a multiplayer match
+ */
 public class MultiPlayerResultsActivity extends AppCompatActivity {
 
     // Views

@@ -23,6 +23,9 @@ import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.Jobs.MessageSender;
 import a.b.c.quizmania.R;
 
+/**
+ * An activity that displays the main menu
+ */
 public class MainMenuActivity extends AppCompatActivity {
 
     public static List<Challenge> myChallenges;

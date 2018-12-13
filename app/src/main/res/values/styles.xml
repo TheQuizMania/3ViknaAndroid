@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:splitMotionEvents">false</item>
         <item name="android:windowEnableSplitTouch">false</item>
+        <item name="android:statusBarColor">#d7d7d7</item>
     </style>
     <style name="DarkTheme" parent="Theme.AppCompat">
         <item name="android:splitMotionEvents">false</item>
