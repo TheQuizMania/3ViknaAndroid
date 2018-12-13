@@ -12,28 +12,33 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
         android:textSize="35sp"
         android:text="Results" />
     <TextView
         android:id="@+id/results_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="category:"/>
+        android:layout_marginVertical="10dp"
+        android:text="Category:"/>
     <TextView
         android:id="@+id/results_difficulty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="difficulty:"/>
+        android:layout_marginVertical="10dp"
+        android:text="Difficulty:"/>
     <TextView
         android:id="@+id/results_right_answers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="right answers out of 10:"/>
+        android:layout_marginVertical="10dp"
+        android:text="Right answers out of 10:"/>
     <TextView
         android:id="@+id/results_average_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="average time to answer:"/>
+        android:layout_marginVertical="10dp"
+        android:text="Average time to answer:"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

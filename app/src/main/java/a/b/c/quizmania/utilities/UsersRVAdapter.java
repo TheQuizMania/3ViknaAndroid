@@ -1,4 +1,4 @@
-package a.b.c.quizmania.db;
+package a.b.c.quizmania.utilities;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

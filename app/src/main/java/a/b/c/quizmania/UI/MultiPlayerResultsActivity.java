@@ -149,9 +149,9 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
      ***************************************************/
     private void displayInfo() {
         // Displays the category
-        changeText(categoryTV, (categoryTV.getText() + " " + currChallenge.getCategory()));
+        changeText(categoryTV, ("Category: " + currChallenge.getCategory() + "\n"));
         // Displays the difficulty
-        changeText(difficultyTV, (difficultyTV.getText() + " " + currChallenge.getDifficulty()));
+        changeText(difficultyTV, ("Difficulty: " + currChallenge.getDifficulty() + "\n"));
     }
 
     /***************************************************
@@ -163,7 +163,7 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
         // Gets the average time to answer a question
         double avgTime = getAvg(currChallenge.getChallengerScore().getQuestionStats());
         // Displays the name, number of questions answered right and average time
-        changeText(challengerNameTV, currChallenge.getChallenger().getDisplayName());
+        changeText(challengerNameTV, "Player name:\n" + currChallenge.getChallenger().getDisplayName() + "\n");
         changeText(challengerRightAnswersTV,
                 (challengerRightAnswersTV.getText()
                         + " " + currChallenge.getChallengerScore().getCorrectAnswers()));
@@ -179,7 +179,7 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
         // Gets the average time to answer a question
         double avgTime = getAvg(currChallenge.getChallengeeScore().getQuestionStats());
         // Displays the name, number of questions answered right and average time
-        changeText(challengeeNameTV, currChallenge.getChallengee().getDisplayName());
+        changeText(challengeeNameTV, "Player name:\n" + currChallenge.getChallengee().getDisplayName() + "\n");
         changeText(challengeeRightAnswersTV, (challengeeRightAnswersTV.getText() + " "
                 + currChallenge.getChallengeeScore().getCorrectAnswers()));
         changeText(challengeeAvgTimeTV, (challengeeAvgTimeTV.getText() + " " + avgTime));
@@ -198,10 +198,10 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
         challengerRA = challengerScore.getCorrectAnswers();
         challengeeRA = challengeeScore.getCorrectAnswers();
         if(challengerRA < challengeeRA) {
-            changeText(resultsTV, "Winner: " + currChallenge.getChallengee()
+            changeText(resultsTV, "Winner:\n" + currChallenge.getChallengee()
                     .getDisplayName());
         } else if (challengerRA > challengeeRA) {
-            changeText(resultsTV, "Winner: " + currChallenge.getChallenger()
+            changeText(resultsTV, "Winner:\n" + currChallenge.getChallenger()
                     .getDisplayName());
         } else {
             double challengerAvgTime = getAvg(currChallenge.getChallengerScore()
@@ -210,10 +210,10 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
                     = getAvg(currChallenge
                         .getChallengeeScore()
                         .getQuestionStats());
-            if(challengerAvgTime < challengeeAvgTime) {
+            if(challengerAvgTime > challengeeAvgTime) {
                 changeText(resultsTV, "Winner: " + currChallenge.getChallengee()
                         .getDisplayName());
-            } else if (challengerAvgTime > challengeeAvgTime) {
+            } else if (challengerAvgTime < challengeeAvgTime) {
                 changeText(resultsTV, "Winner: " + currChallenge.getChallenger()
                         .getDisplayName());
             } else {

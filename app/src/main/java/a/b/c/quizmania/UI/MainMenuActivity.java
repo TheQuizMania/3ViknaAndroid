@@ -53,6 +53,7 @@ public class MainMenuActivity extends AppCompatActivity {
         myChallenges = new ArrayList<>();
         fetchChallenges();
 
+
         //setContentView(R.layout.activity_main_menu);
         //Objects.requireNonNull(getSupportActionBar()).hide();
 
@@ -72,11 +73,49 @@ public class MainMenuActivity extends AppCompatActivity {
         profileBtn.setOnClickListener(v -> goToProfile(v));
         matchesBtn.setOnClickListener(v -> startMatchActivity());
 
+
         // Displays the User name
         getPlayer();
 
         msgSender = new MessageSender();
         msgSender.onNewToken();
+    }
+    private void setNotificationCircle() {
+        Button matchesBtn = findViewById(R.id.matches_btn);
+            switch (myChallenges.size()){
+            case 0:
+                break;
+            case 1:
+                matchesBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.round_lens_red1_18dp, 0);
+                break;
+            case 2:
+                matchesBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.round_lens_red2_18dp, 0);
+                break;
+            case 3:
+                matchesBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.round_lens_red3_18dp, 0);
+                break;
+            case 4:
+                matchesBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.round_lens_red4_18dp, 0);
+                break;
+            case 5:
+                matchesBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.round_lens_red4_18dp, 0);
+                break;
+            case 6:
+                matchesBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.round_lens_red6_18dp, 0);
+                break;
+            case 7:
+                matchesBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.round_lens_red7_18dp, 0);
+                break;
+            case 8:
+                matchesBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.round_lens_red8_18dp, 0);
+                break;
+            case 9:
+                matchesBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.round_lens_red9_18dp, 0);
+                break;
+            default:
+                matchesBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.round_lens_red9plus_18dp, 0);
+                break;
+            }
     }
 
     private void quickMatch() {
@@ -158,6 +197,7 @@ public class MainMenuActivity extends AppCompatActivity {
                                 myChallenges.add(challenge);
                             }
                         }
+                        setNotificationCircle();
                     }
 
                     @Override
