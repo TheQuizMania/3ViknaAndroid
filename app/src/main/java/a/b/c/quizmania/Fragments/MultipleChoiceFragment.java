@@ -3,6 +3,7 @@ package a.b.c.quizmania.Fragments;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Objects;
 
 import a.b.c.quizmania.R;
 
@@ -24,19 +26,16 @@ public class MultipleChoiceFragment extends Fragment {
     private Button b2;
     private Button b3;
     private Button b4;
-
+    //Strings
     private String guess;
-
-    public MultipleChoiceFragment() {
-        // Required empty public constructor
-    }
-
+    // Required empty public constructor
+    public MultipleChoiceFragment(){}
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_multiple_choice, container, false);
+        return Objects.requireNonNull(inflater).inflate(R.layout.fragment_multiple_choice, container, false);
     }
 
 
@@ -50,6 +49,7 @@ public class MultipleChoiceFragment extends Fragment {
         b3 = activity.findViewById(R.id.answer_3);
         b4 = activity.findViewById(R.id.answer_4);
 
+        //Setting default button drawable settings
         b1.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         b2.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         b3.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -144,7 +144,7 @@ public class MultipleChoiceFragment extends Fragment {
     }
 
     private void disableButtons() {
-        // Disables the button
+        // Disables the buttons
         b1.setClickable(false);
         b2.setClickable(false);
         b3.setClickable(false);
@@ -167,7 +167,7 @@ public class MultipleChoiceFragment extends Fragment {
             b4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.round_done_white_18dp, 0, 0);
         }
     }
-
+    //A getter for the other fragment
     public String playerGuess(){
         return guess;
     }
