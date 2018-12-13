@@ -47,4 +47,6 @@
     <string name="no_usernames_match">Usernames don\'t match</string>
     <string name="username_same_as_old">Username can\'t be the same as the old one</string>
     <string name="matches">Matches</string>
+    <string name="answerdCorrect">Answered correct:</string>
+    <string name="avgTimeToAnswer">average time to answer</string>
 </resources>

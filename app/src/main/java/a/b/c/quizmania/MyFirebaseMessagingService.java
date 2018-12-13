@@ -31,8 +31,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if(type.equals(CHALLENGE)) {
             Intent challengeReceived = new Intent(getApplicationContext(), ChallengeListActivity.class);
-
-            PendingIntent pendingIntentChallenge = PendingIntent.getActivity(this, 1, challengeReceived, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntentChallenge = PendingIntent.getActivity(this, 0, challengeReceived, PendingIntent.FLAG_ONE_SHOT);
 
             android.app.Notification build = new NotificationCompat.Builder(this, CHALLENGE)
                     .setSmallIcon(R.drawable.web_hi_res_512)
@@ -62,7 +61,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         else if(type.equals(RESULT)){
             Intent sendResults = new Intent(getApplicationContext(), MultiPlayerResultsActivity.class);
             sendResults.putExtra("challengeID", challengeID);
-            PendingIntent pendingIntentChallenge = PendingIntent.getActivity(this, 1, sendResults, PendingIntent.FLAG_UPDATE_CURRENT);
+            sendResults .setAction(Intent.ACTION_MAIN);
+            sendResults .addCategory(Intent.CATEGORY_LAUNCHER);
+            PendingIntent pendingIntentChallenge = PendingIntent.getActivity(this, 0, sendResults, PendingIntent.FLAG_ONE_SHOT);
+
 
             android.app.Notification build = new NotificationCompat.Builder(this, RESULT)
                     .setSmallIcon(R.drawable.web_hi_res_512)
