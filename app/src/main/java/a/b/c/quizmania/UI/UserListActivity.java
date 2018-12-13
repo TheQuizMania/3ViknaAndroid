@@ -34,7 +34,7 @@ public class UserListActivity extends AppCompatActivity implements UsersRVAdapte
 
 
     private MessageSender msgSender;
-    private List<UserListItem> userList;
+    private static List<UserListItem> userList;
     private UserListItem currUser;
     private static UsersRVAdapter adapter;
     public RecyclerView rv;
