@@ -1,4 +1,4 @@
-package a.b.c.quizmania.db;
+package a.b.c.quizmania.utilities;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;

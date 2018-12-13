@@ -41,7 +41,7 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
         Intent ret = getIntent();
         //If user is playing multiplayer, hides the play_again button
         if(ret.getStringExtra("MODE").matches("MULTI")) {
-            ((Button)findViewById(R.id.sp_result_play_again)).setVisibility(Button.GONE);
+            findViewById(R.id.sp_result_play_again).setVisibility(Button.GONE);
         }
         initVariables();
         populateViews();
@@ -80,7 +80,7 @@ public class SinglePlayerResultsActivity extends AppCompatActivity {
         //setting TextView texts
         category.setText(String.format("Category: %s", getCategoryName()));
         difficulty.setText(String.format("Difficulty: %s", resultScore.getDifficulty()));
-        rightAnswers.setText(String.format(Locale.US, "%d %s", resultScore.getCorrectAnswers(), "out of 10 right"));
+        rightAnswers.setText(String.format(Locale.US, "%d %s", resultScore.getCorrectAnswers(), "out of 10 questions correct"));
         averageTime.setText(String.format(Locale.US, "%s %s %s", "Average time to answer:", calculateAverageTime(), "seconds"));
     }
 
