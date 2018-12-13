@@ -4,12 +4,15 @@ public class UserListItem {
 
     private String email;
     private String displayName;
+    private String pushToken;
 
 
     public UserListItem(String email, String displayName) {
         this.email = email;
         this.displayName = displayName;
+        this.pushToken = null;
     }
+
     public UserListItem() {}
 
     public void setDisplayName(String displayName) {
@@ -20,11 +23,19 @@ public class UserListItem {
         this.email = email;
     }
 
+    public void setPushToken(String pushToken){
+        this.pushToken = pushToken;
+    }
+
     public String getDisplayName() {
         return displayName;
     }
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPushToken() {
+        return pushToken;
     }
 }
