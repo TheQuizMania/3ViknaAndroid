@@ -2,6 +2,9 @@ package a.b.c.quizmania.Entities;
 
 import java.util.List;
 
+/**
+ * Sub-entity for data from the API
+ */
 public class Results {
     private String category;
     private String difficulty;

@@ -2,6 +2,9 @@ package a.b.c.quizmania.Entities;
 
 import java.util.List;
 
+/**
+ * Entity that keeps track of scores from each game played
+ */
 public class Score {
 
     private String difficulty;

@@ -23,6 +23,9 @@ import a.b.c.quizmania.Entities.Categories;
 import a.b.c.quizmania.Entities.Score;
 import a.b.c.quizmania.R;
 
+/**
+ * An activity that shows statistics for the current user
+ */
 public class StatisticsActivity extends AppCompatActivity {
 
     //variables

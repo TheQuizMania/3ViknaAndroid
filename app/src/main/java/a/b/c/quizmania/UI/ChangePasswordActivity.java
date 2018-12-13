@@ -14,11 +14,14 @@ import java.util.Objects;
 
 import a.b.c.quizmania.R;
 
+/**
+ * An activity for non-google users to change their password
+ */
 public class ChangePasswordActivity extends AppCompatActivity {
-
+    //Views
     private EditText newPass;
     private EditText confirmNewPass;
-
+    //Current user
     private FirebaseUser user;
 
     @Override
@@ -29,14 +32,15 @@ public class ChangePasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_change_password);
         //hides the action bar on top
         Objects.requireNonNull(getSupportActionBar()).hide();
-
+        //finds views in XML
         newPass = findViewById(R.id.new_pass);
         confirmNewPass = findViewById(R.id.confirm_new_pass);
-
+        //initializes current user
         user = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     public void submitPassChange(View view) {
+        //checks if the password is valid
         if(!passwordIsValid()){
             newPass.requestFocus();
             newPass.setError("Invalid password");
@@ -52,6 +56,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void changePassword() {
+        //Changes the password
             user.updatePassword(newPass.getText().toString())
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
@@ -67,10 +72,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
         if(newPass.getText().toString().trim().length() == 0){
             return false;
             //password needs to include lower and uppercase letters and a number, can't include whitespace
-        }else if(!newPass.getText().toString().trim().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,}$")){
-            return false;
-        }
-            return true;
+        }else
+            return newPass.getText().toString().trim().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,}$");
     }
 
     private boolean passwordsMatch() {
@@ -83,11 +86,13 @@ public class ChangePasswordActivity extends AppCompatActivity {
         return Objects.equals(user.getDisplayName(), newPass.getText().toString());
     }
 
+    //if the user presses the cancel button finish the view
     public void cancelPassChange(View view) {
         finish();
     }
 
     private void setAppTheme() {
+        //sets app theme stored in shared preferences
         String uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");

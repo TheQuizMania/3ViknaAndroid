@@ -19,7 +19,6 @@ import a.b.c.quizmania.Entities.UserListItem;
 
 /**
  * Utility is used for the communication to Firebase Database
- *
  */
 public class Utility {
 

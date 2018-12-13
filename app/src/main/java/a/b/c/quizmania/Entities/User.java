@@ -2,6 +2,9 @@ package a.b.c.quizmania.Entities;
 
 import java.util.List;
 
+/**
+ * Entity for storing info about each user's stats
+ */
 public class User {
     private String userName;
     private List<Score> scores;

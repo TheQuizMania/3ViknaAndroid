@@ -17,13 +17,15 @@ import java.util.Objects;
 
 import a.b.c.quizmania.R;
 
+/**
+ * An activity for changing the in game display name
+ */
 public class ChangeUsernameActivity extends AppCompatActivity {
-
+    //Views
     private EditText newUsername;
     private EditText confirmNewUsername;
-
+    //current user
     private FirebaseUser user;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +57,13 @@ public class ChangeUsernameActivity extends AppCompatActivity {
     }
 
     private void changeUsername() {
+        //create a request for a username change
         UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
                 .setDisplayName(newUsername.getText().toString())
                 .build();
         user.updateProfile(profileChangeRequest);
         changeFirebaseName();
+        //sleep for 1 second to avoid async issues
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -72,7 +76,7 @@ public class ChangeUsernameActivity extends AppCompatActivity {
     }
 
     private void changeFirebaseName() {
-        //updates the firebasedatabase with the new username
+        //updates the firebase database with the new username
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
                 .child("root").child("Users").child(user.getUid()).child("userName");
         ref.setValue(newUsername.getText().toString());
@@ -92,12 +96,13 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         //new username can't be the same as the existing one
         return Objects.equals(user.getDisplayName(), newUsername.getText().toString());
     }
-
+    //finishes the view if user presses the cancel button
     public void cancelUsernameChange(View view) {
         finish();
     }
 
     private void setAppTheme() {
+        //set app theme according to the shared preferences
         String uID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         SharedPreferences pref = getSharedPreferences(uID, MODE_PRIVATE);
         String str = pref.getString("THEME_PREF", "AppTheme");

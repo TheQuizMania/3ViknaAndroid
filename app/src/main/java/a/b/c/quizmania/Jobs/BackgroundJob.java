@@ -3,6 +3,9 @@ package a.b.c.quizmania.Jobs;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 
+/**
+ * A background job that takes care of each question's timer
+ */
 public class BackgroundJob extends AsyncTask<Integer, Integer, Integer> {
     // To call functions in Question fragment
     private UiCallback<Integer> callback;

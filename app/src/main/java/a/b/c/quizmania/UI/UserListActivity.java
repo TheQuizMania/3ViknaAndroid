@@ -23,13 +23,14 @@ import java.util.Objects;
 
 import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.Entities.UserListItem;
-import a.b.c.quizmania.Jobs.MessageSender;
 import a.b.c.quizmania.R;
 import a.b.c.quizmania.utilities.UsersRVAdapter;
 
-import static a.b.c.quizmania.Entities.StaticVariables.currChallenge;
 import static a.b.c.quizmania.Entities.StaticVariables.pendingChallenge;
 
+/**
+ * An activity that shows a list of users that can be challenged
+ */
 public class UserListActivity extends AppCompatActivity implements UsersRVAdapter.ItemClickListener {
 
 

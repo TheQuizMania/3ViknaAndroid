@@ -1,5 +1,8 @@
 package a.b.c.quizmania.Entities;
 
+/**
+ * Entity that keeps track of user info for multiplayer
+ */
 public class UserListItem {
 
     private String email;

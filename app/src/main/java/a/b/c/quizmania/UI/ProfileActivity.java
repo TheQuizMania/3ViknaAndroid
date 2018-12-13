@@ -18,6 +18,9 @@ import java.util.Objects;
 
 import a.b.c.quizmania.R;
 
+/**
+ * An activity that displays the current user's profile
+ */
 public class ProfileActivity extends AppCompatActivity {
 
 
