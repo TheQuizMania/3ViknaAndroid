@@ -87,7 +87,7 @@ public class RegisterActivityTest {
 
     @Test
     public void noInputTest() {
-        registerBtn.perform(click());
+        registerBtn.perform(closeSoftKeyboard(), click());
         userNameBox.check(matches(hasFocus()));
         userNameBox.check(matches(hasErrorText(activity.getString(R.string.username_needed))));
     }

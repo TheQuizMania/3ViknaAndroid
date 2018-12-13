@@ -244,7 +244,7 @@ public class MultiPlayerResultsActivity extends AppCompatActivity {
         currChallenge = null;
         Intent intent = new Intent(this, MainMenuActivity.class);
         startActivity(intent);
-        finish();
+        finishAffinity();
     }
 
 

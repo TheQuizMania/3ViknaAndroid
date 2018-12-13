@@ -55,14 +55,14 @@ public class SelectionActivityTest {
     @Test
     public void difficultySpinnerTest() {
         clickDifficultySpinner("Medium");
-        assertEquals(mActivity.selectedDifficulty, "&difficulty=medium");
+        assertEquals(mActivity.selectedDifficulty, "medium");
 
 
         clickDifficultySpinner("Hard");
-        assertEquals(mActivity.selectedDifficulty, "&difficulty=hard");
+        assertEquals(mActivity.selectedDifficulty, "hard");
 
         clickDifficultySpinner("Easy");
-        assertEquals(mActivity.selectedDifficulty, "&difficulty=easy");
+        assertEquals(mActivity.selectedDifficulty, "easy");
     }
 
     @Test
@@ -71,34 +71,31 @@ public class SelectionActivityTest {
         assertEquals(mActivity.selectedCategory, "");
 
         clickCategorySpinner("Film");
-        assertEquals(mActivity.selectedCategory, "&category=11");
+        assertEquals(mActivity.selectedCategory, "11");
 
         clickCategorySpinner("Science & nature");
-        assertEquals(mActivity.selectedCategory, "&category=17");
+        assertEquals(mActivity.selectedCategory, "17");
 
         clickCategorySpinner("General Knowledge");
-        assertEquals(mActivity.selectedCategory, "&category=9");
+        assertEquals(mActivity.selectedCategory, "9");
 
         clickCategorySpinner("Sports");
-        assertEquals(mActivity.selectedCategory, "&category=21");
+        assertEquals(mActivity.selectedCategory, "21");
 
         clickCategorySpinner("Mythology");
-        assertEquals(mActivity.selectedCategory, "&category=20");
+        assertEquals(mActivity.selectedCategory, "20");
 
         clickCategorySpinner("Politics");
-        assertEquals(mActivity.selectedCategory, "&category=24");
+        assertEquals(mActivity.selectedCategory, "24");
 
         clickCategorySpinner("Geography");
-        assertEquals(mActivity.selectedCategory, "&category=22");
+        assertEquals(mActivity.selectedCategory, "22");
 
         clickCategorySpinner("Video Games");
-        assertEquals(mActivity.selectedCategory, "&category=15");
-
-        clickCategorySpinner("Television");
-        assertEquals(mActivity.selectedCategory, "&category=14");
+        assertEquals(mActivity.selectedCategory, "15");
 
         clickCategorySpinner("Music");
-        assertEquals(mActivity.selectedCategory, "&category=12");
+        assertEquals(mActivity.selectedCategory, "12");
     }
 
     @Test
