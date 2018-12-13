@@ -233,11 +233,9 @@ public class QuestionDisplayFragment extends Fragment {
         if(category.equals("")){
             pendingChallenge.setCategory("Random");
         } else {
-            String[] ret = category.split("=");
-            pendingChallenge.setCategory(ret[1]);
+            pendingChallenge.setCategory(category);
         }
-        String[] ret = difficulty.split("=");
-        pendingChallenge.setDifficulty(ret[1]);
+        pendingChallenge.setDifficulty(difficulty);
 
         // Sets the score of the challenger in
         pendingChallenge.setChallengerScore(score);
@@ -256,11 +254,9 @@ public class QuestionDisplayFragment extends Fragment {
         if(category.equals("")){
                 score.setCategory("Random");
         } else {
-            String[] ret = category.split("=");
-            score.setCategory(ret[1]);
+            score.setCategory(category);
         }
-        String[] ret = difficulty.split("=");
-        score.setDifficulty(ret[1]);
+        score.setDifficulty(difficulty);
 
         int count = 0;
         for(QuestionStats q : questionsList){

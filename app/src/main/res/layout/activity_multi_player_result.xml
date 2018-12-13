@@ -46,18 +46,18 @@
                 android:id="@+id/mp_results_challenger"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="DisplayName"
+                android:text="Player:\n"
                 />
             <TextView
                 android:id="@+id/mp_challenger_results_right_answers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="right answers out of 10:"/>
+                android:text="Answered correct:\n"/>
             <TextView
                 android:id="@+id/mp_challenger_results_average_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="average time to answer:"/>
+                android:text="average time to answer:\n"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -70,18 +70,18 @@
                 android:id="@+id/mp_results_challengee"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="DisplayName"
+                android:text="Player:\n"
                 />
             <TextView
                 android:id="@+id/mp_challengee_results_right_answers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="right answers out of 10: "/>
+                android:text="Answered correct:\n"/>
             <TextView
                 android:id="@+id/mp_challengee_results_average_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="average time to answer:"/>
+                android:text="average time to answer:\n"/>
         </LinearLayout>
     </LinearLayout>
 

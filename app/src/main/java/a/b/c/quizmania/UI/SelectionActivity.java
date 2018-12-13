@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -92,7 +93,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
 
             // Initialize the selection strings as empty strings
             selectedCategory = "";
-            selectedDifficulty = "&difficulty=easy";
+            selectedDifficulty = "easy";
 
             // Find Views
             // Views
@@ -135,7 +136,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
 
         //Fetches questions from the api from all categories(random) and a random difficulty
         Ion.with(this)
-                .load(url + difficultyString + "&type=multiple")
+                .load(url + "&difficulty=" + difficultyString + "&type=multiple")
                 .asString()
                 .setCallback((e, result) -> {
                     // Converts the result from the api to a Question.class
@@ -151,7 +152,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                     }else{ //if the response code is 0 , it starts the QuestionActivity with the
                             //correct extras.
                         Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
-                        setExtrasIntent(intent, "", difficultyString, "");
+                        setExtrasIntent(intent, cat, difficultyString, "");
                         startActivity(intent);
                         finish();
                     }
@@ -164,13 +165,13 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
         int i = rand.nextInt(3) + 1;
         switch (i) {
             case 1:
-                return "&difficulty=easy";
+                return "easy";
             case 2:
-                return "&difficulty=medium";
+                return "medium";
             case 3:
-                return "difficulty=hard";
+                return "hard";
             default:
-                return "&difficulty=easy";
+                return "easy";
         }
     }
 
@@ -181,6 +182,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.d("SELECTION_INTENT", "onItemSelected() called");
         // Checks which drop down is pressed
         switch(parent.getId()){
             case R.id.category_dropdown:
@@ -189,7 +191,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
                 break;
             case R.id.difficulty_dropdown:
 //                Toast.makeText(getApplicationContext(), difficulties[position], Toast.LENGTH_SHORT).show();
-                selectedDifficulty = "&difficulty=" + difficulties[position].toLowerCase();
+                selectedDifficulty = difficulties[position].toLowerCase();
                 break;
             default:
                 break;
@@ -197,32 +199,32 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
     }
     private String getCategory(String category) {
         // If you changed category it will return a string with &category={selected category}
-        String retVal = "&category=";
-        cat = retVal + category;
+        cat = category;
+        Log.d("SELECTION_INTENT", cat);
         switch (category) {
             case "Random":
                 cat = "";
                 return "";
             case "Film":
-                return retVal + "11";
+                return "11";
             case "Science & nature":
-                return retVal + "17";
+                return "17";
             case "General Knowledge":
-                return retVal + "9";
+                return  "9";
             case "Sports":
-                return retVal + "21";
+                return "21";
             case "Mythology":
-                return retVal + "20";
+                return "20";
             case "Politics":
-                return retVal + "24";
+                return "24";
             case "Geography":
-                return retVal + "22";
+                return "22";
             case "Video Games":
-                return retVal + "15";
+                return "15";
             case "Television":
-                return retVal + "14";
+                return "14";
             case "Music":
-                return retVal + "12";
+                return "12";
             default:
                 return "";
         }
@@ -234,7 +236,7 @@ public class SelectionActivity extends AppCompatActivity implements AdapterView.
       playBtn.setClickable(false);
       playBtn.setText(getString(R.string.quiz_unavaliable));
       Ion.with(this)
-              .load(url + selectedCategory + selectedDifficulty + "&type=multiple")
+              .load(url + "&category=" + selectedCategory + "&difficulty=" + selectedDifficulty + "&type=multiple")
               .asString()
               .setCallback((e, result) -> {
                   // Converts the result from the api to a Question.class

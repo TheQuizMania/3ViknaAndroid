@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Categories {
-    private List<String> categories;
-    private List<String> catNumbers;
+    private static List<String> categories;
+    private static List<String> catNumbers;
 
     public Categories() {
         categories = new ArrayList<>();
@@ -34,14 +34,14 @@ public class Categories {
         catNumbers.add("12");
     }
 
-    public List<String> getCategories() {
+    public  List<String> getCategories() {
         return categories;
     }
-    public List<String> getCatNumbers(){
+    public  List<String> getCatNumbers(){
         return catNumbers;
     }
 
-    public String getCatNameByNumber(String number){
+    public static String getCatNameByNumber(String number){
         return categories.get(catNumbers.indexOf(number));
     }
 }
