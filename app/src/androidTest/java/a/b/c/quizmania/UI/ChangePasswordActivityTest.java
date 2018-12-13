@@ -50,7 +50,6 @@ public class ChangePasswordActivityTest {
         passwordConfirm = onView(withId(R.id.confirm_new_pass));
         submitBtn = onView(withId(R.id.submitBtnChangePassword));
     }
-
     @Test
     public void checkInvalidPWLength() {
         password.perform(typeText(" "), closeSoftKeyboard());

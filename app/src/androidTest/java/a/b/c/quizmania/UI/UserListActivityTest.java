@@ -17,7 +17,7 @@ import java.util.List;
 
 import a.b.c.quizmania.Entities.Challenge;
 import a.b.c.quizmania.Entities.UserListItem;
-import a.b.c.quizmania.db.UsersRVAdapter;
+import a.b.c.quizmania.utilities.UsersRVAdapter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

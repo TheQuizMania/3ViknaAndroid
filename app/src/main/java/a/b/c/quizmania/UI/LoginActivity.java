@@ -40,8 +40,13 @@ import a.b.c.quizmania.utilities.Utility;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static SharedPreferences INSTANCE = null;
+    public static void setSharedPreferencesInstance(SharedPreferences pref){
+        INSTANCE = pref;
+    }
+
     final int RESULT_CODE = 9001;
-    SharedPreferences sp;
+    private SharedPreferences sp;
 
     // Firebase
     private FirebaseAuth mAuth;
@@ -59,11 +64,17 @@ public class LoginActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
 
-        sp = getSharedPreferences("login",MODE_PRIVATE);
+        if(INSTANCE == null){
+            sp = getSharedPreferences("login",MODE_PRIVATE);
 
-        if(sp.getBoolean("logged",false)){
-            startMainMenu();
+            if(sp.getBoolean("logged",false)){
+                startMainMenu();
+            }
+
+        }else {
+            sp = INSTANCE;
         }
+
 
 
         initVariables();
