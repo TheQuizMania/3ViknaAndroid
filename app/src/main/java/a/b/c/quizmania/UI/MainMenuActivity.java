@@ -20,11 +20,14 @@ import java.util.List;
 import java.util.Objects;
 
 import a.b.c.quizmania.Entities.Challenge;
+import a.b.c.quizmania.Jobs.MessageSender;
 import a.b.c.quizmania.R;
 
 public class MainMenuActivity extends AppCompatActivity {
 
     public static List<Challenge> myChallenges;
+
+    private MessageSender msgSender;
 
     // Firebase
     private FirebaseAuth mAuth;
@@ -71,6 +74,9 @@ public class MainMenuActivity extends AppCompatActivity {
 
         // Displays the User name
         getPlayer();
+
+        msgSender = new MessageSender();
+        msgSender.onNewToken();
     }
 
     private void quickMatch() {
