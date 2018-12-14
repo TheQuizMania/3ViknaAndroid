@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.DarkTheme);
         setContentView(R.layout.activity_login);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
@@ -80,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         //initializes variables
         initVariables();
     }
-
+//
     private void initVariables(){
         // Firebase
         mAuth = FirebaseAuth.getInstance();
